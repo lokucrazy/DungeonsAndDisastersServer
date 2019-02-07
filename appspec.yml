@@ -2,4 +2,4 @@ version: 0.0
 os: linux
 files:
   - source: ./build/libs/*
-  - destination: /home/ec2-user/serverJar
+    destination: /home/ec2-user/serverJar
