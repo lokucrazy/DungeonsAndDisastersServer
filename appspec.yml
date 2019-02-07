@@ -1,5 +1,5 @@
 version: 0.0
 os: linux
 files:
-  - source: ./build/libs/*
+  - source: build/libs/*
     destination: /home/ec2-user/serverJar
