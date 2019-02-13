@@ -3,11 +3,12 @@ os: linux
 files:
   - source: build/libs/server-0.0.1-SNAPSHOT.jar
     destination: /home/ec2-user/serverJar
-BeforeInstall:
-  - location: bashScripts/beforeInstall.sh
-    timeout: 300
-    runas: root
-ApplicationStart:
-  - location: bashScripts/applicationStart.sh
-    timeout: 300
-    runas: root
+hooks:
+  BeforeInstall:
+    - location: bashScripts/beforeInstall.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: bashScripts/applicationStart.sh
+      timeout: 300
+      runas: root
