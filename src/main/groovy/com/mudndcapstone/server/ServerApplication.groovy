@@ -15,7 +15,7 @@ class ServerApplication {
 
 	@RequestMapping("/")
 	String hello() {
-		return "Hello Dungeoneers"
+		return "Hello Dungeoneers Again"
 	}
 }
 
