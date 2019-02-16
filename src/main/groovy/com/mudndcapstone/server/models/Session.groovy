@@ -1,11 +1,29 @@
 package com.mudndcapstone.server.models
 
-import org.neo4j.ogm.annotation.GeneratedValue
-import org.neo4j.ogm.annotation.Id
+
 import org.neo4j.ogm.annotation.NodeEntity
+import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
-class Session {
-    @Id @GeneratedValue Long id
+class Session extends History {
+    @Relationship(type = "HAS_CHAT_LOG", direction = Relationship.OUTGOING)
+    Chat chatLog
 
+    @Relationship(type = "HAS_MAP_LIST", direction = Relationship.OUTGOING)
+    Map mapList
+
+    @Relationship(type = "HAS_COMBAT_LIST", direction = Relationship.OUTGOING)
+    Combat combatList
+
+    @Relationship(type = "HAS_DM", direction = Relationship.OUTGOING)
+    DM dm
+
+    @Relationship(type = "HAS_NPC", direction = Relationship.OUTGOING)
+    List<NPC> npcs
+
+    @Relationship(type = "HAS_PLAYER", direction = Relationship.OUTGOING)
+    List<User> players
+
+    @Relationship(type = "HAS_CHARACTER", direction = Relationship.OUTGOING)
+    List<Character> characters
 }
