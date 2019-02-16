@@ -19,11 +19,11 @@ class Session extends History {
     DM dm
 
     @Relationship(type = "HAS_NPC", direction = Relationship.OUTGOING)
-    List<NPC> npcs
+    Set<NPC> npcs
 
     @Relationship(type = "HAS_PLAYER", direction = Relationship.OUTGOING)
-    List<User> players
+    Set<User> players
 
     @Relationship(type = "HAS_CHARACTER", direction = Relationship.OUTGOING)
-    List<Character> characters
+    Set<Character> characters
 }

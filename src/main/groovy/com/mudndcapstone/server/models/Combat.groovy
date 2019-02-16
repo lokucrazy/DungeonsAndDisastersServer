@@ -12,11 +12,11 @@ class Combat {
     @Id @GeneratedValue Long id
     @CreatedDate Date createdAt
     @LastModifiedDate Date modifiedAt
-    List<Combat> previousCombat
+    Combat previousCombat
 
     @Relationship(type = "HAS_COMBAT_LOG", direction = Relationship.INCOMING)
     Session session
 
     @Relationship(type = "INVOLVES_ENEMY", direction = Relationship.OUTGOING)
-    List<Enemy> enemies
+    Set<Enemy> enemies
 }

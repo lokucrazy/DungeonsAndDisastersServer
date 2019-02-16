@@ -22,4 +22,3 @@ class User {
 
     @Relationship(type = "HAS_PLAYER", direction = Relationship.INCOMING)
     Set<Session> sessions
-}
