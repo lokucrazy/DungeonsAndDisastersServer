@@ -7,7 +7,6 @@ import org.neo4j.ogm.annotation.Relationship
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 
-
 @NodeEntity
 class History {
     @Id @GeneratedValue Long id
