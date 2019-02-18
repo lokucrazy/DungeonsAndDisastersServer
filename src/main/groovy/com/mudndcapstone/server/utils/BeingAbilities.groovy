@@ -6,12 +6,12 @@ class BeingAbilities {
     int constitution
     int intelligence
     int wisdom
-    int charism
+    int charisma
 
     int strengthModifier
     int dexterityModifier
     int constitutionModifier
     int intelligenceModifier
     int wisdomModifier
-    int charismModifier
+    int charismaModifier
 }
