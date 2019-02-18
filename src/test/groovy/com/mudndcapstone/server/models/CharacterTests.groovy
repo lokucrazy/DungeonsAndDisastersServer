@@ -45,6 +45,7 @@ class CharacterTests {
         character.setSessions(sessions)
 
         // Then
+        Assert.assertNotNull(character.id)
         Assert.assertEquals(character.name, "King Sir the IV")
         Assert.assertEquals(character.characterClass, CharacterClass.MONK)
         Assert.assertEquals(character.level, 1)
