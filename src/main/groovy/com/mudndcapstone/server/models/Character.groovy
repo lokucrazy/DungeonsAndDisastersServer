@@ -19,8 +19,7 @@ class Character extends Being {
     BeingAbilities abilities
 
     @Relationship(type = "CREATED_CHARACTER", direction = Relationship.INCOMING)
-    @CreatedBy
-    User user
+    @CreatedBy User user
 
     @Relationship(type = "HAS_CHARACTER", direction = Relationship.INCOMING)
     List<Session> sessions

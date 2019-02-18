@@ -9,17 +9,13 @@ import org.springframework.data.annotation.LastModifiedDate
 
 @NodeEntity
 class User {
-    @Id
-    @GeneratedValue
-    Long id
+    @Id @GeneratedValue Long id
     String username
     String hash
     Date birthdate
     List<String> notes
-    @CreatedDate
-    Date createdAt
-    @LastModifiedDate
-    Date modifiedAt
+    @CreatedDate Date createdAt
+    @LastModifiedDate Date modifiedAt
 
     @Relationship(type = "CREATED_CHAR", direction = Relationship.OUTGOING)
     Set<Character> characters
