@@ -39,7 +39,7 @@ class CharacterTests {
         character.setLevel(1)
         character.setBackground("King of Kingland")
         character.setRace(CharacterRace.DRAGONBORN)
-        abilities.setCharism(100)
+        abilities.setCharisma(100)
         character.setAbilities(abilities)
         character.setUser(user)
         character.setSessions(sessions)
@@ -51,7 +51,7 @@ class CharacterTests {
         Assert.assertEquals(character.background, "King of Kingland")
         Assert.assertEquals(character.race, CharacterRace.DRAGONBORN)
         Assert.assertEquals(character.abilities, abilities)
-        Assert.assertEquals(character.abilities.charism, 100)
+        Assert.assertEquals(character.abilities.charisma, 100)
         Assert.assertEquals(character.user, user)
         Assert.assertEquals(character.sessions, sessions)
     }
