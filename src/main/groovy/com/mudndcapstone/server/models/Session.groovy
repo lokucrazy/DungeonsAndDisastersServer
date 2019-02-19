@@ -21,6 +21,9 @@ class Session extends History {
     @Relationship(type = "HAS_NPC", direction = Relationship.OUTGOING)
     Set<NPC> npcs
 
+    /* Could these two be a hashmap, mapping user => character
+    or a new PlayerCharacter class
+    */
     @Relationship(type = "HAS_PLAYER", direction = Relationship.OUTGOING)
     Set<User> players
 

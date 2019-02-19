@@ -22,7 +22,7 @@ class CharacterTests {
         Assert.assertNotNull(character.id)
         Assert.assertNull(character.name)
         Assert.assertNull(character.user)
-        Assert.assertEquals(character.level, -1)
+        Assert.assertEquals(character.level, Integer.MIN_VALUE)
     }
 
     @Test

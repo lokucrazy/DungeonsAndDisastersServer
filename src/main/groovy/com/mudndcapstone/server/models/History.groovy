@@ -17,5 +17,5 @@ class History {
     Date dateEnded
 
     @Relationship(type = "HAS_PREVIOUS_SESSION", direction = Relationship.OUTGOING)
-    History history
+    History history /* might need to rename this to previousHistory */
 }

@@ -4,8 +4,8 @@ import org.neo4j.ogm.annotation.Relationship
 
 class DM extends User {
     @Relationship(type = "HAS_DM", direction = Relationship.INCOMING)
-    List<Session> dmSessions
+    Set<Session> dmSessions
 
     @Relationship(type = "CONTROLS", direction = Relationship.OUTGOING)
-    List<NPC> npcs
+    Set<NPC> npcs
 }

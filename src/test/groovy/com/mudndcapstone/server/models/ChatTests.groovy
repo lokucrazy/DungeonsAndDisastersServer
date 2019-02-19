@@ -17,7 +17,7 @@ class ChatTests {
 
         // Then
         Assert.assertNotNull(chat.id)
-        Assert.assertNotNull(chat.log)
+        Assert.assertNull(chat.log)
         Assert.assertNull(chat.session)
     }
 
