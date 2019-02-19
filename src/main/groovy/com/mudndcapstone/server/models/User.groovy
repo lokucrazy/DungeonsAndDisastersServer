@@ -7,11 +7,13 @@ import org.neo4j.ogm.annotation.Relationship
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 
+import javax.validation.constraints.NotNull
+
 @NodeEntity
 class User {
     @Id @GeneratedValue Long id
-    String username
-    String hash
+    @NotNull String username
+    @NotNull String password
     Date birthdate
     List<String> notes
     @CreatedDate Date createdAt

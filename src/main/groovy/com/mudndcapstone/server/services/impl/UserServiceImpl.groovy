@@ -22,11 +22,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    User createUser(String username, String password, Date birthdate) {
-        User user = new User()
-        user.setUsername(username)
-        user.setHash(password)
-        user.setBirthdate(birthdate)
+    User createUser(User user) {
         userRepository.save(user)
     }
 
