@@ -13,9 +13,5 @@ class ServerApplication {
 		SpringApplication.run(ServerApplication, args)
 	}
 
-	@RequestMapping("/")
-	String hello() {
-		return "Hello Dungeoneers Again"
-	}
 }
 
