@@ -16,7 +16,7 @@ class EnemyTests {
         Enemy enemy = new Enemy()
 
         // Then
-        Assert.assertNotNull(enemy.id)
+        Assert.assertNull(enemy.id)
         Assert.assertNull(enemy.combat)
     }
 
@@ -30,7 +30,7 @@ class EnemyTests {
         enemy.setCombat(combat)
 
         // Then
-        Assert.assertNotNull(enemy.id)
+        Assert.assertNull(enemy.id)
         Assert.assertEquals(enemy.combat, combat)
     }
 

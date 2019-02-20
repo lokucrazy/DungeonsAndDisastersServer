@@ -16,7 +16,7 @@ class ChatTests {
         Chat chat = new Chat()
 
         // Then
-        Assert.assertNotNull(chat.id)
+        Assert.assertNull(chat.id)
         Assert.assertNull(chat.log)
         Assert.assertNull(chat.session)
     }
@@ -34,7 +34,7 @@ class ChatTests {
         chat.setSession(session)
 
         // Then
-        Assert.assertNotNull(chat.id)
+        Assert.assertNull(chat.id)
         Assert.assertEquals(chat.log, log)
         Assert.assertEquals(chat.note, "test note")
         Assert.assertEquals(chat.session, session)

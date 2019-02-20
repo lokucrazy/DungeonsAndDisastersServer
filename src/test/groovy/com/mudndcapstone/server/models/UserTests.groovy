@@ -16,7 +16,7 @@ class UserTests {
         User user = new User()
 
         // Then
-        Assert.assertNotNull(user.id)
+        Assert.assertNull(user.id)
         Assert.assertNull(user.characters)
         Assert.assertNull(user.sessions)
     }
@@ -33,7 +33,7 @@ class UserTests {
         user.setSessions(sessions)
 
         // Then
-        Assert.assertNotNull(user.id)
+        Assert.assertNull(user.id)
         Assert.assertEquals(user.characters, characters)
         Assert.assertEquals(user.sessions, sessions)
     }

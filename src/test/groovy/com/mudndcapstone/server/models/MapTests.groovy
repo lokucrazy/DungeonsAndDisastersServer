@@ -16,7 +16,7 @@ class MapTests {
         Map map = new Map()
 
         // Then
-        Assert.assertNotNull(map.id)
+        Assert.assertNull(map.id)
         Assert.assertNull(map.images)
         Assert.assertNull(map.session)
     }
@@ -33,7 +33,7 @@ class MapTests {
         map.setSession(session)
 
         // Then
-        Assert.assertNotNull(map.id)
+        Assert.assertNull(map.id)
         Assert.assertEquals(map.images, images)
         Assert.assertEquals(map.session, session)
     }

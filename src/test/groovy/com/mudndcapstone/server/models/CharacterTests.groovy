@@ -14,15 +14,14 @@ import org.springframework.test.context.junit4.SpringRunner
 class CharacterTests {
 
     @Test
-    void givenEmptyCharacter_thenReturnAlmostEmptyCharacterObject() {
+    void givenEmptyCharacter_thenReturnEmptyCharacterObject() {
         // Given
         Character character = new Character()
-
         // Then
-        Assert.assertNotNull(character.id)
+        Assert.assertNull(character.id)
         Assert.assertNull(character.name)
         Assert.assertNull(character.user)
-        Assert.assertEquals(character.level, Integer.MIN_VALUE)
+        Assert.assertEquals(character.level, 0)
     }
 
     @Test
@@ -45,7 +44,7 @@ class CharacterTests {
         character.setSessions(sessions)
 
         // Then
-        Assert.assertNotNull(character.id)
+        Assert.assertNull(character.id)
         Assert.assertEquals(character.name, "King Sir the IV")
         Assert.assertEquals(character.characterClass, CharacterClass.MONK)
         Assert.assertEquals(character.level, 1)

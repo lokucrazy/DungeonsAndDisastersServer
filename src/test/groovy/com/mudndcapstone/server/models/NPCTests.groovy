@@ -16,7 +16,7 @@ class NPCTests {
         NPC npc = new NPC()
 
         // Then
-        Assert.assertNotNull(npc.id)
+        Assert.assertNull(npc.id)
         Assert.assertNull(npc.session)
         Assert.assertNull(npc.dm)
     }
@@ -33,7 +33,7 @@ class NPCTests {
         npc.setDm(dm)
 
         // Then
-        Assert.assertNotNull(npc.id)
+        Assert.assertNull(npc.id)
         Assert.assertEquals(npc.session, session)
         Assert.assertEquals(npc.dm, dm)
     }

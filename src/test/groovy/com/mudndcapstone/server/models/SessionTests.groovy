@@ -16,7 +16,7 @@ class SessionTests {
         Session session = new Session()
 
         // Then
-        Assert.assertNotNull(session.id)
+        Assert.assertNull(session.id)
         Assert.assertNull(session.chatLog)
         Assert.assertNull(session.mapList)
         Assert.assertNull(session.combatList)
@@ -48,7 +48,7 @@ class SessionTests {
         session.setCharacters(characters)
 
         // Then
-        Assert.assertNotNull(session.id)
+        Assert.assertNull(session.id)
         Assert.assertEquals(session.chatLog, chatLog)
         Assert.assertEquals(session.mapList, mapList)
         Assert.assertEquals(session.combatList, combatList)

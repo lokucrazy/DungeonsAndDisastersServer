@@ -16,7 +16,7 @@ class HistoryTests {
         History history = new History()
 
         // Then
-        Assert.assertNotNull(history.id)
+        Assert.assertNull(history.id)
         Assert.assertNull(history.nonCombatLog)
         Assert.assertNull(history.combatLog)
         Assert.assertNull(history.history)
@@ -36,10 +36,10 @@ class HistoryTests {
         history.setHistory(previousHistory)
 
         // Then
-        Assert.assertNotNull(history.id)
+        Assert.assertNull(history.id)
         Assert.assertEquals(history.nonCombatLog, nonCombatLog)
         Assert.assertEquals(history.combatLog, combatLog)
-        Assert.assertEquals(history.history, history)
+        Assert.assertEquals(history.history, previousHistory)
     }
 
 }

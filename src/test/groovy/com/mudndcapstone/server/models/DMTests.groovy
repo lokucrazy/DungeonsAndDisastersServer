@@ -16,7 +16,7 @@ class DMTests {
         DM dm = new DM()
 
         // Then
-        Assert.assertNotNull(dm.id)
+        Assert.assertNull(dm.id)
         Assert.assertNull(dm.sessions)
         Assert.assertNull(dm.npcs)
     }
@@ -33,7 +33,7 @@ class DMTests {
         dm.setNpcs(npcs)
 
         // Then
-        Assert.assertNotNull(dm.id)
+        Assert.assertNull(dm.id)
         Assert.assertEquals(dm.dmSessions, dmSessions)
         Assert.assertEquals(dm.npcs, npcs)
     }

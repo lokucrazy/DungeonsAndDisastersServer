@@ -16,7 +16,7 @@ class CombatTests {
         Combat combat = new Combat()
 
         // Then
-        Assert.assertNotNull(combat.id)
+        Assert.assertNull(combat.id)
         Assert.assertNull(combat.previousCombat)
         Assert.assertNull(combat.session)
         Assert.assertNull(combat.enemies)
@@ -36,7 +36,7 @@ class CombatTests {
         combat.setEnemies(enemies)
 
         // Then
-        Assert.assertNotNull(combat.id)
+        Assert.assertNull(combat.id)
         Assert.assertEquals(combat.previousCombat, previousCombat)
         Assert.assertEquals(combat.session, session)
         Assert.assertEquals(combat.enemies, enemies)
