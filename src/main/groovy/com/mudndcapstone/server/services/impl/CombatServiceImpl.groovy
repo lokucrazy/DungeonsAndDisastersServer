@@ -5,7 +5,7 @@ import com.mudndcapstone.server.repositories.CombatRepository
 import com.mudndcapstone.server.services.CombatService
 import org.springframework.beans.factory.annotation.Autowired
 
-class CombatServicImpl implements CombatService {
+class CombatServiceImpl implements CombatService {
 
     @Autowired CombatRepository combatRepository
 
