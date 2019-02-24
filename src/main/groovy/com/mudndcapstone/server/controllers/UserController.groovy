@@ -1,6 +1,8 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.DM
 import com.mudndcapstone.server.models.User
+import com.mudndcapstone.server.services.DMService
 import com.mudndcapstone.server.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -15,10 +17,18 @@ class UserController {
 
     @Autowired UserService userService
 
+    @Autowired DMService dmService
+
     @GetMapping
     ResponseEntity<List<User>> getAllUsers() {
         List<User> allUsers = userService.getAllUsers()
         new ResponseEntity<>(allUsers, HttpStatus.OK)
+    }
+
+    @GetMapping(value = "/dms")
+    ResponseEntity<List<DM>> getAllDMs() {
+        List<DM> allDMs = dmService.getAllDMs()
+        new ResponseEntity<List<DM>>(allDMs, HttpStatus.OK)
     }
 
     @GetMapping(value = "/{id}")
@@ -41,5 +51,4 @@ class UserController {
         userService.deleteUserById(id)
         new ResponseEntity(HttpStatus.OK)
     }
-
 }
