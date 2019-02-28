@@ -4,7 +4,9 @@ import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.repositories.CharacterRepository
 import com.mudndcapstone.server.services.CharacterService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class CharacterServiceImpl implements CharacterService {
 
     @Autowired CharacterRepository characterRepository

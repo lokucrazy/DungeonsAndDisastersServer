@@ -4,7 +4,9 @@ import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.repositories.EnemyRepository
 import com.mudndcapstone.server.services.EnemyService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class EnemyServiceImpl implements EnemyService {
 
     @Autowired EnemyRepository enemyRepository

@@ -4,7 +4,9 @@ import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.repositories.ChatRepository
 import com.mudndcapstone.server.services.ChatService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class ChatServiceImpl implements ChatService {
 
     @Autowired ChatRepository chatRepository
