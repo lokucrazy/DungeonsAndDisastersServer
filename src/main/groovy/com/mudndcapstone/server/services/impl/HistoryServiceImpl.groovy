@@ -4,7 +4,9 @@ import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.repositories.HistoryRepository
 import com.mudndcapstone.server.services.HistoryService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class HistoryServiceImpl implements HistoryService {
 
     @Autowired HistoryRepository historyRepository

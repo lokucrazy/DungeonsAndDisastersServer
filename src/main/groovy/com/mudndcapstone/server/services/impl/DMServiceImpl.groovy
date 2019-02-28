@@ -4,7 +4,9 @@ import com.mudndcapstone.server.models.DM
 import com.mudndcapstone.server.repositories.DMRepository
 import com.mudndcapstone.server.services.DMService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class DMServiceImpl implements DMService {
 
     @Autowired DMRepository dmRepository

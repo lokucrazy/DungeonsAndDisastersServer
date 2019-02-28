@@ -1,10 +1,13 @@
 package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Character
+import com.mudndcapstone.server.models.CharacterRequest
 import com.mudndcapstone.server.repositories.CharacterRepository
 import com.mudndcapstone.server.services.CharacterService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class CharacterServiceImpl implements CharacterService {
 
     @Autowired CharacterRepository characterRepository
@@ -20,7 +23,8 @@ class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    Character createCharacter(Character character) {
+    Character createCharacter(CharacterRequest characterRequest) {
+        Character character = Character.from(characterRequest)
         characterRepository.save(character)
     }
 
