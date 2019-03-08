@@ -1,9 +1,10 @@
 package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.User
-import com.mudndcapstone.server.models.UserRequest
+import com.mudndcapstone.server.models.request.UserRequest
 import com.mudndcapstone.server.repositories.UserRepository
 import com.mudndcapstone.server.services.UserService
+import com.mudndcapstone.server.utils.ModelBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -24,7 +25,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     User createUser(UserRequest userRequest) {
-        User user = User.from(userRequest)
+        User user = ModelBuilder.buildUserFrom(userRequest)
         userRepository.save(user)
     }
 

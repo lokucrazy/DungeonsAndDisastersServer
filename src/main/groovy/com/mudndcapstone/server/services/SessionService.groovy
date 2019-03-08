@@ -1,10 +1,11 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.request.SessionRequest
 
 interface SessionService {
     List<Session> getAllSessions()
     Session getSessionById(Long id)
-    Session createSession(Session session)
+    Session createSession(SessionRequest session)
     void deleteSession(Long id)
 }
