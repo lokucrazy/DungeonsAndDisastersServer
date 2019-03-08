@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping(value = "/users")
 class UserController {
 
     @Autowired UserService userService
 
     @Autowired DMService dmService
 
-    @GetMapping
+    @GetMapping(value = "/users")
     ResponseEntity<List<User>> getAllUsers() {
         List<User> allUsers = userService.getAllUsers()
         new ResponseEntity<>(allUsers, HttpStatus.OK)
@@ -32,7 +31,7 @@ class UserController {
         new ResponseEntity<List<DM>>(allDMs, HttpStatus.OK)
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/users/{id}")
     ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id)
         user ?
@@ -40,14 +39,13 @@ class UserController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)
     }
 
-    @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
+    @PostMapping(value = "/users")
     ResponseEntity<User> createUser(@Valid @RequestBody UserRequest user) {
         User created = userService.createUser(user)
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/users/{id}")
     ResponseEntity deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id)
         new ResponseEntity(HttpStatus.OK)
