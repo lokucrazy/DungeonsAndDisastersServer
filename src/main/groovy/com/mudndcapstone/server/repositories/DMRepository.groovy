@@ -10,9 +10,9 @@ interface DMRepository extends UserRepository {
     can either extend the user repo or just use manual queries here
     */
 
-    @Query("MATCH (dm:DM) RETURN dm")
+    @Query("MATCH (dm)<-[:HAS_DM]-() RETURN dm")
     Iterable<DM> findAllDMs()
 
-    @Query("MATCH (dm:DM) WHERE id(dm)={0} RETURN dm")
+    @Query("MATCH (dm)<-[:HAS_DM]-() WHERE id(dm)={0} RETURN dm")
     Optional<DM> findDMById(Long id)
 }
