@@ -34,8 +34,8 @@ class MapServiceImplTests {
         Map map = new Map()
         mapRepository.save(map)
         //When
-        Mockito.when(mapRepository.findById(map.id).orElse(null)).thenReturn(Optional.of(map))
+        Mockito.when(mapRepository.findById(map.identifier).orElse(null)).thenReturn(Optional.of(map))
         //Then
-        Assert.assertEquals(mapService.getMapById(map.id), map)
+        Assert.assertEquals(mapService.getMapById(map.identifier), map)
     }
 }

@@ -34,8 +34,8 @@ class UserServiceImplTests {
         User user = new User()
         userRepository.save(user)
         //When
-        Mockito.when(userRepository.findById(user.id).orElse(null)).thenReturn(Optional.of(user))
+        Mockito.when(userRepository.findById(user.identifier).orElse(null)).thenReturn(Optional.of(user))
         //Then
-        Assert.assertEquals(userService.getUserById(),user)
+        Assert.assertEquals(userService.getUserById(user.identifier),user)
     }
 }

@@ -21,7 +21,7 @@ class MapRepositoryTests {
         Map map = new Map()
         mapRepository.save(map)
         //When
-        Optional<Map> found = mapRepository.findById(map.id)
+        Optional<Map> found = mapRepository.findById(map.identifier)
         //Then
         Assert.assertEquals(found.get().id, map.id)
     }

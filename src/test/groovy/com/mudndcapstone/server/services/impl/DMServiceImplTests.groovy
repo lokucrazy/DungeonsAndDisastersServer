@@ -35,8 +35,8 @@ class DMServiceImplTests {
         DM dm = new DM()
         dmRepository.save(dm)
         //When
-        Mockito.when(dmRepository.findDMById(dm.id).orElse(null)).thenReturn(Optional.of(dm))
+        Mockito.when(dmRepository.findDMById(dm.identifier).orElse(null)).thenReturn(Optional.of(dm))
         //Then
-        Assert.assertEquals(dmService.getDMById(dm.id), dm)
+        Assert.assertEquals(dmService.getDMById(dm.identifier), dm)
     }
 }

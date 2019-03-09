@@ -34,8 +34,8 @@ class HistoryServiceImplTests {
         History history = new History()
         historyRepository.save(history)
         //When
-        Mockito.when(historyRepository.findById(history.id).orElse(null)).thenReturn(Optional.of(history))
+        Mockito.when(historyRepository.findById(history.identifier).orElse(null)).thenReturn(Optional.of(history))
         //Then
-        Assert.assertEquals(historyService.getHistoryById(history.id), history)
+        Assert.assertEquals(historyService.getHistoryById(history.identifier), history)
     }
 }

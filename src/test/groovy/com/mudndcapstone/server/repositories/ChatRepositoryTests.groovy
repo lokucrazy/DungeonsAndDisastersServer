@@ -21,7 +21,7 @@ class ChatRepositoryTests {
         Chat chat = new Chat()
         chatRepository.save(chat)
         //When
-        Optional<Chat> found = chatRepository.findById(chat.id)
+        Optional<Chat> found = chatRepository.findById(chat.identifier)
         //Then
         Assert.assertEquals(found.get().id, chat.id)
     }

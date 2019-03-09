@@ -34,8 +34,8 @@ class ChatServiceImplTests {
         Chat chat = new Chat()
         chatRepository.save(chat)
         //When
-        Mockito.when(chatRepository.findById(chat.id).orElse(null)).thenReturn(Optional.of(chat))
+        Mockito.when(chatRepository.findById(chat.identifier).orElse(null)).thenReturn(Optional.of(chat))
         //Then
-        Assert.assertEquals(chatService.getChatById(chat.id), chat)
+        Assert.assertEquals(chatService.getChatById(chat.identifier), chat)
     }
 }

@@ -34,8 +34,8 @@ class CharacterServiceImplTests {
         Character character = new Character()
         characterRepository.save(character)
         //When
-        Mockito.when(characterRepository.findById(character.id).orElse(null)).thenReturn(Optional.of(character))
+        Mockito.when(characterRepository.findById(character.identifier).orElse(null)).thenReturn(Optional.of(character))
         //Then
-        Assert.assertEquals(characterService.getCharacterById(character.id), character)
+        Assert.assertEquals(characterService.getCharacterById(character.identifier), character)
     }
 }

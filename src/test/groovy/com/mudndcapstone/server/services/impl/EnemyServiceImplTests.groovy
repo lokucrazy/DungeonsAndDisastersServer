@@ -34,8 +34,8 @@ class EnemyServiceImplTests {
         Enemy enemy = new Enemy()
         enemyRepository.save(enemy)
         //When
-        Mockito.when(enemyRepository.findById(enemy.id).orElse(null)).thenReturn(Optional.of(enemy))
+        Mockito.when(enemyRepository.findById(enemy.identifier).orElse(null)).thenReturn(Optional.of(enemy))
         //Then
-        Assert.assertEquals(enemyService.getEnemyById(enemy.id), enemy)
+        Assert.assertEquals(enemyService.getEnemyById(enemy.identifier), enemy)
     }
 }

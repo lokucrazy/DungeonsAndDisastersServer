@@ -21,7 +21,7 @@ class CombatRepositoryTests {
         Combat combat = new Combat()
         combatRepository.save(combat)
         //When
-        Optional<Combat> found = combatRepository.findById(combat.id)
+        Optional<Combat> found = combatRepository.findById(combat.identifier)
         //Then
         Assert.assertEquals(found.get().id, combat.id)
     }
