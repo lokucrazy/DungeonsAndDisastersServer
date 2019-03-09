@@ -1,5 +1,6 @@
-package com.mudndcapstone.server.models
+package com.mudndcapstone.server.models.request
 
+import com.mudndcapstone.server.models.Being
 import com.mudndcapstone.server.utils.CharacterAlignment
 import com.mudndcapstone.server.utils.CharacterClass
 import com.mudndcapstone.server.utils.CharacterRace
@@ -11,3 +12,4 @@ class CharacterRequest extends Being {
     CharacterRace race
     CharacterAlignment alignment
 }
+

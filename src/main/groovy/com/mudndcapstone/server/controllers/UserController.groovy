@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.DM
 import com.mudndcapstone.server.models.User
-import com.mudndcapstone.server.models.UserRequest
+import com.mudndcapstone.server.models.request.UserRequest
 import com.mudndcapstone.server.services.DMService
 import com.mudndcapstone.server.services.UserService
 import org.springframework.beans.factory.annotation.Autowired

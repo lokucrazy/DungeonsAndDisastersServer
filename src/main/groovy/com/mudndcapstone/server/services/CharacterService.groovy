@@ -1,7 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Character
-import com.mudndcapstone.server.models.CharacterRequest
+import com.mudndcapstone.server.models.request.CharacterRequest
 
 interface CharacterService {
     List<Character> getAllCharacters()

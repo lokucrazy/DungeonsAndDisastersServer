@@ -9,7 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate
 
 @NodeEntity
 class History {
-    @Id @GeneratedValue Long id
+    Long id
+    @Id @GeneratedValue String identifier
     List<String> nonCombatLog
     List<String> combatLog
     @CreatedDate Date createdAt

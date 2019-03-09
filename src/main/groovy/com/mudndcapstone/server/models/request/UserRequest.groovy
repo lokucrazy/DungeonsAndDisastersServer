@@ -1,4 +1,4 @@
-package com.mudndcapstone.server.models
+package com.mudndcapstone.server.models.request
 
 import javax.validation.constraints.NotNull
 

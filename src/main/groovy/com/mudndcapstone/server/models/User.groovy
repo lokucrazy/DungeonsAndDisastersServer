@@ -8,8 +8,12 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 
 @NodeEntity
-class User extends UserRequest {
-    @Id @GeneratedValue Long id
+class User {
+    Long id
+    @Id @GeneratedValue String identifier
+    String username
+    String password
+    Date birthdate
     List<String> notes
     @CreatedDate Date createdAt
     @LastModifiedDate Date modifiedAt
@@ -19,14 +23,4 @@ class User extends UserRequest {
 
     @Relationship(type = "HAS_PLAYER", direction = Relationship.INCOMING)
     Set<Session> sessions
-
-    static User from(UserRequest userRequest) {
-        User user = new User()
-
-        user.setUsername(userRequest.username)
-        user.setPassword(userRequest.password)
-        user.setBirthdate(userRequest.birthdate)
-
-        user
-    }
 }

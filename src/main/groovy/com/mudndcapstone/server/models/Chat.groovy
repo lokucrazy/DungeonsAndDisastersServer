@@ -9,7 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate
 
 @NodeEntity
 class Chat {
-    @Id @GeneratedValue Long id
+    Long id
+    @Id @GeneratedValue String identifier
     List<String> log
     String note
     @CreatedDate Date createdAt
