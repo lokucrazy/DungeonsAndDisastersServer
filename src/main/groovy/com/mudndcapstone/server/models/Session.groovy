@@ -1,9 +1,12 @@
 package com.mudndcapstone.server.models
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator, property = "identifier")
 class Session extends History {
     @Relationship(type = "HAS_CHAT_LOG", direction = Relationship.OUTGOING)
     Chat chatLog
