@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class MapServiceImplTests {
 
-    @Mock
-    MapRepository mapRepository
+    @Mock MapRepository mapRepository
 
     @InjectMocks
     MapServiceImpl mapService
@@ -29,13 +28,16 @@ class MapServiceImplTests {
     }
 
     @Test
-    void whenGetMapById_returnMap() {
-        //Given
+    void givenMap_whenMapRepositorySavesMap_thenMapServiceReturnsMap() {
+        // Given
         Map map = new Map()
+
+        // When
         mapRepository.save(map)
-        //When
-        Mockito.when(mapRepository.findById(map.identifier).orElse(null)).thenReturn(Optional.of(map))
-        //Then
+        Mockito.when(mapRepository.findById(map.identifier)).thenReturn(Optional.of(map))
+
+        // Then
         Assert.assertEquals(mapService.getMapById(map.identifier), map)
     }
+
 }

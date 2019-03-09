@@ -4,8 +4,6 @@ import com.mudndcapstone.server.utils.BeingAbilities
 import com.mudndcapstone.server.utils.CharacterAlignment
 import com.mudndcapstone.server.utils.CharacterClass
 import com.mudndcapstone.server.utils.CharacterRace
-import org.neo4j.ogm.annotation.GeneratedValue
-import org.neo4j.ogm.annotation.Id
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Property
 import org.neo4j.ogm.annotation.Relationship

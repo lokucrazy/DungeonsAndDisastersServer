@@ -33,4 +33,5 @@ class NPCServiceImpl implements NPCService {
     void deleteNPC(Long id) {
         npcRepository.deleteById(id)
     }
+
 }

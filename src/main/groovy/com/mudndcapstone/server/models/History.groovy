@@ -1,20 +1,12 @@
 package com.mudndcapstone.server.models
 
-import org.neo4j.ogm.annotation.GeneratedValue
-import org.neo4j.ogm.annotation.Id
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 
 @NodeEntity
-class History {
-    Long id
-    @Id @GeneratedValue Long identifier
+class History extends Node {
     List<String> nonCombatLog
     List<String> combatLog
-    @CreatedDate Date createdAt
-    @LastModifiedDate Date modifiedAt
     Date dateEnded
 
     @Relationship(type = "HAS_PREVIOUS_SESSION", direction = Relationship.OUTGOING)

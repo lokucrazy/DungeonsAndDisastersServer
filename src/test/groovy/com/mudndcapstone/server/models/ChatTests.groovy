@@ -25,7 +25,7 @@ class ChatTests {
     void givenChat_whenAddProperties_thenCharacterObjectHasProperties() {
         // Given
         Chat chat = new Chat()
-        List<String> log = new ArrayList<>()
+        List<String> log = [""]
         Session session = new Session()
 
         // When

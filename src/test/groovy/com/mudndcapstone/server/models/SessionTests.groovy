@@ -33,7 +33,7 @@ class SessionTests {
         Chat chatLog = new Chat()
         Map mapList = new Map()
         Combat combatList = new Combat()
-        DM dm = new DM()
+        User dm = new User()
         Set<NPC> npcs = [new NPC()]
         Set<User> players = [new User()]
         Set<Character> characters = [new Character()]

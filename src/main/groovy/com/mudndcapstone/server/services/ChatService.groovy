@@ -8,5 +8,4 @@ interface ChatService {
     Chat getChatById(Long id)
     Chat createChat(ChatRequest chatRequestat)
     void deleteChat(Long id)
-
 }

@@ -25,7 +25,7 @@ class MapTests {
     void givenMap_whenAddProperties_thenMapObjectHasProperties() {
         // Given
         Map map = new Map()
-        List<String> images = ["test image 1"]
+        Set<String> images = ["test image 1"]
         Session session = new Session()
 
         // When

@@ -19,8 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class ChatControllerTests {
 
-    @Mock
-    ChatService chatService
+    @Mock ChatService chatService
 
     @InjectMocks
     ChatController chatController
@@ -31,14 +30,18 @@ class ChatControllerTests {
     }
 
     @Test
-    void givenGetAllChats_returnChatList() {
-        //Given
-        List<Chat> chats = new ArrayList<Chat>()
+    void givenChatList_whenChatServiceReturnsList_thenChatControllerReturnsList() {
+        // Given
+        List<Chat> chats = [new Chat()]
+
+        // When
         Mockito.when(chatService.getAllChats()).thenReturn(chats.asList())
-        //Then
+
+        // Then
         ResponseEntity response = chatController.getAllChats()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, chats)
         Mockito.verify(chatService, Mockito.atLeastOnce()).getAllChats()
     }
+
 }

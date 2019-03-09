@@ -19,8 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class MapControllerTests {
 
-    @Mock
-    MapService mapService
+    @Mock MapService mapService
 
     @InjectMocks
     MapController mapController
@@ -31,14 +30,18 @@ class MapControllerTests {
     }
 
     @Test
-    void givenGetAllMaps_returnMapList() {
-        //Given
-        List<Map> maps = new ArrayList<Map>()
+    void givenMapList_whenMapServiceReturnsList_thenMapControllerReturnsList() {
+        // Given
+        List<Map> maps = [new Map()]
+
+        // When
         Mockito.when(mapService.getAllMaps()).thenReturn(maps.asList())
-        //Then
+
+        // Then
         ResponseEntity response = mapController.getAllMaps()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, maps)
         Mockito.verify(mapService, Mockito.atLeastOnce()).getAllMaps()
     }
+
 }

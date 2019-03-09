@@ -17,11 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class UserServiceImplTests {
 
-    @Mock
-    private UserRepository userRepository
+    @Mock UserRepository userRepository
 
     @InjectMocks
-    private UserServiceImpl userService
+    UserServiceImpl userService
 
     @Before
     void setup() {
@@ -29,13 +28,16 @@ class UserServiceImplTests {
     }
 
     @Test
-    void whenGetUserById_returnUser() {
-        //Given
+    void givenUser_whenUserRepositorySavesUser_thenUserServiceReturnsUser() {
+        // Given
         User user = new User()
+
+        // When
         userRepository.save(user)
-        //When
-        Mockito.when(userRepository.findById(user.identifier).orElse(null)).thenReturn(Optional.of(user))
-        //Then
-        Assert.assertEquals(userService.getUserById(user.identifier),user)
+        Mockito.when(userRepository.findById(user.identifier)).thenReturn(Optional.of(user))
+
+        // Then
+        Assert.assertEquals(userService.getUserById(user.identifier), user)
     }
+
 }

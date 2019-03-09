@@ -33,4 +33,5 @@ class CharacterServiceImpl implements CharacterService {
     void deleteCharacter(Long id) {
         characterRepository.deleteById(id)
     }
+
 }

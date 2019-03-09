@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models
 
+import com.mudndcapstone.server.utils.BeingAbilities
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,16 +26,29 @@ class NPCTests {
     void givenNPC_whenAddProperties_thenNPCObjectHasProperties() {
         // Given
         NPC npc = new NPC()
+        int health = 100
+        boolean isAlive = true
+        String initialLocation = "A1"
+        BeingAbilities abilities = new BeingAbilities()
         Session session = new Session()
-        DM dm = new DM()
+        User dm = new User()
 
         // When
+        npc.setHealth(health)
+        npc.setIsAlive(isAlive)
+        npc.setInitialLocation(initialLocation)
+        npc.setAbilities(abilities)
         npc.setSession(session)
         npc.setDm(dm)
 
         // Then
         Assert.assertNull(npc.id)
+        Assert.assertEquals(npc.health, health)
+        Assert.assertEquals(npc.isAlive, isAlive)
+        Assert.assertEquals(npc.initialLocation, initialLocation)
+        Assert.assertEquals(npc.abilities, abilities)
         Assert.assertEquals(npc.session, session)
         Assert.assertEquals(npc.dm, dm)
     }
+
 }

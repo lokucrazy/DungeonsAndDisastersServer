@@ -33,4 +33,5 @@ class ChatServiceImpl implements ChatService {
     void deleteChat(Long id) {
         chatRepository.deleteById(id)
     }
+
 }

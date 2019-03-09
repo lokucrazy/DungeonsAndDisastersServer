@@ -33,4 +33,5 @@ class EnemyServiceImpl implements EnemyService {
     void deleteEnemy(Long id) {
         enemyRepository.deleteById(id)
     }
+
 }

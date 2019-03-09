@@ -17,11 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class CharacterServiceImplTests {
 
-    @Mock
-    private CharacterRepository characterRepository
+    @Mock CharacterRepository characterRepository
 
     @InjectMocks
-    private CharacterServiceImpl characterService
+    CharacterServiceImpl characterService
 
     @Before
     void setup() {
@@ -29,13 +28,16 @@ class CharacterServiceImplTests {
     }
 
     @Test
-    void whenGetCharacterById_returnCharacter() {
-        //Given
+    void givenCharacter_whenCharacterRepositorySavesCharacter_thenCharacterServiceReturnsCharacter() {
+        // Given
         Character character = new Character()
+
+        // When
         characterRepository.save(character)
-        //When
-        Mockito.when(characterRepository.findById(character.identifier).orElse(null)).thenReturn(Optional.of(character))
-        //Then
+        Mockito.when(characterRepository.findById(character.identifier)).thenReturn(Optional.of(character))
+
+        // Then
         Assert.assertEquals(characterService.getCharacterById(character.identifier), character)
     }
+
 }

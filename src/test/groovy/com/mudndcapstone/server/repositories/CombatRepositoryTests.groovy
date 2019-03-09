@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class CombatRepositoryTests {
 
-    @Autowired
-    private CombatRepository combatRepository
+    @Autowired CombatRepository combatRepository
 
     @Test
-    void whenFindById_returnCombat() {
-        //Given
+    void givenCombat_whenCombatSavedToRepository_thenCombatReturned() {
+        // Given
         Combat combat = new Combat()
+        Combat found
+
+        // When
         combatRepository.save(combat)
-        //When
-        Optional<Combat> found = combatRepository.findById(combat.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, combat.id)
+        found = combatRepository.findById(combat.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, combat.identifier)
     }
+
 }

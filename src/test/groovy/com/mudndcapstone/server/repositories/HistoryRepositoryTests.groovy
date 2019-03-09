@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class HistoryRepositoryTests {
 
-    @Autowired
-    private HistoryRepository historyRepository
+    @Autowired HistoryRepository historyRepository
 
     @Test
-    void whenFindById_returnHistory() {
-        //Given
+    void givenHistory_whenHistorySavedToRepository_thenHistoryReturned() {
+        // Given
         History history = new History()
+        History found
+
+        // When
         historyRepository.save(history)
-        //When
-        Optional<History> found = historyRepository.findById(history.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, history.id)
+        found = historyRepository.findById(history.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, history.identifier)
     }
+
 }

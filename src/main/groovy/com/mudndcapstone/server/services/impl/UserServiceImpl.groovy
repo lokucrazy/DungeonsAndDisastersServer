@@ -13,6 +13,7 @@ class UserServiceImpl implements UserService {
 
     @Autowired UserRepository userRepository
 
+    /* Users */
     @Override
     List<User> getAllUsers() {
         userRepository.findAll().asList()
@@ -32,6 +33,17 @@ class UserServiceImpl implements UserService {
     @Override
     void deleteUserById(Long id) {
         userRepository.deleteById(id)
+    }
+
+    /* DMs */
+    @Override
+    List<User> getAllDMs() {
+        userRepository.findAllDMs().asList()
+    }
+
+    @Override
+    User getDMById(Long id) {
+        userRepository.findDMById(id).orElse(null)
     }
 
 }

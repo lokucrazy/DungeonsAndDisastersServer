@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class UserRepositoryTests {
 
-    @Autowired
-    private UserRepository userRepository
+    @Autowired UserRepository userRepository
 
     @Test
-    void whenFindById_returnUser() {
-        //Given
+    void givenUser_whenUserSavedToRepository_thenUserReturned() {
+        // Given
         User user = new User()
+        User found
+
+        // When
         userRepository.save(user)
-        //When
-        Optional<User> found = userRepository.findById(user.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, user.id)
+        found = userRepository.findById(user.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, user.identifier)
     }
+
 }

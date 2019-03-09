@@ -18,6 +18,7 @@ class ChatController {
     @GetMapping
     ResponseEntity<List<Chat>> getAllChats() {
         List<Chat> allChats = chatService.getAllChats()
-        new ResponseEntity<List<Chat>>(allChats, HttpStatus.OK)
+        new ResponseEntity<>(allChats, HttpStatus.OK)
     }
+
 }

@@ -15,7 +15,7 @@ class Session extends History {
     Combat combatList
 
     @Relationship(type = "HAS_DM", direction = Relationship.OUTGOING)
-    DM dm
+    User dm
 
     @Relationship(type = "HAS_NPC", direction = Relationship.OUTGOING)
     Set<NPC> npcs

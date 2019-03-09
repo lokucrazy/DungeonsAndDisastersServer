@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class MapRepositoryTests {
 
-    @Autowired
-    private MapRepository mapRepository
+    @Autowired MapRepository mapRepository
 
     @Test
-    void whenFindById_returnMap() {
-        //Given
+    void givenMap_whenMapSavedToRepository_thenMapReturned() {
+        // Given
         Map map = new Map()
+        Map found
+
+        // When
         mapRepository.save(map)
-        //When
-        Optional<Map> found = mapRepository.findById(map.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, map.id)
+        found = mapRepository.findById(map.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, map.identifier)
     }
+
 }

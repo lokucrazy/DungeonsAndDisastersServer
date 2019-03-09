@@ -25,17 +25,35 @@ class UserTests {
     void givenUser_whenAddProperties_thenUserObjectHasProperties() {
         // Given
         User user = new User()
+        String username = "testuser"
+        String password = "password"
+        Date birthdate = new Date()
+        List<String> notes = [""]
         Set<Character> characters = [new Character()]
         Set<Session> sessions = [new Session()]
+        Set<Session> dmSessions = [new Session()]
+        Set<NPC> npcs = [new NPC()]
 
         // When
+        user.setUsername(username)
+        user.setPassword(password)
+        user.setBirthdate(birthdate)
+        user.setNotes(notes)
         user.setCharacters(characters)
         user.setSessions(sessions)
+        user.setDmSessions(dmSessions)
+        user.setNpcs(npcs)
 
         // Then
         Assert.assertNull(user.id)
+        Assert.assertEquals(user.username, username)
+        Assert.assertEquals(user.password, password)
+        Assert.assertEquals(user.birthdate, birthdate)
+        Assert.assertEquals(user.notes, notes)
         Assert.assertEquals(user.characters, characters)
         Assert.assertEquals(user.sessions, sessions)
+        Assert.assertEquals(user.dmSessions, dmSessions)
+        Assert.assertEquals(user.npcs, npcs)
     }
 
 }

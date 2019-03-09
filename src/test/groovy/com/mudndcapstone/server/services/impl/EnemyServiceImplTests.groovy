@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class EnemyServiceImplTests {
 
-    @Mock
-    EnemyRepository enemyRepository
+    @Mock EnemyRepository enemyRepository
 
     @InjectMocks
     EnemyServiceImpl enemyService
@@ -29,13 +28,16 @@ class EnemyServiceImplTests {
     }
 
     @Test
-    void whenGetEnemyById_returnEnemy() {
-        //Given
+    void givenEnemy_whenEnemyRepositorySavesEnemy_thenEnemyServiceReturnsEnemy() {
+        // Given
         Enemy enemy = new Enemy()
+
+        // When
         enemyRepository.save(enemy)
-        //When
-        Mockito.when(enemyRepository.findById(enemy.identifier).orElse(null)).thenReturn(Optional.of(enemy))
-        //Then
+        Mockito.when(enemyRepository.findById(enemy.identifier)).thenReturn(Optional.of(enemy))
+
+        // Then
         Assert.assertEquals(enemyService.getEnemyById(enemy.identifier), enemy)
     }
+
 }

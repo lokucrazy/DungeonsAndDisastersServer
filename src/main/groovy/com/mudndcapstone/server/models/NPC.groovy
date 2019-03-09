@@ -15,5 +15,5 @@ class NPC extends Being {
     Session session
 
     @Relationship(type = "CONTROLS", direction = Relationship.INCOMING)
-    DM dm
+    User dm
 }

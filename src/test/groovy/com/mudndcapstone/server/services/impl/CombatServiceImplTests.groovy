@@ -17,11 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class CombatServiceImplTests {
 
-    @Mock
-    private CombatRepository combatRepository
+    @Mock CombatRepository combatRepository
 
     @InjectMocks
-    private CombatServiceImpl combatService
+    CombatServiceImpl combatService
 
     @Before
     void setup() {
@@ -29,13 +28,16 @@ class CombatServiceImplTests {
     }
 
     @Test
-    void whenGetCombatById_thenReturnCombat() {
-        //Given
+    void givenCombat_whenCombatRepositorySavesCombat_thenCombatServiceReturnsCombat() {
+        // Given
         Combat combat = new Combat()
+
+        // When
         combatRepository.save(combat)
-        //When
-        Mockito.when(combatRepository.findById(combat.identifier).orElse(null)).thenReturn(Optional.of(combat))
-        //Then
+        Mockito.when(combatRepository.findById(combat.identifier)).thenReturn(Optional.of(combat))
+
+        // Then
         Assert.assertEquals(combatService.getCombatById(combat.identifier), combat)
     }
+
 }

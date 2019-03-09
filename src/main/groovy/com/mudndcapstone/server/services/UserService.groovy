@@ -8,4 +8,7 @@ interface UserService {
     User getUserById(Long id)
     User createUser(UserRequest userRequest)
     void deleteUserById(Long id)
+
+    List<User> getAllDMs()
+    User getDMById(Long id)
 }

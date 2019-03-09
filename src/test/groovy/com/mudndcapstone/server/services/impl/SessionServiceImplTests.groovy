@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class SessionServiceImplTests {
 
-    @Mock
-    SessionRepository sessionRepository
+    @Mock SessionRepository sessionRepository
 
     @InjectMocks
     SessionServiceImpl sessionService
@@ -29,13 +28,16 @@ class SessionServiceImplTests {
     }
 
     @Test
-    void whenGetSessionById_returnSession() {
-        //Given
+    void givenSession_whenSessionRepositorySavesSession_thenSessionServiceReturnsSession() {
+        // Given
         Session session = new Session()
+
+        // When
         sessionRepository.save(session)
-        //When
-        Mockito.when(sessionRepository.findById(session.identifier).orElse(null)).thenReturn(Optional.of(session))
-        //Then
+        Mockito.when(sessionRepository.findById(session.identifier)).thenReturn(Optional.of(session))
+
+        // Then
         Assert.assertEquals(sessionService.getSessionById(session.identifier), session)
     }
+
 }

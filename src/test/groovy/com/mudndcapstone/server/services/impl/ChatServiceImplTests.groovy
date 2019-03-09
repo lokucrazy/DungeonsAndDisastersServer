@@ -17,11 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class ChatServiceImplTests {
 
-    @Mock
-    private ChatRepository chatRepository
+    @Mock ChatRepository chatRepository
 
     @InjectMocks
-    private ChatServiceImpl chatService
+    ChatServiceImpl chatService
 
     @Before
     void setup() {
@@ -29,13 +28,16 @@ class ChatServiceImplTests {
     }
 
     @Test
-    void whenGetChatById_returnChat() {
-        //Given
+    void givenChat_whenChatRepositorySavesChat_thenChatServiceReturnsChat() {
+        // Given
         Chat chat = new Chat()
+
+        // When
         chatRepository.save(chat)
-        //When
-        Mockito.when(chatRepository.findById(chat.identifier).orElse(null)).thenReturn(Optional.of(chat))
-        //Then
+        Mockito.when(chatRepository.findById(chat.identifier)).thenReturn(Optional.of(chat))
+
+        // Then
         Assert.assertEquals(chatService.getChatById(chat.identifier), chat)
     }
+
 }

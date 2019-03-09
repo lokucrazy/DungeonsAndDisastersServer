@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class CharacterRepositoryTests {
 
-    @Autowired
-    private CharacterRepository characterRepository
+    @Autowired CharacterRepository characterRepository
 
     @Test
-    void whenFindById_returnCharacter() {
-        //Given
+    void givenCharacter_whenCharacterSavedToRepository_thenCharacterReturned() {
+        // Given
         Character character = new Character()
+        Character found
+
+        // When
         characterRepository.save(character)
-        //When
-        Optional<Character> found = characterRepository.findById(character.identifier)
-        //Then
-        Assert.assertEquals(found.get().id,character.id)
+        found = characterRepository.findById(character.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, character.identifier)
     }
+
 }

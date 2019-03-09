@@ -1,7 +1,7 @@
 package com.mudndcapstone.server.controllers
 
-import com.mudndcapstone.server.models.Combat
-import com.mudndcapstone.server.services.CombatService
+import com.mudndcapstone.server.models.Character
+import com.mudndcapstone.server.services.CharacterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(value = "/combats")
-class CombatController {
+@RequestMapping(value = "/characters")
+class CharacterController {
 
-    @Autowired CombatService combatService
+    @Autowired CharacterService characterService
 
     @GetMapping
-    ResponseEntity<List<Combat>> getAllCombats() {
-        List<Combat> allCombats = combatService.getAllCombats()
-        new ResponseEntity<>(allCombats, HttpStatus.OK)
+    ResponseEntity<List<Character>> getAllCharacters() {
+        List<Character> allCharacters = characterService.getAllCharacters()
+        new ResponseEntity<>(allCharacters, HttpStatus.OK)
     }
 
 }

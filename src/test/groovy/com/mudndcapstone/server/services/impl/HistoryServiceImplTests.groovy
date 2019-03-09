@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class HistoryServiceImplTests {
 
-    @Mock
-    HistoryRepository historyRepository
+    @Mock HistoryRepository historyRepository
 
     @InjectMocks
     HistoryServiceImpl historyService
@@ -29,13 +28,16 @@ class HistoryServiceImplTests {
     }
 
     @Test
-    void whenGetHistoryById_returnHistory() {
-        //Given
+    void givenHistory_whenHistoryRepositorySavesHistory_thenHistoryServiceReturnsHistory() {
+        // Given
         History history = new History()
+
+        // When
         historyRepository.save(history)
-        //When
-        Mockito.when(historyRepository.findById(history.identifier).orElse(null)).thenReturn(Optional.of(history))
-        //Then
+        Mockito.when(historyRepository.findById(history.identifier)).thenReturn(Optional.of(history))
+
+        // Then
         Assert.assertEquals(historyService.getHistoryById(history.identifier), history)
     }
+
 }

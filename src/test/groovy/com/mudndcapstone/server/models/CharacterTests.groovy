@@ -17,6 +17,7 @@ class CharacterTests {
     void givenEmptyCharacter_thenReturnEmptyCharacterObject() {
         // Given
         Character character = new Character()
+
         // Then
         Assert.assertNull(character.id)
         Assert.assertNull(character.name)
@@ -36,6 +37,7 @@ class CharacterTests {
         character.setName("King Sir the IV")
         character.setCharacterClass(CharacterClass.MONK)
         character.setLevel(1)
+        character.setExperience(500)
         character.setBackground("King of Kingland")
         character.setRace(CharacterRace.DRAGONBORN)
         abilities.setCharisma(100)
@@ -48,6 +50,7 @@ class CharacterTests {
         Assert.assertEquals(character.name, "King Sir the IV")
         Assert.assertEquals(character.characterClass, CharacterClass.MONK)
         Assert.assertEquals(character.level, 1)
+        Assert.assertEquals(character.experience, 500)
         Assert.assertEquals(character.background, "King of Kingland")
         Assert.assertEquals(character.race, CharacterRace.DRAGONBORN)
         Assert.assertEquals(character.abilities, abilities)

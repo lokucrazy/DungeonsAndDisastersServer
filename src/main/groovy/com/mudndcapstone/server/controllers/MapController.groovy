@@ -18,6 +18,7 @@ class MapController {
     @GetMapping
     ResponseEntity<List<Map>> getAllMaps() {
         List<Map> allMaps = mapService.getAllMaps()
-        new ResponseEntity<List<Map>>(allMaps, HttpStatus.OK)
+        new ResponseEntity<>(allMaps, HttpStatus.OK)
     }
+
 }

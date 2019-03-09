@@ -1,10 +1,12 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.request.SessionRequest
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.SessionService
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -20,11 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class SessionControllerTests {
 
-    @Mock
-    SessionService sessionService
-
-    @Mock
-    HistoryService historyService
+    @Mock SessionService sessionService
+    @Mock HistoryService historyService
 
     @InjectMocks
     SessionController sessionController
@@ -35,14 +34,18 @@ class SessionControllerTests {
     }
 
     @Test
-    void givenGetAllSessions_returnSessionList() {
-        //Given
-        List<Session> sessions = new ArrayList<Session>()
+    void givenSessionList_whenSessionServiceReturnsList_thenSessionControllerReturnsList() {
+        // Given
+        List<Session> sessions = [new Session()]
+
+        // When
         Mockito.when(sessionService.getAllSessions()).thenReturn(sessions.asList())
-        //Then
+
+        // Then
         ResponseEntity response = sessionController.getAllSessions()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, sessions)
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getAllSessions()
     }
+
 }

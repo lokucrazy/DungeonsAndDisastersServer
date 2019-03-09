@@ -33,4 +33,5 @@ class CombatServiceImpl implements CombatService {
     void deleteCombat(Long id) {
         combatRepository.deleteById(id)
     }
+
 }

@@ -25,4 +25,5 @@ class HistoryServiceImpl implements HistoryService {
     void deleteHistory(Long id) {
         historyRepository.deleteById(id)
     }
+
 }

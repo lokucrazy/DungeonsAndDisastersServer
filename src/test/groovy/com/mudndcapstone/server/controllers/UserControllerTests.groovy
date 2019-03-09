@@ -19,11 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class UserControllerTests {
 
-    @Mock
-    private UserService userService
+    @Mock UserService userService
 
     @InjectMocks
-    private UserController userController
+    UserController userController
 
     @Before
     void setup() {
@@ -31,11 +30,14 @@ class UserControllerTests {
     }
 
     @Test
-    void givenId_returnUser() throws Exception {
-        //Given
+    void givenUser_whenUserServiceGetsUser_thenUserControllerReturnsUser() {
+        // Given
         User user = new User()
+
+        // When
         Mockito.when(userService.getUserById()).thenReturn(user)
-        //Then
+
+        // Then
         ResponseEntity response = userController.getUserById()
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
         Assert.assertEquals(response.body, user)
@@ -43,13 +45,15 @@ class UserControllerTests {
     }
 
     @Test
-    void givenBadId_returnNotFound() throws Exception {
-        //Given
+    void whenUserServiceGetsUserWithNoId_thenUserControllerReturnsError() {
+        // When
         Mockito.when(userService.getUserById()).thenReturn(null)
-        //Then
+
+        // Then
         ResponseEntity response = userController.getUserById()
         Assert.assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND)
         Assert.assertNull(response.body)
         Mockito.verify(userService, Mockito.atLeastOnce()).getUserById()
     }
+
 }

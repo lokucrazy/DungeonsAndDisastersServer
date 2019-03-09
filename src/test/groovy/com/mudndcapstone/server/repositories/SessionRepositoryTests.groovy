@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class SessionRepositoryTests {
 
-    @Autowired
-    private SessionRepository sessionRepository
+    @Autowired SessionRepository sessionRepository
 
     @Test
-    void whenFindById_returnSession() {
-        //Given
+    void givenSession_whenSessionSavedToRepository_thenSessionReturned() {
+        // Given
         Session session = new Session()
+        Session found
+
+        // When
         sessionRepository.save(session)
-        //When
-        Optional<Session> found = sessionRepository.findById(session.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, session.id)
+        found = sessionRepository.findById(session.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, session.identifier)
     }
+
 }

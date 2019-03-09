@@ -19,8 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class CombatControllerTests {
 
-    @Mock
-    CombatService combatService
+    @Mock CombatService combatService
 
     @InjectMocks
     CombatController combatController
@@ -31,14 +30,18 @@ class CombatControllerTests {
     }
 
     @Test
-    void givenGetAllCombats_returnCombatList() {
-        //Given
-        List<Combat> combats = new ArrayList<Combat>()
+    void givenCombatList_whenCombatServiceReturnsList_thenCombatControllerReturnsList() {
+        // Given
+        List<Combat> combats = [new Combat()]
+
+        // When
         Mockito.when(combatService.getAllCombats()).thenReturn(combats.asList())
-        //Then
+
+        // Then
         ResponseEntity response = combatController.getAllCombats()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, combats)
         Mockito.verify(combatService, Mockito.atLeastOnce()).getAllCombats()
     }
+
 }

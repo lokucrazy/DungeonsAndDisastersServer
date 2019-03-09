@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class NPCRepositoryTests {
 
-    @Autowired
-    private NPCRepository npcRepository
+    @Autowired NPCRepository npcRepository
 
     @Test
-    void whenFindById_returnNPC() {
-        //Given
+    void givenNPC_whenNPCSavedToRepository_thenNPCReturned() {
+        // Given
         NPC npc = new NPC()
+        NPC found
+
+        // When
         npcRepository.save(npc)
-        //When
-        Optional<NPC> found = npcRepository.findById(npc.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, npc.id)
+        found = npcRepository.findById(npc.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, npc.identifier)
     }
+
 }

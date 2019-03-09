@@ -1,9 +1,7 @@
 package com.mudndcapstone.server.controllers
 
-import com.mudndcapstone.server.models.DM
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.request.UserRequest
-import com.mudndcapstone.server.services.DMService
 import com.mudndcapstone.server.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -17,26 +15,11 @@ class UserController {
 
     @Autowired UserService userService
 
-    @Autowired DMService dmService
-
+    /* Users */
     @GetMapping(value = "/users")
     ResponseEntity<List<User>> getAllUsers() {
         List<User> allUsers = userService.getAllUsers()
         new ResponseEntity<>(allUsers, HttpStatus.OK)
-    }
-
-    @GetMapping(value = "/dms")
-    ResponseEntity<List<DM>> getAllDMs() {
-        List<DM> allDMs = dmService.getAllDMs()
-        new ResponseEntity<List<DM>>(allDMs, HttpStatus.OK)
-    }
-
-    @GetMapping(value = "/users/{id}")
-    ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id)
-        user ?
-                new ResponseEntity<>(user, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND)
     }
 
     @PostMapping(value = "/users")
@@ -45,9 +28,23 @@ class UserController {
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
+    @GetMapping(value = "/users/{id}")
+    ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id)
+        new ResponseEntity<>(user, HttpStatus.OK)
+    }
+
     @DeleteMapping(value = "/users/{id}")
     ResponseEntity deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id)
         new ResponseEntity(HttpStatus.OK)
     }
+
+    /* DMs*/
+    @GetMapping(value = "/dms")
+    ResponseEntity<List<User>> getAllDMs() {
+        List<User> allDMs = userService.getAllDMs()
+        new ResponseEntity<>(allDMs, HttpStatus.OK)
+    }
+
 }

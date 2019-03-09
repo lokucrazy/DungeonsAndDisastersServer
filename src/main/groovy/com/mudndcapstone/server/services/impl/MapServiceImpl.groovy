@@ -33,4 +33,5 @@ class MapServiceImpl implements MapService {
     void deleteMap(Long id) {
         mapRepository.deleteById(id)
     }
+
 }

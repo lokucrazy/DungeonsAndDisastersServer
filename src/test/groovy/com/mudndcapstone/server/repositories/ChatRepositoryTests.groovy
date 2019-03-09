@@ -12,17 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataNeo4jTest
 class ChatRepositoryTests {
 
-    @Autowired
-    private ChatRepository chatRepository
+    @Autowired ChatRepository chatRepository
 
     @Test
-    void whenFindById_returnChat() {
-        //Given
+    void givenChat_whenChatSavedToRepository_thenChatReturned() {
+        // Given
         Chat chat = new Chat()
+        Chat found
+
+        // When
         chatRepository.save(chat)
-        //When
-        Optional<Chat> found = chatRepository.findById(chat.identifier)
-        //Then
-        Assert.assertEquals(found.get().id, chat.id)
+        found = chatRepository.findById(chat.identifier).orElse(null)
+
+        // Then
+        Assert.assertNotNull(found)
+        Assert.assertEquals(found.identifier, chat.identifier)
     }
+
 }

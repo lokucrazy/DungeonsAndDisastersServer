@@ -29,17 +29,20 @@ class HistoryTests {
         List<String> nonCombatLog = new ArrayList<>()
         List<String> combatLog = new ArrayList<>()
         History previousHistory = new History()
+        Date dateEnded = new Date()
 
         // When
         history.setNonCombatLog(nonCombatLog)
         history.setCombatLog(combatLog)
         history.setHistory(previousHistory)
+        history.setDateEnded(dateEnded)
 
         // Then
         Assert.assertNull(history.id)
         Assert.assertEquals(history.nonCombatLog, nonCombatLog)
         Assert.assertEquals(history.combatLog, combatLog)
         Assert.assertEquals(history.history, previousHistory)
+        Assert.assertEquals(history.dateEnded, dateEnded)
     }
 
 }
