@@ -10,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate
 @NodeEntity
 class Map {
     Long id
-    @Id @GeneratedValue String identifier
+    @Id @GeneratedValue Long identifier
     @CreatedDate Date createdAt
     @LastModifiedDate Date modifiedAt
     List<String> images

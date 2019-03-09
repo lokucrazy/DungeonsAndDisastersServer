@@ -21,13 +21,4 @@ class DMServiceImpl implements DMService {
         dmRepository.findDMById(id).orElse(null)
     }
 
-    @Override
-    DM createDM(DM dm) {
-        dmRepository.save(dm)
-    }
-
-    @Override
-    void deleteDM(Long id) {
-        dmRepository.deleteById(id)
-    }
 }

@@ -21,7 +21,7 @@ class EnemyRepositoryTests {
         Enemy enemy = new Enemy()
         enemyRepository.save(enemy)
         //When
-        Optional<Enemy> found = enemyRepository.findById(enemy.id)
+        Optional<Enemy> found = enemyRepository.findById(enemy.identifier)
         //Then
         Assert.assertEquals(found.get().id, enemy.id)
     }

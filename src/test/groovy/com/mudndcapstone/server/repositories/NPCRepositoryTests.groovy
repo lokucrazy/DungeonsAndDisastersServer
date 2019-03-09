@@ -21,7 +21,7 @@ class NPCRepositoryTests {
         NPC npc = new NPC()
         npcRepository.save(npc)
         //When
-        Optional<NPC> found = npcRepository.findById(npc.id)
+        Optional<NPC> found = npcRepository.findById(npc.identifier)
         //Then
         Assert.assertEquals(found.get().id, npc.id)
     }

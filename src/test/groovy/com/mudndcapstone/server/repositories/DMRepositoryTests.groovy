@@ -21,7 +21,7 @@ class DMRepositoryTests {
         DM dm = new DM()
         dmRepository.save(dm)
         //When
-        Optional<DM> found = dmRepository.findById(dm.id)
+        Optional<DM> found = dmRepository.findById(dm.identifier)
         //Then
         Assert.assertEquals(found.get().id, dm.id)
     }

@@ -21,7 +21,7 @@ class HistoryRepositoryTests {
         History history = new History()
         historyRepository.save(history)
         //When
-        Optional<History> found = historyRepository.findById(history.id)
+        Optional<History> found = historyRepository.findById(history.identifier)
         //Then
         Assert.assertEquals(found.get().id, history.id)
     }

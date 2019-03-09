@@ -21,7 +21,7 @@ class UserRepositoryTests {
         User user = new User()
         userRepository.save(user)
         //When
-        Optional<User> found = userRepository.findById(user.id)
+        Optional<User> found = userRepository.findById(user.identifier)
         //Then
         Assert.assertEquals(found.get().id, user.id)
     }

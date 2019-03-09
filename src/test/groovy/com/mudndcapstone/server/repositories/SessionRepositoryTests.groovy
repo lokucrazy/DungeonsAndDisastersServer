@@ -21,7 +21,7 @@ class SessionRepositoryTests {
         Session session = new Session()
         sessionRepository.save(session)
         //When
-        Optional<Session> found = sessionRepository.findById(session.id)
+        Optional<Session> found = sessionRepository.findById(session.identifier)
         //Then
         Assert.assertEquals(found.get().id, session.id)
     }

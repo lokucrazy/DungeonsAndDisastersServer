@@ -1,8 +1,10 @@
 package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Enemy
+import com.mudndcapstone.server.models.request.EnemyRequest
 import com.mudndcapstone.server.repositories.EnemyRepository
 import com.mudndcapstone.server.services.EnemyService
+import com.mudndcapstone.server.utils.ModelBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -22,7 +24,8 @@ class EnemyServiceImpl implements EnemyService {
     }
 
     @Override
-    Enemy createEnemy(Enemy enemy) {
+    Enemy createEnemy(EnemyRequest enemyRequest) {
+        Enemy enemy = ModelBuilder.buildEnemyFrom(enemyRequest)
         enemyRepository.save(enemy)
     }
 

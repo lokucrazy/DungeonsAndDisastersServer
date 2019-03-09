@@ -10,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate
 @NodeEntity
 class User {
     Long id
-    @Id @GeneratedValue String identifier
+    @Id @GeneratedValue Long identifier
     String username
     String password
     Date birthdate

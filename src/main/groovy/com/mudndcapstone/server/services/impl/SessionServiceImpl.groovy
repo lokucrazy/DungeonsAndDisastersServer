@@ -1,8 +1,10 @@
 package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.request.SessionRequest
 import com.mudndcapstone.server.repositories.SessionRepository
 import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.utils.ModelBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -22,7 +24,8 @@ class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    Session createSession(Session session) {
+    Session createSession(SessionRequest sessionRequest) {
+        Session session = ModelBuilder.buildSessionFrom(sessionRequest)
         sessionRepository.save(session)
     }
 

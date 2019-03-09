@@ -34,8 +34,8 @@ class SessionServiceImplTests {
         Session session = new Session()
         sessionRepository.save(session)
         //When
-        Mockito.when(sessionRepository.findById(session.id).orElse(null)).thenReturn(Optional.of(session))
+        Mockito.when(sessionRepository.findById(session.identifier).orElse(null)).thenReturn(Optional.of(session))
         //Then
-        Assert.assertEquals(sessionService.getSessionById(session.id), session)
+        Assert.assertEquals(sessionService.getSessionById(session.identifier), session)
     }
 }

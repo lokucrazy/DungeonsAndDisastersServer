@@ -21,7 +21,7 @@ class CharacterRepositoryTests {
         Character character = new Character()
         characterRepository.save(character)
         //When
-        Optional<Character> found = characterRepository.findById(character.id)
+        Optional<Character> found = characterRepository.findById(character.identifier)
         //Then
         Assert.assertEquals(found.get().id,character.id)
     }

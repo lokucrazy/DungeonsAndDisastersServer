@@ -7,7 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate
 
 abstract class Being {
     Long id
-    @Id @GeneratedValue String identifier
+    @Id @GeneratedValue Long identifier
     String name
     @CreatedDate Date createdAt
     @LastModifiedDate Date modifiedAt

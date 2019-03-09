@@ -34,8 +34,8 @@ class CombatServiceImplTests {
         Combat combat = new Combat()
         combatRepository.save(combat)
         //When
-        Mockito.when(combatRepository.findById(combat.id).orElse(null)).thenReturn(Optional.of(combat))
+        Mockito.when(combatRepository.findById(combat.identifier).orElse(null)).thenReturn(Optional.of(combat))
         //Then
-        Assert.assertEquals(combatService.getCombatById(combat.id), combat)
+        Assert.assertEquals(combatService.getCombatById(combat.identifier), combat)
     }
 }
