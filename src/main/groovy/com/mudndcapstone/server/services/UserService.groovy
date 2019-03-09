@@ -6,6 +6,6 @@ import com.mudndcapstone.server.models.request.UserRequest
 interface UserService {
     List<User> getAllUsers()
     User getUserById(Long id)
-    User createUser(UserRequest user)
+    User createUser(UserRequest userRequest)
     void deleteUserById(Long id)
 }

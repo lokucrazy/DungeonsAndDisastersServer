@@ -6,6 +6,6 @@ import com.mudndcapstone.server.models.request.SessionRequest
 interface SessionService {
     List<Session> getAllSessions()
     Session getSessionById(Long id)
-    Session createSession(SessionRequest session)
+    Session createSession(SessionRequest sessionRequest)
     void deleteSession(Long id)
 }

@@ -6,6 +6,6 @@ import com.mudndcapstone.server.models.request.CombatRequest
 interface CombatService {
     List<Combat> getAllCombats()
     Combat getCombatById(Long id)
-    Combat createCombat(CombatRequest combat)
+    Combat createCombat(CombatRequest combatRequest)
     void deleteCombat(Long id)
 }

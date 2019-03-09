@@ -6,7 +6,7 @@ import com.mudndcapstone.server.models.request.MapRequest
 interface MapService {
     List<Map> getAllMaps()
     Map getMapById(Long id)
-    Map createMap(MapRequest map)
+    Map createMap(MapRequest mapRequest)
     void deleteMap(Long id)
 
 }

@@ -6,6 +6,6 @@ import com.mudndcapstone.server.models.request.EnemyRequest
 interface EnemyService {
     List<Enemy> getAllEnemies()
     Enemy getEnemyById(Long id)
-    Enemy createEnemy(EnemyRequest enemy)
+    Enemy createEnemy(EnemyRequest enemyRequest)
     void deleteEnemy(Long id)
 }

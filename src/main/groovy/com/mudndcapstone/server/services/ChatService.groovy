@@ -6,7 +6,7 @@ import com.mudndcapstone.server.models.request.ChatRequest
 interface ChatService {
     List<Chat> getAllChats()
     Chat getChatById(Long id)
-    Chat createChat(ChatRequest chat)
+    Chat createChat(ChatRequest chatRequestat)
     void deleteChat(Long id)
 
 }

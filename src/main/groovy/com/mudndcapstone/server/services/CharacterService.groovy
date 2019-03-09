@@ -6,6 +6,6 @@ import com.mudndcapstone.server.models.request.CharacterRequest
 interface CharacterService {
     List<Character> getAllCharacters()
     Character getCharacterById(Long id)
-    Character createCharacter(CharacterRequest character)
+    Character createCharacter(CharacterRequest characterRequest)
     void deleteCharacter(Long id)
 }
