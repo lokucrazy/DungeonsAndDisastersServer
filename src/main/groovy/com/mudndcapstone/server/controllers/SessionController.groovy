@@ -39,9 +39,11 @@ class SessionController {
     }
 
     @GetMapping(value = "/sessions/{sessionId}/characters")
-    ResponseEntity<List<Character>> getAllSessionsCharacters(@PathVariable Long sessionId) {
+    ResponseEntity<Set<Character>> getAllSessionsCharacters(@PathVariable Long sessionId) {
         Session session = this.sessionService.getSessionById(sessionId)
-        List<Character> sessionCharacters = session.characters
+        if (!session) new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
+        Set<Character> sessionCharacters = session.characters
         new ResponseEntity<>(sessionCharacters, HttpStatus.OK)
     }
 

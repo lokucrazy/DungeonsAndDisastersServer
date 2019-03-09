@@ -1,12 +1,11 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.Session
-import com.mudndcapstone.server.models.request.SessionRequest
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.SessionService
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -46,6 +45,25 @@ class SessionControllerTests {
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, sessions)
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getAllSessions()
+    }
+
+    @Test
+    void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
+        // Given
+        Session session = new Session()
+        Long sessionIdentifier = 1
+        Set<Character> characters = [new Character(), new Character()]
+
+        // When
+        session.setIdentifier(sessionIdentifier)
+        session.setCharacters(characters)
+        Mockito.when(sessionService.getSessionById(sessionIdentifier)).thenReturn(session)
+
+        // Then
+        ResponseEntity response = sessionController.getAllSessionsCharacters(sessionIdentifier)
+        Assert.assertEquals(response.statusCode, HttpStatus.OK)
+        Assert.assertEquals(response.body, characters)
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(sessionIdentifier)
     }
 
 }
