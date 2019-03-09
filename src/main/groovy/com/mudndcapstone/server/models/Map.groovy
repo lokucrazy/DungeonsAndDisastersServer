@@ -4,13 +4,13 @@ import org.neo4j.ogm.annotation.GeneratedValue
 import org.neo4j.ogm.annotation.Id
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
-import org.neo4j.ogm.id.UuidStrategy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 
 @NodeEntity
 class Map {
-    @Id @GeneratedValue(strategy = UuidStrategy) Long id
+    Long id
+    @Id @GeneratedValue String identifier
     @CreatedDate Date createdAt
     @LastModifiedDate Date modifiedAt
     List<String> images
