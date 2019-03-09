@@ -22,11 +22,6 @@ class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    History createHistory(History history) {
-        historyRepository.save(history)
-    }
-
-    @Override
     void deleteHistory(Long id) {
         historyRepository.deleteById(id)
     }
