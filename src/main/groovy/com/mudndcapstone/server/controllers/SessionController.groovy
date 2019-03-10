@@ -34,6 +34,8 @@ class SessionController {
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
         Session session = sessionService.createSession(sessionRequest)
+        if (!session) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+
         SessionDto created = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
@@ -41,6 +43,8 @@ class SessionController {
     @GetMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> getSessionById(@PathVariable Long sessionId) {
         Session session = sessionService.getSessionById(sessionId)
+        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
@@ -59,7 +63,8 @@ class SessionController {
     @GetMapping("/sessions/{sessionId}/characters")
     ResponseEntity<List<CharacterDto>> getAllSessionsCharacters(@PathVariable Long sessionId) {
         Session session = sessionService.getSessionById(sessionId)
-        if (!session) new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
 
         List<CharacterDto> characterDtos = characterService.buildDtoListFrom(session.characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)

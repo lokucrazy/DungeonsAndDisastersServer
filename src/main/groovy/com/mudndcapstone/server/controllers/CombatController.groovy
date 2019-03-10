@@ -35,6 +35,8 @@ class CombatController {
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
         Combat combatRequest = combatService.buildCombatFrom(combatDto)
         Combat combat = combatService.createCombat(combatRequest)
+        if (!combat) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
         CombatDto created = combatService.buildDtoFrom(combat)
         new ResponseEntity<>(created, HttpStatus.OK)
     }
@@ -42,6 +44,8 @@ class CombatController {
     @GetMapping("/{combatId}")
     ResponseEntity<CombatDto> getCombatById(@PathVariable Long combatId) {
         Combat combat = combatService.getCombatById(combatId)
+        if (!combat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+
         CombatDto combatDto = combatService.buildDtoFrom(combat)
         new ResponseEntity<>(combatDto, HttpStatus.OK)
     }

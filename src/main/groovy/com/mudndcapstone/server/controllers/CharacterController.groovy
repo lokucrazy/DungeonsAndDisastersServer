@@ -34,6 +34,8 @@ class CharacterController {
     ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
         Character characterRequest = characterService.buildCharacterFrom(characterDto)
         Character character = characterService.createCharacter(characterRequest)
+        if (!character) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
         CharacterDto created = characterService.buildDtoFrom(character)
         new ResponseEntity<>(created, HttpStatus.OK)
     }
@@ -41,6 +43,8 @@ class CharacterController {
     @GetMapping("/{characterId}")
     ResponseEntity<CharacterDto> getCharacterById(@PathVariable Long characterId) {
         Character character = characterService.getCharacterById(characterId)
+        if (!character) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+
         CharacterDto characterDto = characterService.buildDtoFrom(character)
         new ResponseEntity<>(characterDto, HttpStatus.OK)
     }

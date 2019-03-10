@@ -38,6 +38,8 @@ class BeingController {
     ResponseEntity<EnemyDto> createEnemy(@Valid @RequestBody EnemyDto enemyDto) {
         Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto)
         Enemy enemy = enemyService.createEnemy(enemyRequest)
+        if (!enemy) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
         EnemyDto created = enemyService.buildDtoFrom(enemy)
         new ResponseEntity<>(created, HttpStatus.OK)
     }
@@ -45,6 +47,8 @@ class BeingController {
     @GetMapping("/enemies/{enemyId}")
     ResponseEntity<EnemyDto> getEnemyById(@PathVariable Long enemyId) {
         Enemy enemy = enemyService.getEnemyById(enemyId)
+        if (!enemy) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+
         EnemyDto enemyDto = enemyService.buildDtoFrom(enemy)
         new ResponseEntity<>(enemyDto, HttpStatus.OK)
     }
@@ -72,6 +76,8 @@ class BeingController {
     ResponseEntity<NPCDto> createNPC(@Valid @RequestBody NPCDto npcDto) {
         NPC npcRequest = npcService.buildNPCFrom(npcDto)
         NPC npc = npcService.createNPC(npcRequest)
+        if (!npc) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
         NPCDto created = npcService.buildDtoFrom(npc)
         new ResponseEntity<>(created, HttpStatus.OK)
     }
@@ -79,6 +85,8 @@ class BeingController {
     @GetMapping("/npcs/{npcId}")
     ResponseEntity<NPCDto> getNPCById(@PathVariable Long npcId) {
         NPC npc = npcService.getNPCById(npcId)
+        if (!npc) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+
         NPCDto npcDto = npcService.buildDtoFrom(npc)
         new ResponseEntity<>(npcDto, HttpStatus.OK)
     }

@@ -18,7 +18,9 @@ class ServerApplication {
 
 	@Bean
 	static ModelMapper modelMapper() {
-		new ModelMapper()
+		ModelMapper modelMapper = new ModelMapper()
+		modelMapper.getConfiguration().setAmbiguityIgnored(true)
+		modelMapper
 	}
 
 }

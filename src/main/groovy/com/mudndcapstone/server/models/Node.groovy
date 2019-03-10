@@ -5,7 +5,7 @@ import org.neo4j.ogm.annotation.Id
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 
-class Node {
+abstract class Node {
     Long id
     @Id @GeneratedValue Long identifier
     @CreatedDate Date createdAt

@@ -30,6 +30,8 @@ class UserController {
     ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User userRequest = userService.buildUserFrom(userDto)
         User user = userService.createUser(userRequest)
+        if (!user) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+
         UserDto created = userService.buildDtoFrom(user)
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
@@ -37,6 +39,8 @@ class UserController {
     @GetMapping("/users/{userId}")
     ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
         User user = userService.getUserById(userId)
+        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
         UserDto userDto = userService.buildDtoFrom(user)
         new ResponseEntity<>(userDto, HttpStatus.OK)
     }
@@ -55,6 +59,9 @@ class UserController {
     @GetMapping("/users/{userId}/characters")
     ResponseEntity<List<CharacterDto>> getAllUsersCharacters(@PathVariable Long userId) {
         User user = userService.getUserById(userId)
+        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
+
         List<CharacterDto> characterDtos = characterService.buildDtoListFrom(user.characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }

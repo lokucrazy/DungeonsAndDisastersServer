@@ -35,6 +35,8 @@ class MapController {
     ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
         Map mapRequest = mapService.buildMapFrom(mapDto)
         Map map = mapService.createMap(mapRequest)
+        if (!map) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
         MapDto created = mapService.buildDtoFrom(map)
         new ResponseEntity<>(created, HttpStatus.OK)
     }
@@ -42,6 +44,8 @@ class MapController {
     @GetMapping("/{mapId}")
     ResponseEntity<MapDto> getMapById(@PathVariable Long mapId) {
         Map map = mapService.getMapById(mapId)
+        if (!map) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+
         MapDto mapDto = mapService.buildDtoFrom(map)
         new ResponseEntity<>(mapDto, HttpStatus.OK)
     }

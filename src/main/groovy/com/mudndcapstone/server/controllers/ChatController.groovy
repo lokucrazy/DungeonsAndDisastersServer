@@ -35,6 +35,8 @@ class ChatController {
     ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
         Chat chatRequest = chatService.buildChatFrom(chatDto)
         Chat chat = chatService.createChat(chatRequest)
+        if (!chat) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
         ChatDto created = chatService.buildDtoFrom(chat)
         new ResponseEntity<>(created, HttpStatus.OK)
     }
@@ -42,6 +44,8 @@ class ChatController {
     @GetMapping("/{chatId}")
     ResponseEntity<ChatDto> getChatById(@PathVariable Long chatId) {
         Chat chat = chatService.getChatById(chatId)
+        if (!chat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+
         ChatDto chatDto = chatService.buildDtoFrom(chat)
         new ResponseEntity<>(chatDto, HttpStatus.OK)
     }
