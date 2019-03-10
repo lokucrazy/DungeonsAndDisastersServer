@@ -43,7 +43,7 @@ class SessionController {
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
-
+  
     @PutMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> updateSession(@PathVariable Long sessionId, @Valid @RequestBody SessionDto sessionDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
@@ -53,6 +53,15 @@ class SessionController {
     ResponseEntity deleteSession(@PathVariable Long sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.OK)
+    }
+
+    @GetMapping("/sessions/{sessionId}/characters")
+    ResponseEntity<List<CharacterDto>> getAllSessionsCharacters(@PathVariable Long sessionId) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
+        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(session.characters)
+        new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
     /* History */

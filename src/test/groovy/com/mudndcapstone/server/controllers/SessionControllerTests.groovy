@@ -1,9 +1,12 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
+import com.mudndcapstone.server.services.impl.CharacterServiceImpl
 import com.mudndcapstone.server.services.impl.HistoryServiceImpl
 import com.mudndcapstone.server.services.impl.SessionServiceImpl
 import org.junit.Assert
@@ -24,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class SessionControllerTests {
 
     @Mock SessionServiceImpl sessionService
+    @Mock CharacterServiceImpl characterService
     @Mock HistoryServiceImpl historyService
 
     @InjectMocks
@@ -48,6 +52,26 @@ class SessionControllerTests {
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, sessionDtos)
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getAllSessions()
+    }
+
+    @Test
+    void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
+        // Given
+        Session session = new Session()
+        List<Character> characters = [new Character(), new Character()]
+        List<CharacterDto> characterDtos
+
+        // When
+        session.setIdentifier(1000)
+        session.setCharacters(characters)
+        characterDtos = characterService.buildDtoListFrom(session.characters)
+        Mockito.when(sessionService.getSessionById(1000)).thenReturn(session)
+
+        // Then
+        ResponseEntity response = sessionController.getAllSessionsCharacters(1000)
+        Assert.assertEquals(response.statusCode, HttpStatus.OK)
+        Assert.assertEquals(response.body, characterDtos)
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(1000)
     }
 
     @Test
