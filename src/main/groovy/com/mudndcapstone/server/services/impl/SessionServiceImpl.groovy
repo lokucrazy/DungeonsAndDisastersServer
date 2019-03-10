@@ -30,6 +30,9 @@ class SessionServiceImpl implements SessionService {
 
     @Override
     Session createSession(Session session) {
+        User dm = session.dm
+        if (!dm) return null
+
         sessionRepository.save(session)
     }
 
@@ -41,7 +44,7 @@ class SessionServiceImpl implements SessionService {
     Session buildSessionFrom(SessionDto sessionDto) {
         Session session = modelMapper.map(sessionDto, Session)
 
-        User dm = userService.getDMById(sessionDto.dmId)
+        User dm = userService.getUserById(sessionDto.dmId)
 
         session.setDm(dm)
         session
