@@ -1,11 +1,11 @@
-package com.mudndcapstone.server.models.request
+package com.mudndcapstone.server.models.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
 import javax.validation.constraints.NotNull
 
-class ChatRequest {
+class ChatDto extends EntityDto {
     @NotNull @JsonProperty(value = "session_id") Long sessionId
-    @NotNull @JsonProperty(value = "user_id") Long userId
-    @NotNull String message
+    List<String> log
+    String note
 }

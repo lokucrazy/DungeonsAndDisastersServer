@@ -5,7 +5,7 @@ import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
 class Map extends Node {
-    Set<String> images
+    List<String> images
 
     @Relationship(type = "HAS_MAP_LIST", direction = Relationship.INCOMING)
     Session session

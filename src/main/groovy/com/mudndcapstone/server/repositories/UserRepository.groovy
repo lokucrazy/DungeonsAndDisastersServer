@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserRepository extends Neo4jRepository<User, Long> {
     @Query("MATCH (dm)<-[:HAS_DM]-() RETURN dm")
-    Set<User> findAllDMs()
-
-    @Query("MATCH (dm)<-[:HAS_DM]-() WHERE id(dm)={0} RETURN dm")
-    Optional<User> findDMById(Long id)
+    List<User> findAllDMs()
 }

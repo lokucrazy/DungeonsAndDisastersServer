@@ -1,11 +1,12 @@
 package com.mudndcapstone.server.controllers
 
-import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
-import com.mudndcapstone.server.models.request.SessionRequest
-import com.mudndcapstone.server.services.HistoryService
-import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.models.dto.HistoryDto
+import com.mudndcapstone.server.models.dto.SessionDto
+import com.mudndcapstone.server.services.impl.CharacterServiceImpl
+import com.mudndcapstone.server.services.impl.HistoryServiceImpl
+import com.mudndcapstone.server.services.impl.SessionServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,42 +17,59 @@ import javax.validation.Valid
 @RestController
 class SessionController {
 
-    @Autowired SessionService sessionService
-    @Autowired HistoryService historyService
+    @Autowired SessionServiceImpl sessionService
+    @Autowired CharacterServiceImpl characterService
+    @Autowired HistoryServiceImpl historyService
 
     /* Sessions */
-    @GetMapping(value = "/sessions")
-    ResponseEntity<List<Session>> getAllSessions() {
-        List<Session> allSessions = sessionService.getAllSessions()
-        new ResponseEntity<>(allSessions, HttpStatus.OK)
+    @GetMapping("/sessions")
+    ResponseEntity<List<SessionDto>> getAllSessions() {
+        List<Session> sessions = sessionService.getAllSessions()
+        List<SessionDto> sessionDtos = sessionService.buildDtoListFrom(sessions)
+        new ResponseEntity<>(sessionDtos, HttpStatus.OK)
     }
 
-    @PostMapping(value = "/sessions")
-    ResponseEntity<Session> createSession(@Valid @RequestBody SessionRequest sessionRequest) {
-        Session session = this.sessionService.createSession(sessionRequest)
-        new ResponseEntity<>(session, HttpStatus.CREATED)
+    @PostMapping("/sessions")
+    ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
+        Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
+        Session session = sessionService.createSession(sessionRequest)
+        SessionDto created = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
-    @GetMapping(value = "/sessions/{sessionId}")
-    ResponseEntity<Session> getSessionById(@PathVariable Long sessionId) {
-        Session session = this.sessionService.getSessionById(sessionId)
-        new ResponseEntity<>(session, HttpStatus.OK)
+    @GetMapping("/sessions/{sessionId}")
+    ResponseEntity<SessionDto> getSessionById(@PathVariable Long sessionId) {
+        Session session = sessionService.getSessionById(sessionId)
+        SessionDto sessionDto = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(sessionDto, HttpStatus.OK)
+    }
+  
+    @PutMapping("/sessions/{sessionId}")
+    ResponseEntity<SessionDto> updateSession(@PathVariable Long sessionId, @Valid @RequestBody SessionDto sessionDto) {
+        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
-    @GetMapping(value = "/sessions/{sessionId}/characters")
-    ResponseEntity<Set<Character>> getAllSessionsCharacters(@PathVariable Long sessionId) {
-        Session session = this.sessionService.getSessionById(sessionId)
+    @DeleteMapping("/sessions/{sessionId}")
+    ResponseEntity deleteSession(@PathVariable Long sessionId) {
+        sessionService.deleteSession(sessionId)
+        new ResponseEntity(HttpStatus.OK)
+    }
+
+    @GetMapping("/sessions/{sessionId}/characters")
+    ResponseEntity<List<CharacterDto>> getAllSessionsCharacters(@PathVariable Long sessionId) {
+        Session session = sessionService.getSessionById(sessionId)
         if (!session) new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 
-        Set<Character> sessionCharacters = session.characters
-        new ResponseEntity<>(sessionCharacters, HttpStatus.OK)
+        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(session.characters)
+        new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
     /* History */
-    @GetMapping(value = "/histories")
-    ResponseEntity<List<History>> getAllHistories() {
-        List<History> allHistories = historyService.getAllHistories()
-        new ResponseEntity<>(allHistories,HttpStatus.OK)
+    @GetMapping("/histories")
+    ResponseEntity<List<HistoryDto>> getAllHistories() {
+        List<History> histories = historyService.getAllHistories()
+        List<HistoryDto> historyDtos = historyService.buildDtoListFrom(histories)
+        new ResponseEntity<>(historyDtos, HttpStatus.OK)
     }
 
 }

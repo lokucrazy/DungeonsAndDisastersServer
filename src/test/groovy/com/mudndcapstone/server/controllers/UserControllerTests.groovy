@@ -1,7 +1,8 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.User
-import com.mudndcapstone.server.services.UserService
+import com.mudndcapstone.server.models.dto.UserDto
+import com.mudndcapstone.server.services.impl.UserServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class UserControllerTests {
 
-    @Mock UserService userService
+    @Mock UserServiceImpl userService
 
     @InjectMocks
     UserController userController
@@ -33,6 +34,7 @@ class UserControllerTests {
     void givenUser_whenUserServiceGetsUser_thenUserControllerReturnsUser() {
         // Given
         User user = new User()
+        UserDto userDto = userService.buildDtoFrom(user)
 
         // When
         Mockito.when(userService.getUserById()).thenReturn(user)
@@ -40,19 +42,7 @@ class UserControllerTests {
         // Then
         ResponseEntity response = userController.getUserById()
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
-        Assert.assertEquals(response.body, user)
-        Mockito.verify(userService, Mockito.atLeastOnce()).getUserById()
-    }
-
-    @Test
-    void whenUserServiceGetsUserWithNoId_thenUserControllerReturnsError() {
-        // When
-        Mockito.when(userService.getUserById()).thenReturn(null)
-
-        // Then
-        ResponseEntity response = userController.getUserById()
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND)
-        Assert.assertNull(response.body)
+        Assert.assertEquals(response.body, userDto)
         Mockito.verify(userService, Mockito.atLeastOnce()).getUserById()
     }
 
