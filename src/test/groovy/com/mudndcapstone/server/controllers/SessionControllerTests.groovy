@@ -1,12 +1,13 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
-import com.mudndcapstone.server.models.request.SessionRequest
-import com.mudndcapstone.server.services.HistoryService
-import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.models.dto.HistoryDto
+import com.mudndcapstone.server.models.dto.SessionDto
+import com.mudndcapstone.server.services.impl.HistoryServiceImpl
+import com.mudndcapstone.server.services.impl.SessionServiceImpl
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -22,8 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class SessionControllerTests {
 
-    @Mock SessionService sessionService
-    @Mock HistoryService historyService
+    @Mock SessionServiceImpl sessionService
+    @Mock HistoryServiceImpl historyService
 
     @InjectMocks
     SessionController sessionController
@@ -37,15 +38,32 @@ class SessionControllerTests {
     void givenSessionList_whenSessionServiceReturnsList_thenSessionControllerReturnsList() {
         // Given
         List<Session> sessions = [new Session()]
+        List<SessionDto> sessionDtos = sessionService.buildDtoListFrom(sessions)
 
         // When
-        Mockito.when(sessionService.getAllSessions()).thenReturn(sessions.asList())
+        Mockito.when(sessionService.getAllSessions()).thenReturn(sessions)
 
         // Then
         ResponseEntity response = sessionController.getAllSessions()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, sessions)
+        Assert.assertEquals(response.body, sessionDtos)
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getAllSessions()
+    }
+
+    @Test
+    void givenHistoryList_whenHistoryServiceReturnsList_thenHistoryControllerReturnsList() {
+        // Given
+        List<History> histories = [new History()]
+        List<HistoryDto> historyDtos = historyService.buildDtoListFrom(histories)
+
+        // When
+        Mockito.when(historyService.getAllHistories()).thenReturn(histories)
+
+        // Then
+        ResponseEntity response = sessionController.getAllHistories()
+        Assert.assertEquals(response.statusCode, HttpStatus.OK)
+        Assert.assertEquals(response.body, historyDtos)
+        Mockito.verify(historyService, Mockito.atLeastOnce()).getAllHistories()
     }
 
 }

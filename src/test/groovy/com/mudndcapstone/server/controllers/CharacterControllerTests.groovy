@@ -1,7 +1,8 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Character
-import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.models.dto.CharacterDto
+import com.mudndcapstone.server.services.impl.CharacterServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class CharacterControllerTests {
 
-    @Mock CharacterService characterService
+    @Mock CharacterServiceImpl characterService
 
     @InjectMocks
     CharacterController characterController
@@ -33,14 +34,15 @@ class CharacterControllerTests {
     void givenCharacterList_whenCharacterServiceReturnsList_thenCharacterControllerReturnsList() {
         // Given
         List<Character> characters = [new Character()]
+        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(characters)
 
         // When
-        Mockito.when(characterService.getAllCharacters()).thenReturn(characters.asList())
+        Mockito.when(characterService.getAllCharacters()).thenReturn(characters)
 
         // Then
         ResponseEntity response = characterController.getAllCharacters()
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
-        Assert.assertEquals(response.body, characters)
+        Assert.assertEquals(response.body, characterDtos)
         Mockito.verify(characterService, Mockito.atLeastOnce()).getAllCharacters()
     }
 

@@ -1,7 +1,8 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Map
-import com.mudndcapstone.server.services.MapService
+import com.mudndcapstone.server.models.dto.MapDto
+import com.mudndcapstone.server.services.impl.MapServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class MapControllerTests {
 
-    @Mock MapService mapService
+    @Mock MapServiceImpl mapService
 
     @InjectMocks
     MapController mapController
@@ -33,14 +34,15 @@ class MapControllerTests {
     void givenMapList_whenMapServiceReturnsList_thenMapControllerReturnsList() {
         // Given
         List<Map> maps = [new Map()]
+        List<MapDto> mapDtos = mapService.buildDtoListFrom(maps)
 
         // When
-        Mockito.when(mapService.getAllMaps()).thenReturn(maps.asList())
+        Mockito.when(mapService.getAllMaps()).thenReturn(maps)
 
         // Then
         ResponseEntity response = mapController.getAllMaps()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, maps)
+        Assert.assertEquals(response.body, mapDtos)
         Mockito.verify(mapService, Mockito.atLeastOnce()).getAllMaps()
     }
 

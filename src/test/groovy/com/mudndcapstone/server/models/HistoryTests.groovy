@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class HistoryTests {
 
     @Test
-    void givenEmptyHistory_thenReturnAlmostEmptyHistoryObject() {
+    void givenEmptyHistory_thenReturnEmptyHistoryObject() {
         // Given
         History history = new History()
 
@@ -26,8 +26,8 @@ class HistoryTests {
     void givenHistory_whenAddProperties_thenHistoryObjectHasProperties() {
         // Given
         History history = new History()
-        List<String> nonCombatLog = new ArrayList<>()
-        List<String> combatLog = new ArrayList<>()
+        List<String> nonCombatLog = ["nc test"]
+        List<String> combatLog = ["c test"]
         History previousHistory = new History()
         Date dateEnded = new Date()
 

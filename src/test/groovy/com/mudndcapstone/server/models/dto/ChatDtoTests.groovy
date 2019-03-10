@@ -1,5 +1,6 @@
-package com.mudndcapstone.server.models
+package com.mudndcapstone.server.models.dto
 
+import com.mudndcapstone.server.models.Session
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,36 +9,36 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner)
 @SpringBootTest
-class ChatTests {
+class ChatDtoTests {
 
     @Test
-    void givenEmptyChat_thenReturnEmptyChatObject() {
+    void givenEmptyChatDto_thenReturnEmptyChatDtoObject() {
         // Given
-        Chat chat = new Chat()
+        ChatDto chat = new ChatDto()
 
         // Then
-        Assert.assertNull(chat.id)
+        Assert.assertNull(chat.identifier)
+        Assert.assertNull(chat.sessionId)
         Assert.assertNull(chat.log)
-        Assert.assertNull(chat.session)
+        Assert.assertNull(chat.note)
     }
 
     @Test
-    void givenChat_whenAddProperties_thenCharacterObjectHasProperties() {
+    void givenChatDto_whenAddProperties_thenCharacterObjectHasProperties() {
         // Given
-        Chat chat = new Chat()
+        ChatDto chat = new ChatDto()
         List<String> log = [""]
-        Session session = new Session()
 
         // When
+        chat.setSessionId(500)
         chat.setLog(log)
         chat.setNote("test note")
-        chat.setSession(session)
 
         // Then
-        Assert.assertNull(chat.id)
+        Assert.assertNull(chat.identifier)
+        Assert.assertEquals(chat.sessionId, 500)
         Assert.assertEquals(chat.log, log)
         Assert.assertEquals(chat.note, "test note")
-        Assert.assertEquals(chat.session, session)
     }
 
 }

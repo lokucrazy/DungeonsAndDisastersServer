@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.models
 
 import com.mudndcapstone.server.utils.BeingAbilities
+import com.mudndcapstone.server.utils.CharacterAlignment
 import com.mudndcapstone.server.utils.CharacterClass
 import com.mudndcapstone.server.utils.CharacterRace
 import org.junit.Assert
@@ -40,6 +41,7 @@ class CharacterTests {
         character.setExperience(500)
         character.setBackground("King of Kingland")
         character.setRace(CharacterRace.DRAGONBORN)
+        character.setAlignment(CharacterAlignment.NEUTRAL)
         abilities.setCharisma(100)
         character.setAbilities(abilities)
         character.setUser(user)
@@ -53,6 +55,7 @@ class CharacterTests {
         Assert.assertEquals(character.experience, 500)
         Assert.assertEquals(character.background, "King of Kingland")
         Assert.assertEquals(character.race, CharacterRace.DRAGONBORN)
+        Assert.assertEquals(character.alignment, CharacterAlignment.NEUTRAL)
         Assert.assertEquals(character.abilities, abilities)
         Assert.assertEquals(character.abilities.charisma, 100)
         Assert.assertEquals(character.user, user)

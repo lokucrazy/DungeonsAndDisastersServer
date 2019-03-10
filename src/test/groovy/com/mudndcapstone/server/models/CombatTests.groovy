@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class CombatTests {
 
     @Test
-    void givenEmptyCombat_thenReturnAlmostEmptyCombatObject() {
+    void givenEmptyCombat_thenReturnEmptyCombatObject() {
         // Given
         Combat combat = new Combat()
 
@@ -28,7 +28,7 @@ class CombatTests {
         Combat combat = new Combat()
         Combat previousCombat = new Combat()
         Session session = new Session()
-        Set<Enemy> enemies = [new Enemy()]
+        List<Enemy> enemies = [new Enemy()]
 
         // When
         combat.setPreviousCombat(previousCombat)

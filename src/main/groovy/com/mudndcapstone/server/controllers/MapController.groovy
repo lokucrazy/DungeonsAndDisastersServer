@@ -1,24 +1,60 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Map
-import com.mudndcapstone.server.services.MapService
+import com.mudndcapstone.server.models.dto.MapDto
+import com.mudndcapstone.server.services.impl.MapServiceImpl
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.validation.Valid
+
 @RestController
-@RequestMapping(value = "/maps")
+@RequestMapping("/maps")
 class MapController {
 
-    @Autowired MapService mapService
+    @Autowired MapServiceImpl mapService
 
     @GetMapping
-    ResponseEntity<List<Map>> getAllMaps() {
-        List<Map> allMaps = mapService.getAllMaps()
-        new ResponseEntity<>(allMaps, HttpStatus.OK)
+    ResponseEntity<List<MapDto>> getAllMaps() {
+        List<Map> maps = mapService.getAllMaps()
+        List<MapDto> mapDtos = mapService.buildDtoListFrom(maps)
+        new ResponseEntity<>(mapDtos, HttpStatus.OK)
+    }
+
+    @PostMapping
+    ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
+        Map mapRequest = mapService.buildMapFrom(mapDto)
+        Map map = mapService.createMap(mapRequest)
+        MapDto created = mapService.buildDtoFrom(map)
+        new ResponseEntity<>(created, HttpStatus.OK)
+    }
+
+    @GetMapping("/{mapId}")
+    ResponseEntity<MapDto> getMapById(@PathVariable Long mapId) {
+        Map map = mapService.getMapById(mapId)
+        MapDto mapDto = mapService.buildDtoFrom(map)
+        new ResponseEntity<>(mapDto, HttpStatus.OK)
+    }
+
+    @PutMapping("/{mapId}")
+    ResponseEntity<MapDto> updateMap(@PathVariable Long mapId, @Valid @RequestBody MapDto mapDto) {
+        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @DeleteMapping("/{mapId}")
+    ResponseEntity deleteMap(@PathVariable Long mapId) {
+        mapService.deleteMap(mapId)
+        new ResponseEntity(HttpStatus.OK)
     }
 
 }
