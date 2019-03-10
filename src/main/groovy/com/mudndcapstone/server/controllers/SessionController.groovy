@@ -2,6 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.impl.CharacterServiceImpl
