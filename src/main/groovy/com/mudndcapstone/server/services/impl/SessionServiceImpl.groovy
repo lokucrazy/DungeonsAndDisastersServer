@@ -47,6 +47,7 @@ class SessionServiceImpl implements SessionService {
         User dm = userService.getUserById(sessionDto.dmId)
 
         session.setDm(dm)
+
         session
     }
 
