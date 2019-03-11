@@ -41,7 +41,7 @@ class SessionController {
     }
 
     @GetMapping("/sessions/{sessionId}")
-    ResponseEntity<SessionDto> getSessionById(@PathVariable Long sessionId) {
+    ResponseEntity<SessionDto> getSessionById(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 
@@ -50,18 +50,18 @@ class SessionController {
     }
   
     @PutMapping("/sessions/{sessionId}")
-    ResponseEntity<SessionDto> updateSession(@PathVariable Long sessionId, @Valid @RequestBody SessionDto sessionDto) {
+    ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/sessions/{sessionId}")
-    ResponseEntity deleteSession(@PathVariable Long sessionId) {
+    ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.OK)
     }
 
     @GetMapping("/sessions/{sessionId}/characters")
-    ResponseEntity<List<CharacterDto>> getAllSessionsCharacters(@PathVariable Long sessionId) {
+    ResponseEntity<List<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)

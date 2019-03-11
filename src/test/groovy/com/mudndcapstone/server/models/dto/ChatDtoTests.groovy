@@ -1,6 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
-import com.mudndcapstone.server.models.Session
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,17 +26,18 @@ class ChatDtoTests {
     @Test
     void givenChatDto_whenAddProperties_thenCharacterObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         ChatDto chat = new ChatDto()
         List<String> log = [""]
 
         // When
-        chat.setSessionId(500)
+        chat.setSessionId(testUuid)
         chat.setLog(log)
         chat.setNote("test note")
 
         // Then
         Assert.assertNull(chat.identifier)
-        Assert.assertEquals(chat.sessionId, 500)
+        Assert.assertEquals(chat.sessionId, testUuid)
         Assert.assertEquals(chat.log, log)
         Assert.assertEquals(chat.note, "test note")
     }

@@ -42,7 +42,7 @@ class ChatController {
     }
 
     @GetMapping("/{chatId}")
-    ResponseEntity<ChatDto> getChatById(@PathVariable Long chatId) {
+    ResponseEntity<ChatDto> getChatById(@PathVariable String chatId) {
         Chat chat = chatService.getChatById(chatId)
         if (!chat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -51,12 +51,12 @@ class ChatController {
     }
 
     @PutMapping("/{chatId}")
-    ResponseEntity<ChatDto> updateChat(@PathVariable Long chatId, @Valid @RequestBody ChatDto chatDto) {
+    ResponseEntity<ChatDto> updateChat(@PathVariable String chatId, @Valid @RequestBody ChatDto chatDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{chatId}")
-    ResponseEntity deleteChat(@PathVariable Long chatId) {
+    ResponseEntity deleteChat(@PathVariable String chatId) {
         chatService.deleteChat(chatId)
         new ResponseEntity(HttpStatus.OK)
     }

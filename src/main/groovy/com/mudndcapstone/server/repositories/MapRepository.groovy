@@ -5,5 +5,5 @@ import org.springframework.data.neo4j.repository.Neo4jRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface MapRepository extends Neo4jRepository<Map, Long> {
+interface MapRepository extends Neo4jRepository<Map, String> {
 }

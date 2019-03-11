@@ -42,7 +42,7 @@ class CombatController {
     }
 
     @GetMapping("/{combatId}")
-    ResponseEntity<CombatDto> getCombatById(@PathVariable Long combatId) {
+    ResponseEntity<CombatDto> getCombatById(@PathVariable String combatId) {
         Combat combat = combatService.getCombatById(combatId)
         if (!combat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -51,12 +51,12 @@ class CombatController {
     }
 
     @PutMapping("/{combatId}")
-    ResponseEntity<CombatDto> updateCombat(@PathVariable Long combatId, @Valid @RequestBody CombatDto combatDto) {
+    ResponseEntity<CombatDto> updateCombat(@PathVariable String combatId, @Valid @RequestBody CombatDto combatDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{combatId}")
-    ResponseEntity deleteCombat(@PathVariable Long combatId) {
+    ResponseEntity deleteCombat(@PathVariable String combatId) {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.OK)
     }

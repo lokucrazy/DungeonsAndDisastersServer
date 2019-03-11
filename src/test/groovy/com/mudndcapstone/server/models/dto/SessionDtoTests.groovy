@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,37 +34,38 @@ class SessionDtoTests {
     @Test
     void givenSessionDto_whenAddProperties_thenSessionDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         SessionDto sessionDto = new SessionDto()
         List<String> nonCombatLog = ["nc test"]
         List<String> combatLog = ["c test"]
         Date dateEnded = new Date()
-        List<Long> npcIds = [1100]
-        List<Long> playerIds = [1300]
-        List<Long> characterIds = [1500]
+        List<String> npcIds = [testUuid]
+        List<String> playerIds = [testUuid]
+        List<String> characterIds = [testUuid]
 
         // When
-        sessionDto.setDmId(100)
+        sessionDto.setDmId(testUuid)
         sessionDto.setNonCombatLog(nonCombatLog)
         sessionDto.setCombatLog(combatLog)
         sessionDto.setDateEnded(dateEnded)
-        sessionDto.setHistoryId(300)
-        sessionDto.setChatId(500)
-        sessionDto.setMapId(700)
-        sessionDto.setCombatId(900)
+        sessionDto.setHistoryId(testUuid)
+        sessionDto.setChatId(testUuid)
+        sessionDto.setMapId(testUuid)
+        sessionDto.setCombatId(testUuid)
         sessionDto.setNpcIds(npcIds)
         sessionDto.setPlayerIds(playerIds)
         sessionDto.setCharacterIds(characterIds)
 
         // Then
         Assert.assertNull(sessionDto.identifier)
-        Assert.assertEquals(sessionDto.dmId, 100)
+        Assert.assertEquals(sessionDto.dmId, testUuid)
         Assert.assertEquals(sessionDto.nonCombatLog, nonCombatLog)
         Assert.assertEquals(sessionDto.combatLog, combatLog)
         Assert.assertEquals(sessionDto.dateEnded, dateEnded)
-        Assert.assertEquals(sessionDto.historyId, 300)
-        Assert.assertEquals(sessionDto.chatId, 500)
-        Assert.assertEquals(sessionDto.mapId, 700)
-        Assert.assertEquals(sessionDto.combatId, 900)
+        Assert.assertEquals(sessionDto.historyId, testUuid)
+        Assert.assertEquals(sessionDto.chatId, testUuid)
+        Assert.assertEquals(sessionDto.mapId, testUuid)
+        Assert.assertEquals(sessionDto.combatId, testUuid)
         Assert.assertEquals(sessionDto.npcIds, npcIds)
         Assert.assertEquals(sessionDto.playerIds, playerIds)
         Assert.assertEquals(sessionDto.characterIds, characterIds)

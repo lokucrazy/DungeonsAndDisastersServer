@@ -42,7 +42,7 @@ class MapController {
     }
 
     @GetMapping("/{mapId}")
-    ResponseEntity<MapDto> getMapById(@PathVariable Long mapId) {
+    ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
         Map map = mapService.getMapById(mapId)
         if (!map) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -51,12 +51,12 @@ class MapController {
     }
 
     @PutMapping("/{mapId}")
-    ResponseEntity<MapDto> updateMap(@PathVariable Long mapId, @Valid @RequestBody MapDto mapDto) {
+    ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{mapId}")
-    ResponseEntity deleteMap(@PathVariable Long mapId) {
+    ResponseEntity deleteMap(@PathVariable String mapId) {
         mapService.deleteMap(mapId)
         new ResponseEntity(HttpStatus.OK)
     }

@@ -37,7 +37,7 @@ class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+    ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
         User user = userService.getUserById(userId)
         if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 
@@ -46,18 +46,18 @@ class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+    ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/users/{userId}")
-    ResponseEntity deleteUser(@PathVariable Long userId) {
+    ResponseEntity deleteUser(@PathVariable String userId) {
         userService.deleteUserById(userId)
         new ResponseEntity(HttpStatus.OK)
     }
 
     @GetMapping("/users/{userId}/characters")
-    ResponseEntity<List<CharacterDto>> getAllUsersCharacters(@PathVariable Long userId) {
+    ResponseEntity<List<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
         User user = userService.getUserById(userId)
         if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)

@@ -9,6 +9,7 @@ import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.impl.CharacterServiceImpl
 import com.mudndcapstone.server.services.impl.HistoryServiceImpl
 import com.mudndcapstone.server.services.impl.SessionServiceImpl
+
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -57,21 +58,22 @@ class SessionControllerTests {
     @Test
     void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         Session session = new Session()
         List<Character> characters = [new Character(), new Character()]
         List<CharacterDto> characterDtos
 
         // When
-        session.setIdentifier(1000)
+        session.setIdentifier(UUID.randomUUID().toString())
         session.setCharacters(characters)
         characterDtos = characterService.buildDtoListFrom(session.characters)
-        Mockito.when(sessionService.getSessionById(1000)).thenReturn(session)
+        Mockito.when(sessionService.getSessionById(testUuid)).thenReturn(session)
 
         // Then
-        ResponseEntity response = sessionController.getAllSessionsCharacters(1000)
+        ResponseEntity response = sessionController.getAllSessionsCharacters(testUuid)
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
         Assert.assertEquals(response.body, characterDtos)
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(1000)
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(testUuid)
     }
 
     @Test

@@ -41,7 +41,7 @@ class CharacterController {
     }
 
     @GetMapping("/{characterId}")
-    ResponseEntity<CharacterDto> getCharacterById(@PathVariable Long characterId) {
+    ResponseEntity<CharacterDto> getCharacterById(@PathVariable String characterId) {
         Character character = characterService.getCharacterById(characterId)
         if (!character) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -50,12 +50,12 @@ class CharacterController {
     }
 
     @PutMapping("/{characterId}")
-    ResponseEntity<CharacterDto> updateCharacter(@PathVariable Long characterId, @Valid @RequestBody CharacterDto characterDto) {
+    ResponseEntity<CharacterDto> updateCharacter(@PathVariable String characterId, @Valid @RequestBody CharacterDto characterDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{characterId}")
-    ResponseEntity deleteCharacter(@PathVariable Long characterId) {
+    ResponseEntity deleteCharacter(@PathVariable String characterId) {
         characterService.deleteCharacter(characterId)
         new ResponseEntity(HttpStatus.OK)
     }

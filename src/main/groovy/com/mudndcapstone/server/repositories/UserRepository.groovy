@@ -6,7 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository extends Neo4jRepository<User, Long> {
+interface UserRepository extends Neo4jRepository<User, String> {
     @Query("MATCH (dm)<-[:HAS_DM]-() RETURN dm")
     List<User> findAllDMs()
 }

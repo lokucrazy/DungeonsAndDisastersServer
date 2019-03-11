@@ -1,7 +1,7 @@
 package com.mudndcapstone.server.models.dto
 
 class EntityDto {
-    Long identifier
+    String identifier
     Date createdAt
     Date modifiedAt
 }

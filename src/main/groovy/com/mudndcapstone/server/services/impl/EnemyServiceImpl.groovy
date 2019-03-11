@@ -3,7 +3,6 @@ package com.mudndcapstone.server.services.impl
 import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.repositories.EnemyRepository
-import com.mudndcapstone.server.services.EnemyService
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,42 +10,36 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class EnemyServiceImpl implements EnemyService {
+class EnemyServiceImpl {
 
     @Autowired EnemyRepository enemyRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
     List<Enemy> getAllEnemies() {
         enemyRepository.findAll().asList()
     }
 
-    @Override
-    Enemy getEnemyById(Long id) {
+    Enemy getEnemyById(String id) {
         enemyRepository.findById(id).orElse(null)
     }
 
-    @Override
     Enemy createEnemy(Enemy enemy) {
         enemyRepository.save(enemy)
     }
 
-    @Override
-    void deleteEnemy(Long id) {
+    void deleteEnemy(String id) {
         enemyRepository.deleteById(id)
     }
 
     Enemy buildEnemyFrom(EnemyDto enemyDto) {
         Enemy enemy = modelMapper.map(enemyDto, Enemy)
-
         enemy
     }
 
     EnemyDto buildDtoFrom(Enemy enemy) {
         EnemyDto enemyDto = modelMapper.map(enemy, EnemyDto)
 
-        Long combatId = enemy.combat ? enemy.combat.identifier : null
-
+        String combatId = enemy.combat ? enemy.combat.identifier : null
         enemyDto.setCombatId(combatId)
 
         enemyDto

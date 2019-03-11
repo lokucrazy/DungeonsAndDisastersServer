@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,14 +24,15 @@ class EnemyDtoTests {
     @Test
     void givenEnemyDto_whenAddProperties_thenEnemyDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         EnemyDto enemyDto = new EnemyDto()
 
         // When
-        enemyDto.setCombatId(500)
+        enemyDto.setCombatId(testUuid)
 
         // Then
         Assert.assertNull(enemyDto.identifier)
-        Assert.assertEquals(enemyDto.combatId, 500)
+        Assert.assertEquals(enemyDto.combatId, testUuid)
     }
 
 }

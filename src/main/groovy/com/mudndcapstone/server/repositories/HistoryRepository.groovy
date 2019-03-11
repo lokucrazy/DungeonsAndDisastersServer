@@ -5,5 +5,5 @@ import org.springframework.data.neo4j.repository.Neo4jRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface HistoryRepository extends Neo4jRepository<History, Long> {
+interface HistoryRepository extends Neo4jRepository<History, String> {
 }

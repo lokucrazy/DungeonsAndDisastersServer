@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,18 +26,19 @@ class CombatDtoTests {
     @Test
     void givenCombatDto_whenAddProperties_thenCombatDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         CombatDto combatDto = new CombatDto()
-        List<Long> enemyIds = [500]
+        List<String> enemyIds = [testUuid]
 
         // When
-        combatDto.setPreviousCombatId(100)
-        combatDto.setSessionId(300)
+        combatDto.setPreviousCombatId(testUuid)
+        combatDto.setSessionId(testUuid)
         combatDto.setEnemyIds(enemyIds)
 
         // Then
         Assert.assertNull(combatDto.identifier)
-        Assert.assertEquals(combatDto.previousCombatId, 100)
-        Assert.assertEquals(combatDto.sessionId, 300)
+        Assert.assertEquals(combatDto.previousCombatId, testUuid)
+        Assert.assertEquals(combatDto.sessionId, testUuid)
         Assert.assertEquals(combatDto.enemyIds, enemyIds)
     }
 

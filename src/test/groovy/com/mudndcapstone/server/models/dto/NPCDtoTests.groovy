@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.models.dto
 
 import com.mudndcapstone.server.utils.BeingAbilities
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,6 +30,7 @@ class NPCDtoTests {
     @Test
     void givenNPCDto_whenAddProperties_thenNPCDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         NPCDto npcDto = new NPCDto()
         String initialLocation = "A1"
         BeingAbilities abilities = new BeingAbilities()
@@ -38,8 +40,8 @@ class NPCDtoTests {
         npcDto.setIsAlive(true)
         npcDto.setInitialLocation(initialLocation)
         npcDto.setAbilities(abilities)
-        npcDto.setSessionId(500)
-        npcDto.setDmId(1000)
+        npcDto.setSessionId(testUuid)
+        npcDto.setDmId(testUuid)
 
         // Then
         Assert.assertNull(npcDto.identifier)
@@ -47,8 +49,8 @@ class NPCDtoTests {
         Assert.assertEquals(npcDto.isAlive, true)
         Assert.assertEquals(npcDto.initialLocation, initialLocation)
         Assert.assertEquals(npcDto.abilities, abilities)
-        Assert.assertEquals(npcDto.sessionId, 500)
-        Assert.assertEquals(npcDto.dmId, 1000)
+        Assert.assertEquals(npcDto.sessionId, testUuid)
+        Assert.assertEquals(npcDto.dmId, testUuid)
     }
 
 }

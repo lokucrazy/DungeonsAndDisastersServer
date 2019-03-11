@@ -4,6 +4,7 @@ import com.mudndcapstone.server.utils.BeingAbilities
 import com.mudndcapstone.server.utils.CharacterAlignment
 import com.mudndcapstone.server.utils.CharacterClass
 import com.mudndcapstone.server.utils.CharacterRace
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,8 +36,9 @@ class CharacterDtoTests {
     @Test
     void givenCharacterDto_whenAddProperties_thenCharacterDtoObjectsHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         CharacterDto characterDto = new CharacterDto()
-        List<Long> sessionIds = [500]
+        List<String> sessionIds = [testUuid]
         BeingAbilities abilities = new BeingAbilities()
 
         // When
@@ -49,7 +51,7 @@ class CharacterDtoTests {
         characterDto.setAlignment(CharacterAlignment.NEUTRAL)
         abilities.setCharisma(100)
         characterDto.setAbilities(abilities)
-        characterDto.setUserId(500)
+        characterDto.setUserId(testUuid)
         characterDto.setSessionIds(sessionIds)
 
         // Then
@@ -63,7 +65,7 @@ class CharacterDtoTests {
         Assert.assertEquals(characterDto.alignment, CharacterAlignment.NEUTRAL)
         Assert.assertEquals(characterDto.abilities, abilities)
         Assert.assertEquals(characterDto.abilities.charisma, 100)
-        Assert.assertEquals(characterDto.userId, 500)
+        Assert.assertEquals(characterDto.userId, testUuid)
         Assert.assertEquals(characterDto.sessionIds, sessionIds)
     }
 

@@ -3,7 +3,6 @@ package com.mudndcapstone.server.services.impl
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.repositories.CombatRepository
-import com.mudndcapstone.server.services.CombatService
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,43 +10,38 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class CombatServiceImpl implements CombatService {
+class CombatServiceImpl {
 
     @Autowired CombatRepository combatRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
     List<Combat> getAllCombats() {
         combatRepository.findAll().asList()
     }
 
-    @Override
-    Combat getCombatById(Long id) {
+    Combat getCombatById(String id) {
         combatRepository.findById(id).orElse(null)
     }
 
-    @Override
     Combat createCombat(Combat combat) {
         combatRepository.save(combat)
     }
 
-    @Override
-    void deleteCombat(Long id) {
+    void deleteCombat(String id) {
         combatRepository.deleteById(id)
     }
 
     Combat buildCombatFrom(CombatDto combatDto) {
         Combat combat = modelMapper.map(combatDto, Combat)
-
         combat
     }
 
     CombatDto buildDtoFrom(Combat combat) {
         CombatDto combatDto = modelMapper.map(combat, CombatDto)
 
-        Long previousCombatId = combat.previousCombat ? combat.previousCombat.identifier : null
-        Long sessionId = combat.session ? combat.session.identifier : null
-        List<Long> enemyIds = combat.enemies ?
+        String previousCombatId = combat.previousCombat ? combat.previousCombat.identifier : null
+        String sessionId = combat.session ? combat.session.identifier : null
+        List<String> enemyIds = combat.enemies ?
                 combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toList()) :
                 null
 

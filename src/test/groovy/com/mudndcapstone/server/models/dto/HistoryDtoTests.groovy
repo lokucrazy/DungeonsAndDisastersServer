@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,6 +27,7 @@ class HistoryDtoTests {
     @Test
     void givenHistoryDto_whenAddProperties_thenHistoryDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         HistoryDto historyDto = new HistoryDto()
         List<String> nonCombatLog = ["nc test"]
         List<String> combatLog = ["c test"]
@@ -35,14 +37,14 @@ class HistoryDtoTests {
         historyDto.setNonCombatLog(nonCombatLog)
         historyDto.setCombatLog(combatLog)
         historyDto.setDateEnded(dateEnded)
-        historyDto.setHistoryId(500)
+        historyDto.setHistoryId(testUuid)
 
         // Then
         Assert.assertNull(historyDto.identifier)
         Assert.assertEquals(historyDto.nonCombatLog, nonCombatLog)
         Assert.assertEquals(historyDto.combatLog, combatLog)
         Assert.assertEquals(historyDto.dateEnded, dateEnded)
-        Assert.assertEquals(historyDto.historyId, 500)
+        Assert.assertEquals(historyDto.historyId, testUuid)
     }
 
 }

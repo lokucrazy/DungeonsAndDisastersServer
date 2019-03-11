@@ -9,6 +9,6 @@ class NPCDto extends BeingDto {
     @JsonProperty(value = "is_alive") boolean isAlive
     @JsonProperty(value = "initial_location") String initialLocation /* maybe move this into a Location class */
     BeingAbilities abilities
-    @JsonProperty(value = "session_id") Long sessionId
-    @JsonProperty(value = "dm_id") Long dmId
+    @JsonProperty(value = "session_id") String sessionId
+    @JsonProperty(value = "dm_id") String dmId
 }

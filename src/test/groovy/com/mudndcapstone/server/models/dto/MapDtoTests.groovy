@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,16 +25,17 @@ class MapDtoTests {
     @Test
     void givenMapDto_whenAddProperties_thenMapDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         MapDto mapDto = new MapDto()
         List<String> images = ["test image 1"]
 
         // When
-        mapDto.setSessionId(500)
+        mapDto.setSessionId(testUuid)
         mapDto.setImages(images)
 
         // Then
         Assert.assertNull(mapDto.identifier)
-        Assert.assertEquals(mapDto.sessionId, 500)
+        Assert.assertEquals(mapDto.sessionId, testUuid)
         Assert.assertEquals(mapDto.images, images)
     }
 

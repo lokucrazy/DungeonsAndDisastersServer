@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,13 +31,14 @@ class UserDtoTests {
     @Test
     void givenUserDto_whenAddProperties_thenUserDtoObjectHasProperties() {
         // Given
+        String testUuid = UUID.randomUUID().toString()
         UserDto userDto = new UserDto()
         Date birthdate = new Date()
         List<String> notes = ["n test"]
-        List<Long> characterIds = [100]
-        List<Long> sessionIds = [300]
-        List<Long> dmSessionIds = [500]
-        List<Long> npcIds = [700]
+        List<String> characterIds = [testUuid]
+        List<String> sessionIds = [testUuid]
+        List<String> dmSessionIds = [testUuid]
+        List<String> npcIds = [testUuid]
 
         // When
         userDto.setUsername("test")
