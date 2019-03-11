@@ -1,10 +1,10 @@
-package com.mudndcapstone.server.models.request
+package com.mudndcapstone.server.models.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
 import javax.validation.constraints.NotNull
 
-class MapRequest {
+class MapDto extends EntityDto {
     @NotNull @JsonProperty(value = "session_id") Long sessionId
-    String image
+    List<String> images
 }

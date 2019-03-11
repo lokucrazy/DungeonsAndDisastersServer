@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class SessionTests {
 
     @Test
-    void givenEmptySession_thenReturnAlmostEmptySessionObject() {
+    void givenEmptySession_thenReturnEmptySessionObject() {
         // Given
         Session session = new Session()
 
@@ -35,8 +35,8 @@ class SessionTests {
         Combat combatList = new Combat()
         User dm = new User()
         Set<NPC> npcs = [new NPC()]
-        Set<User> players = [new User()]
-        Set<Character> characters = [new Character()]
+        List<User> players = [new User()]
+        List<Character> characters = [new Character()]
 
         // When
         session.setChatLog(chatLog)

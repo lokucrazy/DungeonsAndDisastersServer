@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class ChatTests {
 
     @Test
-    void givenEmptyChat_thenReturnAlmostEmptyChatObject() {
+    void givenEmptyChat_thenReturnEmptyChatObject() {
         // Given
         Chat chat = new Chat()
 

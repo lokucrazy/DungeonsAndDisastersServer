@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class NPCTests {
 
     @Test
-    void givenEmptyNPC_thenReturnAlmostEmptyNPCObject() {
+    void givenEmptyNPC_thenReturnEmptyNPCObject() {
         // Given
         NPC npc = new NPC()
 

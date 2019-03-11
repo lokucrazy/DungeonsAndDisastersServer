@@ -24,8 +24,8 @@ class Session extends History {
     or a new PlayerCharacter class
     */
     @Relationship(type = "HAS_PLAYER", direction = Relationship.OUTGOING)
-    Set<User> players
+    List<User> players
 
     @Relationship(type = "HAS_CHARACTER", direction = Relationship.OUTGOING)
-    Set<Character> characters
+    List<Character> characters
 }

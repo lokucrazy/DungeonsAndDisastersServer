@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class MapTests {
 
     @Test
-    void givenEmptyMap_thenReturnAlmostEmptyMapObject() {
+    void givenEmptyMap_thenReturnEmptyMapObject() {
         // Given
         Map map = new Map()
 
@@ -25,7 +25,7 @@ class MapTests {
     void givenMap_whenAddProperties_thenMapObjectHasProperties() {
         // Given
         Map map = new Map()
-        Set<String> images = ["test image 1"]
+        List<String> images = ["test image 1"]
         Session session = new Session()
 
         // When

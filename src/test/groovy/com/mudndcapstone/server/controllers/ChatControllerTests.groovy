@@ -1,7 +1,8 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
-import com.mudndcapstone.server.services.ChatService
+import com.mudndcapstone.server.models.dto.ChatDto
+import com.mudndcapstone.server.services.impl.ChatServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class ChatControllerTests {
 
-    @Mock ChatService chatService
+    @Mock ChatServiceImpl chatService
 
     @InjectMocks
     ChatController chatController
@@ -33,6 +34,7 @@ class ChatControllerTests {
     void givenChatList_whenChatServiceReturnsList_thenChatControllerReturnsList() {
         // Given
         List<Chat> chats = [new Chat()]
+        List<ChatDto> chatDtos = chatService.buildDtoListFrom(chats)
 
         // When
         Mockito.when(chatService.getAllChats()).thenReturn(chats.asList())
@@ -40,7 +42,7 @@ class ChatControllerTests {
         // Then
         ResponseEntity response = chatController.getAllChats()
         Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, chats)
+        Assert.assertEquals(response.body, chatDtos)
         Mockito.verify(chatService, Mockito.atLeastOnce()).getAllChats()
     }
 

@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class EnemyTests {
 
     @Test
-    void givenEmptyEnemy_thenReturnAlmostEmptyEnemyObject() {
+    void givenEmptyEnemy_thenReturnEmptyEnemyObject() {
         // Given
         Enemy enemy = new Enemy()
 

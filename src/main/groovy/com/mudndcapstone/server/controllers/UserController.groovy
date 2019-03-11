@@ -1,8 +1,10 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.User
-import com.mudndcapstone.server.models.request.UserRequest
-import com.mudndcapstone.server.services.UserService
+import com.mudndcapstone.server.models.dto.CharacterDto
+import com.mudndcapstone.server.models.dto.UserDto
+import com.mudndcapstone.server.services.impl.CharacterServiceImpl
+import com.mudndcapstone.server.services.impl.UserServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,38 +15,63 @@ import javax.validation.Valid
 @RestController
 class UserController {
 
-    @Autowired UserService userService
+    @Autowired UserServiceImpl userService
+    @Autowired CharacterServiceImpl characterService
 
     /* Users */
-    @GetMapping(value = "/users")
-    ResponseEntity<List<User>> getAllUsers() {
-        List<User> allUsers = userService.getAllUsers()
-        new ResponseEntity<>(allUsers, HttpStatus.OK)
+    @GetMapping("/users")
+    ResponseEntity<List<UserDto>> getAllUsers() {
+        List<User> users = userService.getAllUsers()
+        List<UserDto> userDtos = userService.buildDtoListFrom(users)
+        new ResponseEntity<>(userDtos, HttpStatus.OK)
     }
 
-    @PostMapping(value = "/users")
-    ResponseEntity<User> createUser(@Valid @RequestBody UserRequest user) {
-        User created = userService.createUser(user)
+    @PostMapping("/users")
+    ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+        User userRequest = userService.buildUserFrom(userDto)
+        User user = userService.createUser(userRequest)
+        if (!user) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+
+        UserDto created = userService.buildDtoFrom(user)
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
-    @GetMapping(value = "/users/{id}")
-    ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id)
-        new ResponseEntity<>(user, HttpStatus.OK)
+    @GetMapping("/users/{userId}")
+    ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+        User user = userService.getUserById(userId)
+        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
+        UserDto userDto = userService.buildDtoFrom(user)
+        new ResponseEntity<>(userDto, HttpStatus.OK)
     }
 
-    @DeleteMapping(value = "/users/{id}")
-    ResponseEntity deleteUser(@PathVariable Long id) {
-        userService.deleteUserById(id)
+    @PutMapping("/users/{userId}")
+    ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @DeleteMapping("/users/{userId}")
+    ResponseEntity deleteUser(@PathVariable Long userId) {
+        userService.deleteUserById(userId)
         new ResponseEntity(HttpStatus.OK)
     }
 
-    /* DMs*/
-    @GetMapping(value = "/dms")
-    ResponseEntity<List<User>> getAllDMs() {
-        List<User> allDMs = userService.getAllDMs()
-        new ResponseEntity<>(allDMs, HttpStatus.OK)
+    @GetMapping("/users/{userId}/characters")
+    ResponseEntity<List<CharacterDto>> getAllUsersCharacters(@PathVariable Long userId) {
+        User user = userService.getUserById(userId)
+        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
+
+        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(user.characters)
+        new ResponseEntity<>(characterDtos, HttpStatus.OK)
+    }
+
+    /* DMs */
+    @GetMapping("/dms")
+    ResponseEntity<List<UserDto>> getAllDMs() {
+        List<User> dms = userService.getAllDMs()
+        List<UserDto> dmDtos = userService.buildDtoListFrom(dms)
+        new ResponseEntity<>(dmDtos, HttpStatus.OK)
     }
 
 }

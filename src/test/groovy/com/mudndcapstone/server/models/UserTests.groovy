@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 class UserTests {
 
     @Test
-    void givenEmptyUser_thenReturnAlmostEmptyUserObject() {
+    void givenEmptyUser_thenReturnEmptyUserObject() {
         // Given
         User user = new User()
 
@@ -29,10 +29,10 @@ class UserTests {
         String password = "password"
         Date birthdate = new Date()
         List<String> notes = [""]
-        Set<Character> characters = [new Character()]
-        Set<Session> sessions = [new Session()]
-        Set<Session> dmSessions = [new Session()]
-        Set<NPC> npcs = [new NPC()]
+        List<Character> characters = [new Character()]
+        List<Session> sessions = [new Session()]
+        List<Session> dmSessions = [new Session()]
+        List<NPC> npcs = [new NPC()]
 
         // When
         user.setUsername(username)
