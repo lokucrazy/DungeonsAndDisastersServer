@@ -18,14 +18,14 @@ class Session extends History {
     User dm
 
     @Relationship(type = "HAS_NPC", direction = Relationship.OUTGOING)
-    Set<NPC> npcs
+    HashSet<NPC> npcs
 
     /* Could these two be a hashmap, mapping user => character
     or a new PlayerCharacter class
     */
     @Relationship(type = "HAS_PLAYER", direction = Relationship.OUTGOING)
-    List<User> players
+    HashSet<User> players
 
     @Relationship(type = "HAS_CHARACTER", direction = Relationship.OUTGOING)
-    List<Character> characters
+    HashSet<Character> characters
 }

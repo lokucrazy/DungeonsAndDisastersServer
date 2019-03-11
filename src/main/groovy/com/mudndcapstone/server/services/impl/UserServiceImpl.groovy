@@ -11,39 +11,33 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class UserServiceImpl implements UserService {
+class UserServiceImpl {
 
     @Autowired UserRepository userRepository
     @Autowired ModelMapper modelMapper
 
     /* Users */
-    @Override
-    List<User> getAllUsers() {
-        userRepository.findAll().asList()
+    Set<User> getAllUsers() {
+        userRepository.findAll().toSet()
     }
 
-    @Override
     User getUserById(Long id) {
         userRepository.findById(id).orElse(null)
     }
 
-    @Override
     User createUser(User user) {
         userRepository.save(user)
     }
 
-    @Override
     void deleteUserById(Long id) {
         userRepository.deleteById(id)
     }
 
     /* DMs */
-    @Override
-    List<User> getAllDMs() {
-        userRepository.findAllDMs().asList()
+    Set<User> getAllDMs() {
+        userRepository.findAllDMs().toSet()
     }
 
-    @Override
     User getDMById(Long id) {
         userRepository.findById(id).orElse(null)
     }
@@ -57,17 +51,17 @@ class UserServiceImpl implements UserService {
     UserDto buildDtoFrom(User user) {
         UserDto userDto = modelMapper.map(user, UserDto)
 
-        List<Long> characterIds = user.characters ?
-                user.characters.stream().map({ character -> character.identifier }).collect(Collectors.toList()) :
+        HashSet<Long> characterIds = user.characters ?
+                user.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) as HashSet :
                 null
-        List<Long> sessionIds = user.sessions ?
-                user.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toList()) :
+        HashSet<Long> sessionIds = user.sessions ?
+                user.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) as HashSet :
                 null
-        List<Long> dmSessionIds = user.dmSessions ?
-                user.dmSessions.stream().map({ dmSession -> dmSession.identifier }).collect(Collectors.toList()) :
+        HashSet<Long> dmSessionIds = user.dmSessions ?
+                user.dmSessions.stream().map({ dmSession -> dmSession.identifier }).collect(Collectors.toSet()) as HashSet :
                 null
-        List<Long> npcIds = user.npcs ?
-                user.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toList()) :
+        HashSet<Long> npcIds = user.npcs ?
+                user.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) as HashSet :
                 null
 
         userDto.setCharacterIds(characterIds)
@@ -78,8 +72,8 @@ class UserServiceImpl implements UserService {
         userDto
     }
 
-    List<UserDto> buildDtoListFrom(List<User> users) {
-        users.stream().map({ user -> buildDtoFrom(user) }).collect(Collectors.toList())
+    Set<UserDto> buildDtoSetFrom(Set<User> users) {
+        users.stream().map({ user -> buildDtoFrom(user) }).collect(Collectors.toSet())
     }
 
 }

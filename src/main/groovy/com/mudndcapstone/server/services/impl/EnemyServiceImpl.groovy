@@ -11,27 +11,23 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class EnemyServiceImpl implements EnemyService {
+class EnemyServiceImpl {
 
     @Autowired EnemyRepository enemyRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<Enemy> getAllEnemies() {
-        enemyRepository.findAll().asList()
+    Set<Enemy> getAllEnemies() {
+        enemyRepository.findAll().toSet()
     }
 
-    @Override
     Enemy getEnemyById(Long id) {
         enemyRepository.findById(id).orElse(null)
     }
 
-    @Override
     Enemy createEnemy(Enemy enemy) {
         enemyRepository.save(enemy)
     }
 
-    @Override
     void deleteEnemy(Long id) {
         enemyRepository.deleteById(id)
     }
@@ -52,8 +48,8 @@ class EnemyServiceImpl implements EnemyService {
         enemyDto
     }
 
-    List<EnemyDto> buildDtoListFrom(List<Enemy> enemys) {
-        enemys.stream().map({ enemy -> buildDtoFrom(enemy) }).collect(Collectors.toList())
+    Set<EnemyDto> buildDtoSetFrom(Set<Enemy> enemys) {
+        enemys.stream().map({ enemy -> buildDtoFrom(enemy) }).collect(Collectors.toSet())
     }
 
 }

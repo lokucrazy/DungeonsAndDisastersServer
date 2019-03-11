@@ -11,27 +11,23 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class CombatServiceImpl implements CombatService {
+class CombatServiceImpl {
 
     @Autowired CombatRepository combatRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<Combat> getAllCombats() {
-        combatRepository.findAll().asList()
+    Set<Combat> getAllCombats() {
+        combatRepository.findAll().toSet()
     }
 
-    @Override
     Combat getCombatById(Long id) {
         combatRepository.findById(id).orElse(null)
     }
 
-    @Override
     Combat createCombat(Combat combat) {
         combatRepository.save(combat)
     }
 
-    @Override
     void deleteCombat(Long id) {
         combatRepository.deleteById(id)
     }
@@ -47,8 +43,8 @@ class CombatServiceImpl implements CombatService {
 
         Long previousCombatId = combat.previousCombat ? combat.previousCombat.identifier : null
         Long sessionId = combat.session ? combat.session.identifier : null
-        List<Long> enemyIds = combat.enemies ?
-                combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toList()) :
+        HashSet<Long> enemyIds = combat.enemies ?
+                combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toSet()) as HashSet :
                 null
 
         combatDto.setPreviousCombatId(previousCombatId)
@@ -58,8 +54,8 @@ class CombatServiceImpl implements CombatService {
         combatDto
     }
 
-    List<CombatDto> buildDtoListFrom(List<Combat> combats) {
-        combats.stream().map({ combat -> buildDtoFrom(combat) }).collect(Collectors.toList())
+    Set<CombatDto> buildDtoSetFrom(Set<Combat> combats) {
+        combats.stream().map({ combat -> buildDtoFrom(combat) }).collect(Collectors.toSet())
     }
 
 }

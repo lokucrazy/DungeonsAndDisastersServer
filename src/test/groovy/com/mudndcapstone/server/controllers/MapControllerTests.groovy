@@ -33,8 +33,8 @@ class MapControllerTests {
     @Test
     void givenMapList_whenMapServiceReturnsList_thenMapControllerReturnsList() {
         // Given
-        List<Map> maps = [new Map()]
-        List<MapDto> mapDtos = mapService.buildDtoListFrom(maps)
+        Set<Map> maps = [new Map()]
+        Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
 
         // When
         Mockito.when(mapService.getAllMaps()).thenReturn(maps)

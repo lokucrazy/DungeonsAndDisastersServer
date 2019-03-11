@@ -26,7 +26,7 @@ class CombatDtoTests {
     void givenCombatDto_whenAddProperties_thenCombatDtoObjectHasProperties() {
         // Given
         CombatDto combatDto = new CombatDto()
-        List<Long> enemyIds = [500]
+        HashSet<Long> enemyIds = [500]
 
         // When
         combatDto.setPreviousCombatId(100)

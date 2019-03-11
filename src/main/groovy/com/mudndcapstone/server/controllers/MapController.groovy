@@ -25,9 +25,9 @@ class MapController {
     @Autowired MapServiceImpl mapService
 
     @GetMapping
-    ResponseEntity<List<MapDto>> getAllMaps() {
-        List<Map> maps = mapService.getAllMaps()
-        List<MapDto> mapDtos = mapService.buildDtoListFrom(maps)
+    ResponseEntity<Set<MapDto>> getAllMaps() {
+        Set<Map> maps = mapService.getAllMaps()
+        Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
         new ResponseEntity<>(mapDtos, HttpStatus.OK)
     }
 

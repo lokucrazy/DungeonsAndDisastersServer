@@ -28,9 +28,9 @@ class BeingController {
 
     /* Enemies */
     @GetMapping("/enemies")
-    ResponseEntity<List<EnemyDto>> getAllEnemies() {
-        List<Enemy> enemies  = enemyService.getAllEnemies()
-        List<EnemyDto> enemyDtos = enemyService.buildDtoListFrom(enemies)
+    ResponseEntity<Set<EnemyDto>> getAllEnemies() {
+        Set<Enemy> enemies  = enemyService.getAllEnemies()
+        Set<EnemyDto> enemyDtos = enemyService.buildDtoSetFrom(enemies)
         new ResponseEntity<>(enemyDtos, HttpStatus.OK)
     }
 
@@ -66,9 +66,9 @@ class BeingController {
 
     /* NPCs */
     @GetMapping("/npcs")
-    ResponseEntity<List<NPCDto>> getAllNPCs() {
-        List<NPC> npcs = npcService.getAllNPCs()
-        List<NPCDto> npcDtos = npcService.buildDtoListFrom(npcs)
+    ResponseEntity<Set<NPCDto>> getAllNPCs() {
+        Set<NPC> npcs = npcService.getAllNPCs()
+        Set<NPCDto> npcDtos = npcService.buildDtoSetFrom(npcs)
         new ResponseEntity<>(npcDtos, HttpStatus.OK)
     }
 

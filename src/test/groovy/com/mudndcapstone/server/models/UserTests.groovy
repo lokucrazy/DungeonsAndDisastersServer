@@ -29,10 +29,10 @@ class UserTests {
         String password = "password"
         Date birthdate = new Date()
         List<String> notes = [""]
-        List<Character> characters = [new Character()]
-        List<Session> sessions = [new Session()]
-        List<Session> dmSessions = [new Session()]
-        List<NPC> npcs = [new NPC()]
+        HashSet<Character> characters = [new Character()]
+        HashSet<Session> sessions = [new Session()]
+        HashSet<Session> dmSessions = [new Session()]
+        HashSet<NPC> npcs = [new NPC()]
 
         // When
         user.setUsername(username)
