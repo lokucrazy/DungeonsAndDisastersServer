@@ -43,8 +43,8 @@ class CombatServiceImpl {
 
         Long previousCombatId = combat.previousCombat ? combat.previousCombat.identifier : null
         Long sessionId = combat.session ? combat.session.identifier : null
-        HashSet<Long> enemyIds = combat.enemies ?
-                combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> enemyIds = combat.enemies ?
+                combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toSet()) :
                 null
 
         combatDto.setPreviousCombatId(previousCombatId)

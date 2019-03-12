@@ -37,9 +37,9 @@ class SessionDtoTests {
         List<String> nonCombatLog = ["nc test"]
         List<String> combatLog = ["c test"]
         Date dateEnded = new Date()
-        HashSet<Long> npcIds = [1100]
-        HashSet<Long> playerIds = [1300]
-        HashSet<Long> characterIds = [1500]
+        Set<Long> npcIds = [1100]
+        Set<Long> playerIds = [1300]
+        Set<Long> characterIds = [1500]
 
         // When
         sessionDto.setDmId(100)

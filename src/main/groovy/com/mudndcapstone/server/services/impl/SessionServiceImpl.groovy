@@ -55,14 +55,14 @@ class SessionServiceImpl {
         Long chatId = session.chatLog ? session.chatLog.identifier : null
         Long mapId = session.mapList ? session.mapList.identifier : null
         Long combatId = session.combatList ? session.combatList.identifier : null
-        HashSet<Long> npcIds = session.npcs ?
-                session.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> npcIds = session.npcs ?
+                session.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) :
                 null
-        HashSet<Long> playerIds = session.players ?
-                session.players.stream().map({ player -> player.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> playerIds = session.players ?
+                session.players.stream().map({ player -> player.identifier }).collect(Collectors.toSet()) :
                 null
-        HashSet<Long> characterIds = session.characters ?
-                session.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> characterIds = session.characters ?
+                session.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) :
                 null
 
         sessionDto.setDmId(dmId)

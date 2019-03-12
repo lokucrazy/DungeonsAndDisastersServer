@@ -42,8 +42,8 @@ class CharacterServiceImpl {
         CharacterDto characterDto = modelMapper.map(character, CharacterDto)
 
         Long userId = character.user ? character.user.id : null
-        HashSet<Long> sessionIds = character.sessions ?
-                character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> sessionIds = character.sessions ?
+                character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) :
                 null
 
         characterDto.setUserId(userId)

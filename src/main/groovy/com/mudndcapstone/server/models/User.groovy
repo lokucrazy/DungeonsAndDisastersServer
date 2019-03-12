@@ -11,14 +11,14 @@ class User extends Node {
     List<String> notes
 
     @Relationship(type = "CREATED_CHAR", direction = Relationship.OUTGOING)
-    HashSet<Character> characters
+    Set<Character> characters
 
     @Relationship(type = "HAS_PLAYER", direction = Relationship.INCOMING)
-    HashSet<Session> sessions
+    Set<Session> sessions
 
     @Relationship(type = "HAS_DM", direction = Relationship.INCOMING)
-    HashSet<Session> dmSessions
+    Set<Session> dmSessions
 
     @Relationship(type = "CONTROLS", direction = Relationship.OUTGOING)
-    HashSet<NPC> npcs
+    Set<NPC> npcs
 }

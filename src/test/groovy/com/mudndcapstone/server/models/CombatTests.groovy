@@ -28,7 +28,7 @@ class CombatTests {
         Combat combat = new Combat()
         Combat previousCombat = new Combat()
         Session session = new Session()
-        HashSet<Enemy> enemies = [new Enemy()]
+        Set<Enemy> enemies = [new Enemy()]
 
         // When
         combat.setPreviousCombat(previousCombat)

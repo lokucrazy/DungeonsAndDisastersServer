@@ -31,7 +31,7 @@ class CharacterTests {
         // Given
         Character character = new Character()
         User user = new User()
-        HashSet<Session> sessions = [new Session()]
+        Set<Session> sessions = [new Session()]
         BeingAbilities abilities = new BeingAbilities()
 
         // When

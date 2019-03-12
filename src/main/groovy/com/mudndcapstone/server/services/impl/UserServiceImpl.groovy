@@ -51,17 +51,17 @@ class UserServiceImpl {
     UserDto buildDtoFrom(User user) {
         UserDto userDto = modelMapper.map(user, UserDto)
 
-        HashSet<Long> characterIds = user.characters ?
-                user.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> characterIds = user.characters ?
+                user.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) :
                 null
-        HashSet<Long> sessionIds = user.sessions ?
-                user.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> sessionIds = user.sessions ?
+                user.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) :
                 null
-        HashSet<Long> dmSessionIds = user.dmSessions ?
-                user.dmSessions.stream().map({ dmSession -> dmSession.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> dmSessionIds = user.dmSessions ?
+                user.dmSessions.stream().map({ dmSession -> dmSession.identifier }).collect(Collectors.toSet()) :
                 null
-        HashSet<Long> npcIds = user.npcs ?
-                user.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) as HashSet :
+        Set<Long> npcIds = user.npcs ?
+                user.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) :
                 null
 
         userDto.setCharacterIds(characterIds)

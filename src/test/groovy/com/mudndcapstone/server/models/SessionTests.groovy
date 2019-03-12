@@ -34,9 +34,9 @@ class SessionTests {
         Map mapList = new Map()
         Combat combatList = new Combat()
         User dm = new User()
-        HashSet<NPC> npcs = [new NPC()]
-        HashSet<User> players = [new User()]
-        HashSet<Character> characters = [new Character()]
+        Set<NPC> npcs = [new NPC()]
+        Set<User> players = [new User()]
+        Set<Character> characters = [new Character()]
 
         // When
         session.setChatLog(chatLog)

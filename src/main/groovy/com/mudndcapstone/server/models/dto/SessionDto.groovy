@@ -14,7 +14,7 @@ class SessionDto extends EntityDto {
     @JsonProperty(value = "chat_id") Long chatId
     @JsonProperty(value = "map_id") Long mapId
     @JsonProperty(value = "combat_id") Long combatId
-    @JsonProperty(value = "npc_ids") HashSet<Long> npcIds
-    @JsonProperty(value = "player_ids") HashSet<Long> playerIds
-    @JsonProperty(value = "character_ids") HashSet<Long> characterIds
+    @JsonProperty(value = "npc_ids") Set<Long> npcIds
+    @JsonProperty(value = "player_ids") Set<Long> playerIds
+    @JsonProperty(value = "character_ids") Set<Long> characterIds
 }

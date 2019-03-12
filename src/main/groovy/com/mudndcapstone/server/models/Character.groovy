@@ -23,5 +23,5 @@ class Character extends Being {
     @CreatedBy User user
 
     @Relationship(type = "HAS_CHARACTER", direction = Relationship.INCOMING)
-    HashSet<Session> sessions
+    Set<Session> sessions
 }

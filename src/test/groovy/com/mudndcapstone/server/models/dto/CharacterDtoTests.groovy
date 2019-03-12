@@ -36,7 +36,7 @@ class CharacterDtoTests {
     void givenCharacterDto_whenAddProperties_thenCharacterDtoObjectsHasProperties() {
         // Given
         CharacterDto characterDto = new CharacterDto()
-        HashSet<Long> sessionIds = [500]
+        Set<Long> sessionIds = [500]
         BeingAbilities abilities = new BeingAbilities()
 
         // When
