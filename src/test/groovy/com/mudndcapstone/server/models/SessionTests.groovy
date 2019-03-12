@@ -35,8 +35,8 @@ class SessionTests {
         Combat combatList = new Combat()
         User dm = new User()
         Set<NPC> npcs = [new NPC()]
-        List<User> players = [new User()]
-        List<Character> characters = [new Character()]
+        Set<User> players = [new User()]
+        Set<Character> characters = [new Character()]
 
         // When
         session.setChatLog(chatLog)

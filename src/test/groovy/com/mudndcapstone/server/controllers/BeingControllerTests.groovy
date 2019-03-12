@@ -37,8 +37,8 @@ class BeingControllerTests {
     @Test
     void givenEnemyList_whenEnemyServiceReturnsList_thenEnemyControllerReturnsList() {
         // Given
-        List<Enemy> enemies = [new Enemy()]
-        List<EnemyDto> enemyDtos = enemyService.buildDtoListFrom(enemies)
+        Set<Enemy> enemies = [new Enemy()]
+        Set<EnemyDto> enemyDtos = enemyService.buildDtoSetFrom(enemies)
 
         // When
         Mockito.when(enemyService.getAllEnemies()).thenReturn(enemies)
@@ -53,8 +53,8 @@ class BeingControllerTests {
     @Test
     void givenNPCList_whenNPCServiceReturnsList_thenNPCControllerReturnsList() {
         // Given
-        List<NPC> npcs = [new NPC()]
-        List<NPCDto> npcDtos = npcService.buildDtoListFrom(npcs)
+        Set<NPC> npcs = [new NPC()]
+        Set<NPCDto> npcDtos = npcService.buildDtoSetFrom(npcs)
 
         // When
         Mockito.when(npcService.getAllNPCs()).thenReturn(npcs)

@@ -11,27 +11,23 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class MapServiceImpl implements MapService {
+class MapServiceImpl {
 
     @Autowired MapRepository mapRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<Map> getAllMaps() {
-        mapRepository.findAll().asList()
+    Set<Map> getAllMaps() {
+        mapRepository.findAll().toSet()
     }
 
-    @Override
     Map getMapById(Long id) {
         mapRepository.findById(id).orElse(null)
     }
 
-    @Override
     Map createMap(Map map) {
         mapRepository.save(map)
     }
 
-    @Override
     void deleteMap(Long id) {
         mapRepository.deleteById(id)
     }
@@ -52,8 +48,8 @@ class MapServiceImpl implements MapService {
         mapDto
     }
 
-    List<MapDto> buildDtoListFrom(List<Map> maps) {
-        maps.stream().map({ map -> buildDtoFrom(map) }).collect(Collectors.toList())
+    Set<MapDto> buildDtoSetFrom(Set<Map> maps) {
+        maps.stream().map({ map -> buildDtoFrom(map) }).collect(Collectors.toSet())
     }
 
 }

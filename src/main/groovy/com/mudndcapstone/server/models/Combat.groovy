@@ -11,5 +11,5 @@ class Combat extends Node {
     Session session
 
     @Relationship(type = "INVOLVES_ENEMY", direction = Relationship.OUTGOING)
-    List<Enemy> enemies
+    Set<Enemy> enemies
 }

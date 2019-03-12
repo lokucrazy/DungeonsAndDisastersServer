@@ -33,8 +33,8 @@ class CharacterControllerTests {
     @Test
     void givenCharacterList_whenCharacterServiceReturnsList_thenCharacterControllerReturnsList() {
         // Given
-        List<Character> characters = [new Character()]
-        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(characters)
+        Set<Character> characters = [new Character()]
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(characters)
 
         // When
         Mockito.when(characterService.getAllCharacters()).thenReturn(characters)

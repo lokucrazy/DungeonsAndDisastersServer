@@ -33,11 +33,11 @@ class ChatControllerTests {
     @Test
     void givenChatList_whenChatServiceReturnsList_thenChatControllerReturnsList() {
         // Given
-        List<Chat> chats = [new Chat()]
-        List<ChatDto> chatDtos = chatService.buildDtoListFrom(chats)
+        Set<Chat> chats = [new Chat()]
+        Set<ChatDto> chatDtos = chatService.buildDtoSetFrom(chats)
 
         // When
-        Mockito.when(chatService.getAllChats()).thenReturn(chats.asList())
+        Mockito.when(chatService.getAllChats()).thenReturn(chats)
 
         // Then
         ResponseEntity response = chatController.getAllChats()

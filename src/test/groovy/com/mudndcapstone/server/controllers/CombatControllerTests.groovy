@@ -33,8 +33,8 @@ class CombatControllerTests {
     @Test
     void givenCombatList_whenCombatServiceReturnsList_thenCombatControllerReturnsList() {
         // Given
-        List<Combat> combats = [new Combat()]
-        List<CombatDto> combatDtos = combatService.buildDtoListFrom(combats)
+        Set<Combat> combats = [new Combat()]
+        Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
 
         // When
         Mockito.when(combatService.getAllCombats()).thenReturn(combats)

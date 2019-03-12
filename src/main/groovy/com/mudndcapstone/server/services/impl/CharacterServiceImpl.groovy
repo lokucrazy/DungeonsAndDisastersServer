@@ -11,27 +11,23 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class CharacterServiceImpl implements CharacterService {
+class CharacterServiceImpl {
 
     @Autowired CharacterRepository characterRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<Character> getAllCharacters() {
-        characterRepository.findAll().asList()
+    Set<Character> getAllCharacters() {
+        characterRepository.findAll().toSet()
     }
 
-    @Override
     Character getCharacterById(Long id) {
         characterRepository.findById(id).orElse(null)
     }
 
-    @Override
     Character createCharacter(Character character) {
         characterRepository.save(character)
     }
 
-    @Override
     void deleteCharacter(Long id) {
         characterRepository.deleteById(id)
     }
@@ -46,8 +42,8 @@ class CharacterServiceImpl implements CharacterService {
         CharacterDto characterDto = modelMapper.map(character, CharacterDto)
 
         Long userId = character.user ? character.user.id : null
-        List<Long> sessionIds = character.sessions ?
-                character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toList()) :
+        Set<Long> sessionIds = character.sessions ?
+                character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) :
                 null
 
         characterDto.setUserId(userId)
@@ -56,8 +52,8 @@ class CharacterServiceImpl implements CharacterService {
         characterDto
     }
 
-    List<CharacterDto> buildDtoListFrom(List<Character> characters) {
-        characters.stream().map({ character -> buildDtoFrom(character) }).collect(Collectors.toList())
+    Set<CharacterDto> buildDtoSetFrom(Set<Character> characters) {
+        characters.stream().map({ character -> buildDtoFrom(character) }).collect(Collectors.toSet())
     }
 
 }

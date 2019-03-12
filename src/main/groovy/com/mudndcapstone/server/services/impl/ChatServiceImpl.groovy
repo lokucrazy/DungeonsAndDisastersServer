@@ -11,27 +11,23 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class ChatServiceImpl implements ChatService {
+class ChatServiceImpl {
 
     @Autowired ChatRepository chatRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<Chat> getAllChats() {
-        chatRepository.findAll().asList()
+    Set<Chat> getAllChats() {
+        chatRepository.findAll().toSet()
     }
 
-    @Override
     Chat getChatById(Long id) {
         chatRepository.findById(id).orElse(null)
     }
 
-    @Override
     Chat createChat(Chat chat) {
         chatRepository.save(chat)
     }
 
-    @Override
     void deleteChat(Long id) {
         chatRepository.deleteById(id)
     }
@@ -52,8 +48,8 @@ class ChatServiceImpl implements ChatService {
         chatDto
     }
 
-    List<ChatDto> buildDtoListFrom(List<Chat> chats) {
-        chats.stream().map({ chat -> buildDtoFrom(chat) }).collect(Collectors.toList())
+    Set<ChatDto> buildDtoSetFrom(Set<Chat> chats) {
+        chats.stream().map({ chat -> buildDtoFrom(chat) }).collect(Collectors.toSet())
     }
 
 }

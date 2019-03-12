@@ -25,9 +25,9 @@ class ChatController {
     @Autowired ChatServiceImpl chatService
 
     @GetMapping
-    ResponseEntity<List<ChatDto>> getAllChats() {
-        List<Chat> chats = chatService.getAllChats()
-        List<ChatDto> chatDtos = chatService.buildDtoListFrom(chats)
+    ResponseEntity<Set<ChatDto>> getAllChats() {
+        Set<Chat> chats = chatService.getAllChats()
+        Set<ChatDto> chatDtos = chatService.buildDtoSetFrom(chats)
         new ResponseEntity<>(chatDtos, HttpStatus.OK)
     }
 

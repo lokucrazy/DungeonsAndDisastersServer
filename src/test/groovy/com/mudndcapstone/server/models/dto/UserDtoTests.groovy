@@ -33,10 +33,10 @@ class UserDtoTests {
         UserDto userDto = new UserDto()
         Date birthdate = new Date()
         List<String> notes = ["n test"]
-        List<Long> characterIds = [100]
-        List<Long> sessionIds = [300]
-        List<Long> dmSessionIds = [500]
-        List<Long> npcIds = [700]
+        HashSet<Long> characterIds = [100]
+        Set<Long> sessionIds = [300]
+        Set<Long> dmSessionIds = [500]
+        Set<Long> npcIds = [700]
 
         // When
         userDto.setUsername("test")

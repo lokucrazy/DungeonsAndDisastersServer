@@ -11,22 +11,19 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class HistoryServiceImpl implements HistoryService {
+class HistoryServiceImpl {
 
     @Autowired HistoryRepository historyRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<History> getAllHistories() {
-        historyRepository.findAll().asList()
+    Set<History> getAllHistories() {
+        historyRepository.findAll().toSet()
     }
 
-    @Override
     History getHistoryById(Long id) {
         historyRepository.findById(id).orElse(null)
     }
 
-    @Override
     void deleteHistory(Long id) {
         historyRepository.deleteById(id)
     }
@@ -47,8 +44,8 @@ class HistoryServiceImpl implements HistoryService {
         historyDto
     }
 
-    List<HistoryDto> buildDtoListFrom(List<History> histories) {
-        histories.stream().map({ history -> buildDtoFrom(history) }).collect(Collectors.toList())
+    Set<HistoryDto> buildDtoSetFrom(Set<History> histories) {
+        histories.stream().map({ history -> buildDtoFrom(history) }).collect(Collectors.toSet())
     }
 
 }

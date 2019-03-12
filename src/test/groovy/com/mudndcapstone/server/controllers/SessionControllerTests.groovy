@@ -41,8 +41,8 @@ class SessionControllerTests {
     @Test
     void givenSessionList_whenSessionServiceReturnsList_thenSessionControllerReturnsList() {
         // Given
-        List<Session> sessions = [new Session()]
-        List<SessionDto> sessionDtos = sessionService.buildDtoListFrom(sessions)
+        Set<Session> sessions = [new Session()]
+        Set<SessionDto> sessionDtos = sessionService.buildDtoSetFrom(sessions)
 
         // When
         Mockito.when(sessionService.getAllSessions()).thenReturn(sessions)
@@ -58,13 +58,13 @@ class SessionControllerTests {
     void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
         // Given
         Session session = new Session()
-        List<Character> characters = [new Character(), new Character()]
-        List<CharacterDto> characterDtos
+        HashSet<Character> characters = [new Character(), new Character()]
+        Set<CharacterDto> characterDtos
 
         // When
         session.setIdentifier(1000)
         session.setCharacters(characters)
-        characterDtos = characterService.buildDtoListFrom(session.characters)
+        characterDtos = characterService.buildDtoSetFrom(session.characters)
         Mockito.when(sessionService.getSessionById(1000)).thenReturn(session)
 
         // Then
@@ -77,8 +77,8 @@ class SessionControllerTests {
     @Test
     void givenHistoryList_whenHistoryServiceReturnsList_thenHistoryControllerReturnsList() {
         // Given
-        List<History> histories = [new History()]
-        List<HistoryDto> historyDtos = historyService.buildDtoListFrom(histories)
+        Set<History> histories = [new History()]
+        Set<HistoryDto> historyDtos = historyService.buildDtoSetFrom(histories)
 
         // When
         Mockito.when(historyService.getAllHistories()).thenReturn(histories)

@@ -11,27 +11,23 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class NPCServiceImpl implements NPCService {
+class NPCServiceImpl {
 
     @Autowired NPCRepository npcRepository
     @Autowired ModelMapper modelMapper
 
-    @Override
-    List<NPC> getAllNPCs() {
-        npcRepository.findAll().asList()
+    Set<NPC> getAllNPCs() {
+        npcRepository.findAll().toSet()
     }
 
-    @Override
     NPC getNPCById(Long id) {
         npcRepository.findById(id).orElse(null)
     }
 
-    @Override
     NPC createNPC(NPC npc) {
         npcRepository.save(npc)
     }
 
-    @Override
     void deleteNPC(Long id) {
         npcRepository.deleteById(id)
     }
@@ -54,8 +50,8 @@ class NPCServiceImpl implements NPCService {
         npcDto
     }
 
-    List<NPCDto> buildDtoListFrom(List<NPC> npcs) {
-        npcs.stream().map({ npc -> buildDtoFrom(npc) }).collect(Collectors.toList())
+    Set<NPCDto> buildDtoSetFrom(Set<NPC> npcs) {
+        npcs.stream().map({ npc -> buildDtoFrom(npc) }).collect(Collectors.toSet())
     }
 
 }
