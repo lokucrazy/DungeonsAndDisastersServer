@@ -25,9 +25,6 @@ class CharacterServiceImplTests {
     @InjectMocks
     CharacterServiceImpl characterService
 
-    @Autowired
-    Session session
-
     @Before
     void setup() {
         MockitoAnnotations.initMocks(this)
