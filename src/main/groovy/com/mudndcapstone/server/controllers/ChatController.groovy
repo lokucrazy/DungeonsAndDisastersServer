@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.dto.ChatDto
-import com.mudndcapstone.server.services.impl.ChatServiceImpl
+import com.mudndcapstone.server.services.ChatService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ import javax.validation.Valid
 @RequestMapping("/chats")
 class ChatController {
 
-    @Autowired ChatServiceImpl chatService
+    @Autowired ChatService chatService
 
     @GetMapping
     ResponseEntity<Set<ChatDto>> getAllChats() {
@@ -42,7 +42,7 @@ class ChatController {
     }
 
     @GetMapping("/{chatId}")
-    ResponseEntity<ChatDto> getChatById(@PathVariable Long chatId) {
+    ResponseEntity<ChatDto> getChatById(@PathVariable String chatId) {
         Chat chat = chatService.getChatById(chatId)
         if (!chat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -51,12 +51,12 @@ class ChatController {
     }
 
     @PutMapping("/{chatId}")
-    ResponseEntity<ChatDto> updateChat(@PathVariable Long chatId, @Valid @RequestBody ChatDto chatDto) {
+    ResponseEntity<ChatDto> updateChat(@PathVariable String chatId, @Valid @RequestBody ChatDto chatDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{chatId}")
-    ResponseEntity deleteChat(@PathVariable Long chatId) {
+    ResponseEntity deleteChat(@PathVariable String chatId) {
         chatService.deleteChat(chatId)
         new ResponseEntity(HttpStatus.OK)
     }

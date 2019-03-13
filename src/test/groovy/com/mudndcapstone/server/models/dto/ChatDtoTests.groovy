@@ -25,16 +25,17 @@ class ChatDtoTests {
     void givenChatDto_whenAddProperties_thenCharacterObjectHasProperties() {
         // Given
         ChatDto chat = new ChatDto()
+        String testUuid = UUID.randomUUID().toString()
         List<String> log = [""]
 
         // When
-        chat.setSessionId(500)
+        chat.setSessionId(testUuid)
         chat.setLog(log)
         chat.setNote("test note")
 
         // Then
         assert !chat.identifier
-        assert chat.sessionId == 500
+        assert chat.sessionId == testUuid
         assert chat.log == log
         assert chat.note == "test note"
     }

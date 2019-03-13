@@ -6,9 +6,9 @@ import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import com.mudndcapstone.server.services.impl.HistoryServiceImpl
-import com.mudndcapstone.server.services.impl.SessionServiceImpl
+import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.HistoryService
+import com.mudndcapstone.server.services.SessionService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,9 +25,9 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class SessionControllerTests {
 
-    @Mock SessionServiceImpl sessionService
-    @Mock CharacterServiceImpl characterService
-    @Mock HistoryServiceImpl historyService
+    @Mock SessionService sessionService
+    @Mock CharacterService characterService
+    @Mock HistoryService historyService
 
     @InjectMocks
     SessionController sessionController
@@ -58,21 +58,22 @@ class SessionControllerTests {
     void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
         // Given
         Session session = new Session()
+        String testUuid = UUID.randomUUID().toString()
         HashSet<Character> characters = [new Character(), new Character()]
         Set<CharacterDto> characterDtos
         ResponseEntity response
 
         // When
-        session.setIdentifier(1000)
+        session.setIdentifier(testUuid)
         session.setCharacters(characters)
         characterDtos = characterService.buildDtoSetFrom(session.characters)
-        Mockito.when(sessionService.getSessionById(1000)).thenReturn(session)
-        response = sessionController.getAllSessionsCharacters(1000)
+        Mockito.when(sessionService.getSessionById(testUuid)).thenReturn(session)
+        response = sessionController.getAllSessionsCharacters(testUuid)
 
         // Then
         assert response.statusCode == HttpStatus.OK
         assert response.body == characterDtos
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(1000)
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(testUuid)
     }
 
     @Test

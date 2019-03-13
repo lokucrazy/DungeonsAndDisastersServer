@@ -23,13 +23,14 @@ class EnemyDtoTests {
     void givenEnemyDto_whenAddProperties_thenEnemyDtoObjectHasProperties() {
         // Given
         EnemyDto enemyDto = new EnemyDto()
+        String testUuid = UUID.randomUUID().toString()
 
         // When
-        enemyDto.setCombatId(500)
+        enemyDto.setCombatId(testUuid)
 
         // Then
         assert !enemyDto.identifier
-        assert enemyDto.combatId == 500
+        assert enemyDto.combatId == testUuid
     }
 
 }

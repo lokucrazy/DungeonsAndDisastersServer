@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.UserDto
-import com.mudndcapstone.server.services.impl.UserServiceImpl
+import com.mudndcapstone.server.services.UserService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class UserControllerTests {
 
-    @Mock UserServiceImpl userService
+    @Mock UserService userService
 
     @InjectMocks
     UserController userController
@@ -33,7 +33,7 @@ class UserControllerTests {
     void givenUser_whenUserServiceGetsUser_thenUserControllerReturnsUser() {
         // Given
         User user = new User()
-        Long userId = 500
+        String userId = UUID.randomUUID().toString()
         UserDto userDto
         ResponseEntity response
 

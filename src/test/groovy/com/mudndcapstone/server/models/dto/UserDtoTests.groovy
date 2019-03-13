@@ -32,10 +32,10 @@ class UserDtoTests {
         UserDto userDto = new UserDto()
         Date birthdate = new Date()
         List<String> notes = ["n test"]
-        HashSet<Long> characterIds = [100]
-        Set<Long> sessionIds = [300]
-        Set<Long> dmSessionIds = [500]
-        Set<Long> npcIds = [700]
+        Set<String> characterIds = [UUID.randomUUID().toString()]
+        Set<String> sessionIds = [UUID.randomUUID().toString()]
+        Set<String> dmSessionIds = [UUID.randomUUID().toString()]
+        Set<String> npcIds = [UUID.randomUUID().toString()]
 
         // When
         userDto.setUsername("test")

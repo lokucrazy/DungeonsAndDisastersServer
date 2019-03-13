@@ -4,8 +4,8 @@ import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.NPC
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.models.dto.NPCDto
-import com.mudndcapstone.server.services.impl.EnemyServiceImpl
-import com.mudndcapstone.server.services.impl.NPCServiceImpl
+import com.mudndcapstone.server.services.EnemyService
+import com.mudndcapstone.server.services.NPCService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -23,8 +23,8 @@ import javax.validation.Valid
 @RestController
 class BeingController {
 
-    @Autowired NPCServiceImpl npcService
-    @Autowired EnemyServiceImpl enemyService
+    @Autowired NPCService npcService
+    @Autowired EnemyService enemyService
 
     /* Enemies */
     @GetMapping("/enemies")
@@ -45,7 +45,7 @@ class BeingController {
     }
 
     @GetMapping("/enemies/{enemyId}")
-    ResponseEntity<EnemyDto> getEnemyById(@PathVariable Long enemyId) {
+    ResponseEntity<EnemyDto> getEnemyById(@PathVariable String enemyId) {
         Enemy enemy = enemyService.getEnemyById(enemyId)
         if (!enemy) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -54,12 +54,12 @@ class BeingController {
     }
 
     @PutMapping("/enemies/{enemyId}")
-    ResponseEntity<EnemyDto> updateEnemy(@PathVariable Long enemyId, @Valid @RequestBody EnemyDto enemyDto) {
+    ResponseEntity<EnemyDto> updateEnemy(@PathVariable String enemyId, @Valid @RequestBody EnemyDto enemyDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/enemies/{enemyId}")
-    ResponseEntity deleteEnemy(@PathVariable Long enemyId) {
+    ResponseEntity deleteEnemy(@PathVariable String enemyId) {
         enemyService.deleteEnemy(enemyId)
         new ResponseEntity(HttpStatus.OK)
     }
@@ -83,7 +83,7 @@ class BeingController {
     }
 
     @GetMapping("/npcs/{npcId}")
-    ResponseEntity<NPCDto> getNPCById(@PathVariable Long npcId) {
+    ResponseEntity<NPCDto> getNPCById(@PathVariable String npcId) {
         NPC npc = npcService.getNPCById(npcId)
         if (!npc) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -92,12 +92,12 @@ class BeingController {
     }
 
     @PutMapping("/npcs/{npcId}")
-    ResponseEntity<NPCDto> updateNPC(@PathVariable Long npcId, @Valid @RequestBody NPCDto npcDto) {
+    ResponseEntity<NPCDto> updateNPC(@PathVariable String npcId, @Valid @RequestBody NPCDto npcDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/npcs/{npcId}")
-    ResponseEntity deleteNPC(@PathVariable Long npcId) {
+    ResponseEntity deleteNPC(@PathVariable String npcId) {
         npcService.deleteNPC(npcId)
         new ResponseEntity(HttpStatus.OK)
     }

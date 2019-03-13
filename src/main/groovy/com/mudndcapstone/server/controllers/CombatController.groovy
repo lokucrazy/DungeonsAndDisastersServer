@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.dto.CombatDto
-import com.mudndcapstone.server.services.impl.CombatServiceImpl
+import com.mudndcapstone.server.services.CombatService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ import javax.validation.Valid
 @RequestMapping("/combats")
 class CombatController {
 
-    @Autowired CombatServiceImpl combatService
+    @Autowired CombatService combatService
 
     @GetMapping
     ResponseEntity<Set<CombatDto>> getAllCombats() {
@@ -42,7 +42,7 @@ class CombatController {
     }
 
     @GetMapping("/{combatId}")
-    ResponseEntity<CombatDto> getCombatById(@PathVariable Long combatId) {
+    ResponseEntity<CombatDto> getCombatById(@PathVariable String combatId) {
         Combat combat = combatService.getCombatById(combatId)
         if (!combat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -51,12 +51,12 @@ class CombatController {
     }
 
     @PutMapping("/{combatId}")
-    ResponseEntity<CombatDto> updateCombat(@PathVariable Long combatId, @Valid @RequestBody CombatDto combatDto) {
+    ResponseEntity<CombatDto> updateCombat(@PathVariable String combatId, @Valid @RequestBody CombatDto combatDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{combatId}")
-    ResponseEntity deleteCombat(@PathVariable Long combatId) {
+    ResponseEntity deleteCombat(@PathVariable String combatId) {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.OK)
     }

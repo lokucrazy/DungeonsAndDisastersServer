@@ -26,6 +26,7 @@ class HistoryDtoTests {
     void givenHistoryDto_whenAddProperties_thenHistoryDtoObjectHasProperties() {
         // Given
         HistoryDto historyDto = new HistoryDto()
+        String testUuid = UUID.randomUUID().toString()
         List<String> nonCombatLog = ["nc test"]
         List<String> combatLog = ["c test"]
         Date dateEnded = new Date()
@@ -34,14 +35,14 @@ class HistoryDtoTests {
         historyDto.setNonCombatLog(nonCombatLog)
         historyDto.setCombatLog(combatLog)
         historyDto.setDateEnded(dateEnded)
-        historyDto.setHistoryId(500)
+        historyDto.setHistoryId(testUuid)
 
         // Then
         assert !historyDto.identifier
         assert historyDto.nonCombatLog == nonCombatLog
         assert historyDto.combatLog == combatLog
         assert historyDto.dateEnded == dateEnded
-        assert historyDto.historyId == 500
+        assert historyDto.historyId == testUuid
     }
 
 }

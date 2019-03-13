@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.CharacterDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
+import com.mudndcapstone.server.services.CharacterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,7 +21,7 @@ import javax.validation.Valid
 @RequestMapping("/characters")
 class CharacterController {
 
-    @Autowired CharacterServiceImpl characterService
+    @Autowired CharacterService characterService
 
     @GetMapping
     ResponseEntity<Set<CharacterDto>> getAllCharacters() {
@@ -41,7 +41,7 @@ class CharacterController {
     }
 
     @GetMapping("/{characterId}")
-    ResponseEntity<CharacterDto> getCharacterById(@PathVariable Long characterId) {
+    ResponseEntity<CharacterDto> getCharacterById(@PathVariable String characterId) {
         Character character = characterService.getCharacterById(characterId)
         if (!character) return new ResponseEntity(HttpStatus.BAD_REQUEST)
 
@@ -50,12 +50,12 @@ class CharacterController {
     }
 
     @PutMapping("/{characterId}")
-    ResponseEntity<CharacterDto> updateCharacter(@PathVariable Long characterId, @Valid @RequestBody CharacterDto characterDto) {
+    ResponseEntity<CharacterDto> updateCharacter(@PathVariable String characterId, @Valid @RequestBody CharacterDto characterDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{characterId}")
-    ResponseEntity deleteCharacter(@PathVariable Long characterId) {
+    ResponseEntity deleteCharacter(@PathVariable String characterId) {
         characterService.deleteCharacter(characterId)
         new ResponseEntity(HttpStatus.OK)
     }

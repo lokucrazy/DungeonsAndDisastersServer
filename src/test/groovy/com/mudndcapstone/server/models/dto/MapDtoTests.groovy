@@ -24,15 +24,16 @@ class MapDtoTests {
     void givenMapDto_whenAddProperties_thenMapDtoObjectHasProperties() {
         // Given
         MapDto mapDto = new MapDto()
+        String testUuid = UUID.randomUUID().toString()
         List<String> images = ["test image 1"]
 
         // When
-        mapDto.setSessionId(500)
+        mapDto.setSessionId(testUuid)
         mapDto.setImages(images)
 
         // Then
         assert !mapDto.identifier
-        assert mapDto.sessionId == 500
+        assert mapDto.sessionId == testUuid
         assert mapDto.images == images
     }
 

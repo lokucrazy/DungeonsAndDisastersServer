@@ -3,8 +3,8 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.UserDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import com.mudndcapstone.server.services.impl.UserServiceImpl
+import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,8 +15,8 @@ import javax.validation.Valid
 @RestController
 class UserController {
 
-    @Autowired UserServiceImpl userService
-    @Autowired CharacterServiceImpl characterService
+    @Autowired UserService userService
+    @Autowired CharacterService characterService
 
     /* Users */
     @GetMapping("/users")
@@ -37,7 +37,7 @@ class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+    ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
         User user = userService.getUserById(userId)
         if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 
@@ -46,18 +46,18 @@ class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+    ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/users/{userId}")
-    ResponseEntity deleteUser(@PathVariable Long userId) {
+    ResponseEntity deleteUser(@PathVariable String userId) {
         userService.deleteUserById(userId)
         new ResponseEntity(HttpStatus.OK)
     }
 
     @GetMapping("/users/{userId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable Long userId) {
+    ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
         User user = userService.getUserById(userId)
         if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)

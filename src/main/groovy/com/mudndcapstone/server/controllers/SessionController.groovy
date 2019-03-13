@@ -5,9 +5,9 @@ import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import com.mudndcapstone.server.services.impl.HistoryServiceImpl
-import com.mudndcapstone.server.services.impl.SessionServiceImpl
+import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.HistoryService
+import com.mudndcapstone.server.services.SessionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,9 +18,9 @@ import javax.validation.Valid
 @RestController
 class SessionController {
 
-    @Autowired SessionServiceImpl sessionService
-    @Autowired CharacterServiceImpl characterService
-    @Autowired HistoryServiceImpl historyService
+    @Autowired SessionService sessionService
+    @Autowired CharacterService characterService
+    @Autowired HistoryService historyService
 
     /* Sessions */
     @GetMapping("/sessions")
@@ -41,7 +41,7 @@ class SessionController {
     }
 
     @GetMapping("/sessions/{sessionId}")
-    ResponseEntity<SessionDto> getSessionById(@PathVariable Long sessionId) {
+    ResponseEntity<SessionDto> getSessionById(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 
@@ -50,18 +50,18 @@ class SessionController {
     }
   
     @PutMapping("/sessions/{sessionId}")
-    ResponseEntity<SessionDto> updateSession(@PathVariable Long sessionId, @Valid @RequestBody SessionDto sessionDto) {
+    ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/sessions/{sessionId}")
-    ResponseEntity deleteSession(@PathVariable Long sessionId) {
+    ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.OK)
     }
 
     @GetMapping("/sessions/{sessionId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable Long sessionId) {
+    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)

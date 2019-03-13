@@ -4,8 +4,8 @@ import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.NPC
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.models.dto.NPCDto
-import com.mudndcapstone.server.services.impl.EnemyServiceImpl
-import com.mudndcapstone.server.services.impl.NPCServiceImpl
+import com.mudndcapstone.server.services.EnemyService
+import com.mudndcapstone.server.services.NPCService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,8 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class BeingControllerTests {
 
-    @Mock NPCServiceImpl npcService
-    @Mock EnemyServiceImpl enemyService
+    @Mock NPCService npcService
+    @Mock EnemyService enemyService
 
     @InjectMocks
     BeingController beingController

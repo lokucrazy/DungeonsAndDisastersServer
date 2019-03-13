@@ -35,7 +35,8 @@ class CharacterDtoTests {
     void givenCharacterDto_whenAddProperties_thenCharacterDtoObjectsHasProperties() {
         // Given
         CharacterDto characterDto = new CharacterDto()
-        Set<Long> sessionIds = [500]
+        String testUuid = UUID.randomUUID().toString()
+        Set<String> sessionIds = ["test session"]
         BeingAbilities abilities = new BeingAbilities()
 
         // When
@@ -48,7 +49,7 @@ class CharacterDtoTests {
         characterDto.setAlignment(CharacterAlignment.NEUTRAL)
         abilities.setCharisma(100)
         characterDto.setAbilities(abilities)
-        characterDto.setUserId(500)
+        characterDto.setUserId(testUuid)
         characterDto.setSessionIds(sessionIds)
 
         // Then
@@ -62,7 +63,7 @@ class CharacterDtoTests {
         assert characterDto.alignment == CharacterAlignment.NEUTRAL
         assert characterDto.abilities == abilities
         assert characterDto.abilities.charisma == 100
-        assert characterDto.userId == 500
+        assert characterDto.userId == testUuid
         assert characterDto.sessionIds == sessionIds
     }
 

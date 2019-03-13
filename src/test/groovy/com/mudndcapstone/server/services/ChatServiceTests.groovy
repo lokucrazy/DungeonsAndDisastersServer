@@ -1,4 +1,4 @@
-package com.mudndcapstone.server.services.impl
+package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.repositories.ChatRepository
@@ -14,12 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner)
 @DataNeo4jTest
-class ChatServiceImplTests {
+class ChatServiceTests {
 
     @Mock ChatRepository chatRepository
 
     @InjectMocks
-    ChatServiceImpl chatService
+    ChatService chatService
 
     @Before
     void setup() {

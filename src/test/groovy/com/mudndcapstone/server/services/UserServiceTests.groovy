@@ -1,8 +1,7 @@
-package com.mudndcapstone.server.services.impl
+package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.repositories.UserRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,12 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner)
 @DataNeo4jTest
-class UserServiceImplTests {
+class UserServiceTests {
 
     @Mock UserRepository userRepository
 
     @InjectMocks
-    UserServiceImpl userService
+    UserService userService
 
     @Before
     void setup() {

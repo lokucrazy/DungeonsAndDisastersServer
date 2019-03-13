@@ -1,4 +1,4 @@
-package com.mudndcapstone.server.services.impl
+package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.repositories.SessionRepository
@@ -14,12 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner)
 @DataNeo4jTest
-class SessionServiceImplTests {
+class SessionServiceTests {
 
     @Mock SessionRepository sessionRepository
 
     @InjectMocks
-    SessionServiceImpl sessionService
+    SessionService sessionService
 
     @Before
     void setup() {

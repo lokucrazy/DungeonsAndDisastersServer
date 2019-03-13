@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.dto.MapDto
-import com.mudndcapstone.server.services.impl.MapServiceImpl
+import com.mudndcapstone.server.services.MapService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class MapControllerTests {
 
-    @Mock MapServiceImpl mapService
+    @Mock MapService mapService
 
     @InjectMocks
     MapController mapController
