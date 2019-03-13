@@ -3,7 +3,6 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.services.impl.CombatServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,14 +34,15 @@ class CombatControllerTests {
         // Given
         Set<Combat> combats = [new Combat()]
         Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
+        ResponseEntity response
 
         // When
         Mockito.when(combatService.getAllCombats()).thenReturn(combats)
+        response = combatController.getAllCombats()
 
         // Then
-        ResponseEntity response = combatController.getAllCombats()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, combatDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == combatDtos
         Mockito.verify(combatService, Mockito.atLeastOnce()).getAllCombats()
     }
 

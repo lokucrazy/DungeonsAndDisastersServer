@@ -2,7 +2,6 @@ package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.repositories.CombatRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,13 +30,15 @@ class CombatServiceImplTests {
     void givenCombat_whenCombatRepositorySavesCombat_thenCombatServiceReturnsCombat() {
         // Given
         Combat combat = new Combat()
+        Combat found
 
         // When
         combatRepository.save(combat)
         Mockito.when(combatRepository.findById(combat.identifier)).thenReturn(Optional.of(combat))
+        found = combatService.getCombatById(combat.identifier)
 
         // Then
-        Assert.assertEquals(combatService.getCombatById(combat.identifier), combat)
+        assert combat == found
     }
 
 }

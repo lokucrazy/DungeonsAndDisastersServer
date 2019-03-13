@@ -2,7 +2,6 @@ package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.repositories.ChatRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,13 +30,15 @@ class ChatServiceImplTests {
     void givenChat_whenChatRepositorySavesChat_thenChatServiceReturnsChat() {
         // Given
         Chat chat = new Chat()
+        Chat found
 
         // When
         chatRepository.save(chat)
         Mockito.when(chatRepository.findById(chat.identifier)).thenReturn(Optional.of(chat))
+        found = chatService.getChatById(chat.identifier)
 
         // Then
-        Assert.assertEquals(chatService.getChatById(chat.identifier), chat)
+        assert chat == found
     }
 
 }

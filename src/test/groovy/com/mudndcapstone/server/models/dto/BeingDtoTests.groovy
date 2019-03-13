@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,8 +15,8 @@ class BeingDtoTests {
         BeingDto beingDto = new BeingDto()
 
         // Then
-        Assert.assertNull(beingDto.identifier)
-        Assert.assertNull(beingDto.name)
+        assert !beingDto.identifier
+        assert !beingDto.name
     }
 
     @Test
@@ -30,8 +29,8 @@ class BeingDtoTests {
         beingDto.setName(name)
 
         // Then
-        Assert.assertNull(beingDto.identifier)
-        Assert.assertEquals(beingDto.name, name)
+        assert !beingDto.identifier
+        assert beingDto.name == name
     }
 
 }

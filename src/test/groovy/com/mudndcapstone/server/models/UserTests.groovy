@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,9 +15,9 @@ class UserTests {
         User user = new User()
 
         // Then
-        Assert.assertNull(user.id)
-        Assert.assertNull(user.characters)
-        Assert.assertNull(user.sessions)
+        assert !user.identifier
+        assert !user.characters
+        assert !user.sessions
     }
 
     @Test
@@ -45,15 +44,15 @@ class UserTests {
         user.setNpcs(npcs)
 
         // Then
-        Assert.assertNull(user.id)
-        Assert.assertEquals(user.username, username)
-        Assert.assertEquals(user.password, password)
-        Assert.assertEquals(user.birthdate, birthdate)
-        Assert.assertEquals(user.notes, notes)
-        Assert.assertEquals(user.characters, characters)
-        Assert.assertEquals(user.sessions, sessions)
-        Assert.assertEquals(user.dmSessions, dmSessions)
-        Assert.assertEquals(user.npcs, npcs)
+        assert !user.identifier
+        assert user.username == username
+        assert user.password == password
+        assert user.birthdate == birthdate
+        assert user.notes == notes
+        assert user.characters == characters
+        assert user.sessions == sessions
+        assert user.dmSessions == dmSessions
+        assert user.npcs == npcs
     }
 
 }

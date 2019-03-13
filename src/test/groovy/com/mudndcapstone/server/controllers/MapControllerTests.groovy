@@ -3,7 +3,6 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.dto.MapDto
 import com.mudndcapstone.server.services.impl.MapServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,14 +34,15 @@ class MapControllerTests {
         // Given
         Set<Map> maps = [new Map()]
         Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
+        ResponseEntity response
 
         // When
         Mockito.when(mapService.getAllMaps()).thenReturn(maps)
+        response = mapController.getAllMaps()
 
         // Then
-        ResponseEntity response = mapController.getAllMaps()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, mapDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == mapDtos
         Mockito.verify(mapService, Mockito.atLeastOnce()).getAllMaps()
     }
 

@@ -3,7 +3,6 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.impl.ChatServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,14 +34,15 @@ class ChatControllerTests {
         // Given
         Set<Chat> chats = [new Chat()]
         Set<ChatDto> chatDtos = chatService.buildDtoSetFrom(chats)
+        ResponseEntity response
 
         // When
         Mockito.when(chatService.getAllChats()).thenReturn(chats)
+        response = chatController.getAllChats()
 
         // Then
-        ResponseEntity response = chatController.getAllChats()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, chatDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == chatDtos
         Mockito.verify(chatService, Mockito.atLeastOnce()).getAllChats()
     }
 

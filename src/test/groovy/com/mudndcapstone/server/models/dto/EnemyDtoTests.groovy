@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,8 +15,8 @@ class EnemyDtoTests {
         EnemyDto enemyDto = new EnemyDto()
 
         // Then
-        Assert.assertNull(enemyDto.identifier)
-        Assert.assertNull(enemyDto.combatId)
+        assert !enemyDto.identifier
+        assert !enemyDto.combatId
     }
 
     @Test
@@ -29,8 +28,8 @@ class EnemyDtoTests {
         enemyDto.setCombatId(500)
 
         // Then
-        Assert.assertNull(enemyDto.identifier)
-        Assert.assertEquals(enemyDto.combatId, 500)
+        assert !enemyDto.identifier
+        assert enemyDto.combatId == 500
     }
 
 }

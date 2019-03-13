@@ -2,7 +2,6 @@ package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.repositories.MapRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,13 +30,15 @@ class MapServiceImplTests {
     void givenMap_whenMapRepositorySavesMap_thenMapServiceReturnsMap() {
         // Given
         Map map = new Map()
+        Map found
 
         // When
         mapRepository.save(map)
         Mockito.when(mapRepository.findById(map.identifier)).thenReturn(Optional.of(map))
+        found = mapService.getMapById(map.identifier)
 
         // Then
-        Assert.assertEquals(mapService.getMapById(map.identifier), map)
+        assert map == found
     }
 
 }

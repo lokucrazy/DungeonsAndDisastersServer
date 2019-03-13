@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,9 +15,9 @@ class ChatTests {
         Chat chat = new Chat()
 
         // Then
-        Assert.assertNull(chat.id)
-        Assert.assertNull(chat.log)
-        Assert.assertNull(chat.session)
+        assert !chat.identifier
+        assert !chat.log
+        assert !chat.session
     }
 
     @Test
@@ -34,10 +33,10 @@ class ChatTests {
         chat.setSession(session)
 
         // Then
-        Assert.assertNull(chat.id)
-        Assert.assertEquals(chat.log, log)
-        Assert.assertEquals(chat.note, "test note")
-        Assert.assertEquals(chat.session, session)
+        assert !chat.identifier
+        assert chat.log == log
+        assert chat.note == "test note"
+        assert chat.session == session
     }
 
 }

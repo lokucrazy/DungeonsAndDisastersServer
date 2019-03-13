@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.models
 
 import com.mudndcapstone.server.utils.BeingAbilities
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,9 +16,9 @@ class NPCTests {
         NPC npc = new NPC()
 
         // Then
-        Assert.assertNull(npc.id)
-        Assert.assertNull(npc.session)
-        Assert.assertNull(npc.dm)
+        assert !npc.identifier
+        assert !npc.session
+        assert !npc.dm
     }
 
     @Test
@@ -42,13 +41,13 @@ class NPCTests {
         npc.setDm(dm)
 
         // Then
-        Assert.assertNull(npc.id)
-        Assert.assertEquals(npc.health, health)
-        Assert.assertEquals(npc.isAlive, isAlive)
-        Assert.assertEquals(npc.initialLocation, initialLocation)
-        Assert.assertEquals(npc.abilities, abilities)
-        Assert.assertEquals(npc.session, session)
-        Assert.assertEquals(npc.dm, dm)
+        assert !npc.identifier
+        assert npc.health == health
+        assert npc.isAlive == isAlive
+        assert npc.initialLocation == initialLocation
+        assert npc.abilities == abilities
+        assert npc.session == session
+        assert npc.dm == dm
     }
 
 }
