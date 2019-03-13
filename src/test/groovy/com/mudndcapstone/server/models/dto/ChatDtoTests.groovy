@@ -1,7 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,10 +15,10 @@ class ChatDtoTests {
         ChatDto chat = new ChatDto()
 
         // Then
-        Assert.assertNull(chat.identifier)
-        Assert.assertNull(chat.sessionId)
-        Assert.assertNull(chat.log)
-        Assert.assertNull(chat.note)
+        assert !chat.identifier
+        assert !chat.sessionId
+        assert !chat.log
+        assert !chat.note
     }
 
     @Test
@@ -36,10 +34,10 @@ class ChatDtoTests {
         chat.setNote("test note")
 
         // Then
-        Assert.assertNull(chat.identifier)
-        Assert.assertEquals(chat.sessionId, testUuid)
-        Assert.assertEquals(chat.log, log)
-        Assert.assertEquals(chat.note, "test note")
+        assert !chat.identifier
+        assert chat.sessionId == testUuid
+        assert chat.log == log
+        assert chat.note == "test note"
     }
 
 }

@@ -1,8 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
 import com.mudndcapstone.server.utils.BeingAbilities
-
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,13 +16,13 @@ class NPCDtoTests {
         NPCDto npcDto = new NPCDto()
 
         // Then
-        Assert.assertNull(npcDto.identifier)
-        Assert.assertEquals(npcDto.health, 0)
-        Assert.assertFalse(npcDto.isAlive)
-        Assert.assertNull(npcDto.initialLocation)
-        Assert.assertNull(npcDto.abilities)
-        Assert.assertNull(npcDto.sessionId)
-        Assert.assertNull(npcDto.dmId)
+        assert !npcDto.identifier
+        assert npcDto.health == 0
+        assert !npcDto.isAlive
+        assert !npcDto.initialLocation
+        assert !npcDto.abilities
+        assert !npcDto.sessionId
+        assert !npcDto.dmId
     }
 
     @Test
@@ -44,13 +42,13 @@ class NPCDtoTests {
         npcDto.setDmId(testUuid)
 
         // Then
-        Assert.assertNull(npcDto.identifier)
-        Assert.assertEquals(npcDto.health, 100)
-        Assert.assertEquals(npcDto.isAlive, true)
-        Assert.assertEquals(npcDto.initialLocation, initialLocation)
-        Assert.assertEquals(npcDto.abilities, abilities)
-        Assert.assertEquals(npcDto.sessionId, testUuid)
-        Assert.assertEquals(npcDto.dmId, testUuid)
+        assert !npcDto.identifier
+        assert npcDto.health == 100
+        assert npcDto.isAlive
+        assert npcDto.initialLocation == initialLocation
+        assert npcDto.abilities == abilities
+        assert npcDto.sessionId == testUuid
+        assert npcDto.dmId == testUuid
     }
 
 }

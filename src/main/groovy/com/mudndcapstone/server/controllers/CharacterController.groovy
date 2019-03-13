@@ -24,9 +24,9 @@ class CharacterController {
     @Autowired CharacterServiceImpl characterService
 
     @GetMapping
-    ResponseEntity<List<CharacterDto>> getAllCharacters() {
-        List<Character> characters = characterService.getAllCharacters()
-        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(characters)
+    ResponseEntity<Set<CharacterDto>> getAllCharacters() {
+        Set<Character> characters = characterService.getAllCharacters()
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 

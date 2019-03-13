@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,7 +15,7 @@ class EntityDtoTests {
         EntityDto entityDto = new EntityDto()
 
         // Then
-        Assert.assertNull(entityDto.identifier)
+        assert !entityDto.identifier
     }
 
 }

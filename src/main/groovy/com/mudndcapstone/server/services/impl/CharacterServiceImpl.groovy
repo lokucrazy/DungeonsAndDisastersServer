@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
-class CharacterServiceImpl{
+class CharacterServiceImpl {
 
     @Autowired CharacterRepository characterRepository
     @Autowired ModelMapper modelMapper
 
-    List<Character> getAllCharacters() {
-        characterRepository.findAll().asList()
+    Set<Character> getAllCharacters() {
+        characterRepository.findAll().toSet()
     }
 
     Character getCharacterById(String id) {
@@ -40,8 +40,8 @@ class CharacterServiceImpl{
         CharacterDto characterDto = modelMapper.map(character, CharacterDto)
 
         String userId = character.user ? character.user.identifier : null
-        List<String> sessionIds = character.sessions ?
-                character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toList()) :
+        Set<String> sessionIds = character.sessions ?
+                character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) :
                 null
 
 
@@ -51,8 +51,8 @@ class CharacterServiceImpl{
         characterDto
     }
 
-    List<CharacterDto> buildDtoListFrom(List<Character> characters) {
-        characters.stream().map({ character -> buildDtoFrom(character) }).collect(Collectors.toList())
+    Set<CharacterDto> buildDtoSetFrom(Set<Character> characters) {
+        characters.stream().map({ character -> buildDtoFrom(character) }).collect(Collectors.toSet())
     }
 
 }

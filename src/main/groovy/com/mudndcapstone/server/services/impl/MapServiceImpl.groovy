@@ -15,8 +15,8 @@ class MapServiceImpl {
     @Autowired MapRepository mapRepository
     @Autowired ModelMapper modelMapper
 
-    List<Map> getAllMaps() {
-        mapRepository.findAll().asList()
+    Set<Map> getAllMaps() {
+        mapRepository.findAll().toSet()
     }
 
     Map getMapById(String id) {
@@ -45,8 +45,8 @@ class MapServiceImpl {
         mapDto
     }
 
-    List<MapDto> buildDtoListFrom(List<Map> maps) {
-        maps.stream().map({ map -> buildDtoFrom(map) }).collect(Collectors.toList())
+    Set<MapDto> buildDtoSetFrom(Set<Map> maps) {
+        maps.stream().map({ map -> buildDtoFrom(map) }).collect(Collectors.toSet())
     }
 
 }

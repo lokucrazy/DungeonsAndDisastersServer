@@ -1,7 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,9 +15,9 @@ class MapDtoTests {
         MapDto mapDto = new MapDto()
 
         // Then
-        Assert.assertNull(mapDto.identifier)
-        Assert.assertNull(mapDto.sessionId)
-        Assert.assertNull(mapDto.images)
+        assert !mapDto.identifier
+        assert !mapDto.sessionId
+        assert !mapDto.images
     }
 
     @Test
@@ -34,9 +32,9 @@ class MapDtoTests {
         mapDto.setImages(images)
 
         // Then
-        Assert.assertNull(mapDto.identifier)
-        Assert.assertEquals(mapDto.sessionId, testUuid)
-        Assert.assertEquals(mapDto.images, images)
+        assert !mapDto.identifier
+        assert mapDto.sessionId == testUuid
+        assert mapDto.images == images
     }
 
 }

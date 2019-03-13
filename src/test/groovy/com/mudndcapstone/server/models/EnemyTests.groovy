@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,8 +15,8 @@ class EnemyTests {
         Enemy enemy = new Enemy()
 
         // Then
-        Assert.assertNull(enemy.id)
-        Assert.assertNull(enemy.combat)
+        assert !enemy.identifier
+        assert !enemy.combat
     }
 
     @Test
@@ -30,8 +29,8 @@ class EnemyTests {
         enemy.setCombat(combat)
 
         // Then
-        Assert.assertNull(enemy.id)
-        Assert.assertEquals(enemy.combat, combat)
+        assert !enemy.identifier
+        assert enemy.combat == combat
     }
 
 }

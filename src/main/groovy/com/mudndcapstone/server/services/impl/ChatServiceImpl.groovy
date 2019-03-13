@@ -15,8 +15,8 @@ class ChatServiceImpl {
     @Autowired ChatRepository chatRepository
     @Autowired ModelMapper modelMapper
 
-    List<Chat> getAllChats() {
-        chatRepository.findAll().asList()
+    Set<Chat> getAllChats() {
+        chatRepository.findAll().toSet()
     }
 
     Chat getChatById(String id) {
@@ -45,8 +45,8 @@ class ChatServiceImpl {
         chatDto
     }
 
-    List<ChatDto> buildDtoListFrom(List<Chat> chats) {
-        chats.stream().map({ chat -> buildDtoFrom(chat) }).collect(Collectors.toList())
+    Set<ChatDto> buildDtoSetFrom(Set<Chat> chats) {
+        chats.stream().map({ chat -> buildDtoFrom(chat) }).collect(Collectors.toSet())
     }
 
 }

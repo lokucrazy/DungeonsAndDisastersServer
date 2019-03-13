@@ -3,7 +3,6 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,16 +32,17 @@ class CharacterControllerTests {
     @Test
     void givenCharacterList_whenCharacterServiceReturnsList_thenCharacterControllerReturnsList() {
         // Given
-        List<Character> characters = [new Character()]
-        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(characters)
+        Set<Character> characters = [new Character()]
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(characters)
+        ResponseEntity response
 
         // When
         Mockito.when(characterService.getAllCharacters()).thenReturn(characters)
+        response = characterController.getAllCharacters()
 
         // Then
-        ResponseEntity response = characterController.getAllCharacters()
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
-        Assert.assertEquals(response.body, characterDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == characterDtos
         Mockito.verify(characterService, Mockito.atLeastOnce()).getAllCharacters()
     }
 

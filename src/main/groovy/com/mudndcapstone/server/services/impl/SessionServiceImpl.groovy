@@ -17,8 +17,8 @@ class SessionServiceImpl {
     @Autowired UserServiceImpl userService
     @Autowired ModelMapper modelMapper
 
-    List<Session> getAllSessions() {
-        sessionRepository.findAll().asList()
+    Set<Session> getAllSessions() {
+        sessionRepository.findAll().toSet()
     }
 
     Session getSessionById(String id) {
@@ -52,14 +52,14 @@ class SessionServiceImpl {
         String chatId = session.chatLog ? session.chatLog.identifier : null
         String mapId = session.mapList ? session.mapList.identifier : null
         String combatId = session.combatList ? session.combatList.identifier : null
-        List<String> npcIds = session.npcs ?
-                session.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toList()) :
+        Set<String> npcIds = session.npcs ?
+                session.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) :
                 null
-        List<String> playerIds = session.players ?
-                session.players.stream().map({ player -> player.identifier }).collect(Collectors.toList()) :
+        Set<String> playerIds = session.players ?
+                session.players.stream().map({ player -> player.identifier }).collect(Collectors.toSet()) :
                 null
-        List<String> characterIds = session.characters ?
-                session.characters.stream().map({ character -> character.identifier }).collect(Collectors.toList()) :
+        Set<String> characterIds = session.characters ?
+                session.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) :
                 null
 
         sessionDto.setDmId(dmId)
@@ -74,8 +74,8 @@ class SessionServiceImpl {
         sessionDto
     }
 
-    List<SessionDto> buildDtoListFrom(List<Session> sessions) {
-        sessions.stream().map({ session -> buildDtoFrom(session) }).collect(Collectors.toList())
+    Set<SessionDto> buildDtoSetFrom(Set<Session> sessions) {
+        sessions.stream().map({ session -> buildDtoFrom(session) }).collect(Collectors.toSet())
     }
 
 }

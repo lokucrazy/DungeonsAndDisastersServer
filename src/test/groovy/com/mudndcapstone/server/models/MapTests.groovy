@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,9 +15,9 @@ class MapTests {
         Map map = new Map()
 
         // Then
-        Assert.assertNull(map.id)
-        Assert.assertNull(map.images)
-        Assert.assertNull(map.session)
+        assert !map.identifier
+        assert !map.images
+        assert !map.session
     }
 
     @Test
@@ -33,9 +32,9 @@ class MapTests {
         map.setSession(session)
 
         // Then
-        Assert.assertNull(map.id)
-        Assert.assertEquals(map.images, images)
-        Assert.assertEquals(map.session, session)
+        assert !map.identifier
+        assert map.images == images
+        assert map.session == session
     }
 
 }

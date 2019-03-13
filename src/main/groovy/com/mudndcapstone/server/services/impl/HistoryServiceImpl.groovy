@@ -15,8 +15,8 @@ class HistoryServiceImpl {
     @Autowired HistoryRepository historyRepository
     @Autowired ModelMapper modelMapper
 
-    List<History> getAllHistories() {
-        historyRepository.findAll().asList()
+    Set<History> getAllHistories() {
+        historyRepository.findAll().toSet()
     }
 
     History getHistoryById(String id) {
@@ -41,8 +41,8 @@ class HistoryServiceImpl {
         historyDto
     }
 
-    List<HistoryDto> buildDtoListFrom(List<History> histories) {
-        histories.stream().map({ history -> buildDtoFrom(history) }).collect(Collectors.toList())
+    Set<HistoryDto> buildDtoSetFrom(Set<History> histories) {
+        histories.stream().map({ history -> buildDtoFrom(history) }).collect(Collectors.toSet())
     }
 
 }

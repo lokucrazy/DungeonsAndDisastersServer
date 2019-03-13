@@ -24,9 +24,9 @@ class SessionController {
 
     /* Sessions */
     @GetMapping("/sessions")
-    ResponseEntity<List<SessionDto>> getAllSessions() {
-        List<Session> sessions = sessionService.getAllSessions()
-        List<SessionDto> sessionDtos = sessionService.buildDtoListFrom(sessions)
+    ResponseEntity<Set<SessionDto>> getAllSessions() {
+        Set<Session> sessions = sessionService.getAllSessions()
+        Set<SessionDto> sessionDtos = sessionService.buildDtoSetFrom(sessions)
         new ResponseEntity<>(sessionDtos, HttpStatus.OK)
     }
 
@@ -61,20 +61,20 @@ class SessionController {
     }
 
     @GetMapping("/sessions/{sessionId}/characters")
-    ResponseEntity<List<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
+    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
 
-        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(session.characters)
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(session.characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
     /* History */
     @GetMapping("/histories")
-    ResponseEntity<List<HistoryDto>> getAllHistories() {
-        List<History> histories = historyService.getAllHistories()
-        List<HistoryDto> historyDtos = historyService.buildDtoListFrom(histories)
+    ResponseEntity<Set<HistoryDto>> getAllHistories() {
+        Set<History> histories = historyService.getAllHistories()
+        Set<HistoryDto> historyDtos = historyService.buildDtoSetFrom(histories)
         new ResponseEntity<>(historyDtos, HttpStatus.OK)
     }
 

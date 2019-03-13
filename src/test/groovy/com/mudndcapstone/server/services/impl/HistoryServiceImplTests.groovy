@@ -2,7 +2,6 @@ package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.repositories.HistoryRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,13 +30,15 @@ class HistoryServiceImplTests {
     void givenHistory_whenHistoryRepositorySavesHistory_thenHistoryServiceReturnsHistory() {
         // Given
         History history = new History()
+        History found
 
         // When
         historyRepository.save(history)
         Mockito.when(historyRepository.findById(history.identifier)).thenReturn(Optional.of(history))
+        found = historyService.getHistoryById(history.identifier)
 
         // Then
-        Assert.assertEquals(historyService.getHistoryById(history.identifier), history)
+        assert history == found
     }
 
 }

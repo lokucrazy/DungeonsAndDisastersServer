@@ -20,9 +20,9 @@ class UserController {
 
     /* Users */
     @GetMapping("/users")
-    ResponseEntity<List<UserDto>> getAllUsers() {
-        List<User> users = userService.getAllUsers()
-        List<UserDto> userDtos = userService.buildDtoListFrom(users)
+    ResponseEntity<Set<UserDto>> getAllUsers() {
+        Set<User> users = userService.getAllUsers()
+        Set<UserDto> userDtos = userService.buildDtoSetFrom(users)
         new ResponseEntity<>(userDtos, HttpStatus.OK)
     }
 
@@ -57,20 +57,20 @@ class UserController {
     }
 
     @GetMapping("/users/{userId}/characters")
-    ResponseEntity<List<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
+    ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
         User user = userService.getUserById(userId)
         if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
 
-        List<CharacterDto> characterDtos = characterService.buildDtoListFrom(user.characters)
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(user.characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
     /* DMs */
     @GetMapping("/dms")
-    ResponseEntity<List<UserDto>> getAllDMs() {
-        List<User> dms = userService.getAllDMs()
-        List<UserDto> dmDtos = userService.buildDtoListFrom(dms)
+    ResponseEntity<Set<UserDto>> getAllDMs() {
+        Set<User> dms = userService.getAllDMs()
+        Set<UserDto> dmDtos = userService.buildDtoSetFrom(dms)
         new ResponseEntity<>(dmDtos, HttpStatus.OK)
     }
 

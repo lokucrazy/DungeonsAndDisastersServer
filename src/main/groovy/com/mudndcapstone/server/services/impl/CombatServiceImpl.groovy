@@ -15,8 +15,8 @@ class CombatServiceImpl {
     @Autowired CombatRepository combatRepository
     @Autowired ModelMapper modelMapper
 
-    List<Combat> getAllCombats() {
-        combatRepository.findAll().asList()
+    Set<Combat> getAllCombats() {
+        combatRepository.findAll().toSet()
     }
 
     Combat getCombatById(String id) {
@@ -41,8 +41,8 @@ class CombatServiceImpl {
 
         String previousCombatId = combat.previousCombat ? combat.previousCombat.identifier : null
         String sessionId = combat.session ? combat.session.identifier : null
-        List<String> enemyIds = combat.enemies ?
-                combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toList()) :
+        Set<String> enemyIds = combat.enemies ?
+                combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toSet()) :
                 null
 
         combatDto.setPreviousCombatId(previousCombatId)
@@ -52,8 +52,8 @@ class CombatServiceImpl {
         combatDto
     }
 
-    List<CombatDto> buildDtoListFrom(List<Combat> combats) {
-        combats.stream().map({ combat -> buildDtoFrom(combat) }).collect(Collectors.toList())
+    Set<CombatDto> buildDtoSetFrom(Set<Combat> combats) {
+        combats.stream().map({ combat -> buildDtoFrom(combat) }).collect(Collectors.toSet())
     }
 
 }

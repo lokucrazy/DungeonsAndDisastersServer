@@ -17,5 +17,5 @@ class CharacterDto extends BeingDto {
     int level
     int experience
     BeingAbilities abilities
-    @JsonProperty(value = "session_ids") List<String> sessionIds
+    @JsonProperty(value = "session_ids") Set<String> sessionIds
 }

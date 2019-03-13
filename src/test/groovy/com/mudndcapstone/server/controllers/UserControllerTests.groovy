@@ -3,7 +3,6 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.UserDto
 import com.mudndcapstone.server.services.impl.UserServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,16 +33,20 @@ class UserControllerTests {
     void givenUser_whenUserServiceGetsUser_thenUserControllerReturnsUser() {
         // Given
         User user = new User()
-        UserDto userDto = userService.buildDtoFrom(user)
+        String userId = UUID.randomUUID()
+        UserDto userDto
+        ResponseEntity response
 
         // When
-        Mockito.when(userService.getUserById()).thenReturn(user)
+        user.setIdentifier(userId)
+        userDto = userService.buildDtoFrom(user)
+        Mockito.when(userService.getUserById(userId)).thenReturn(user)
+        response = userController.getUserById(userId)
 
         // Then
-        ResponseEntity response = userController.getUserById()
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
-        Assert.assertEquals(response.body, userDto)
-        Mockito.verify(userService, Mockito.atLeastOnce()).getUserById()
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == userDto
+        Mockito.verify(userService, Mockito.atLeastOnce()).getUserById(userId)
     }
 
 }

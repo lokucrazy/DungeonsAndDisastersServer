@@ -15,8 +15,8 @@ class NPCServiceImpl {
     @Autowired NPCRepository npcRepository
     @Autowired ModelMapper modelMapper
 
-    List<NPC> getAllNPCs() {
-        npcRepository.findAll().asList()
+    Set<NPC> getAllNPCs() {
+        npcRepository.findAll().toSet()
     }
 
     NPC getNPCById(String id) {
@@ -47,8 +47,8 @@ class NPCServiceImpl {
         npcDto
     }
 
-    List<NPCDto> buildDtoListFrom(List<NPC> npcs) {
-        npcs.stream().map({ npc -> buildDtoFrom(npc) }).collect(Collectors.toList())
+    Set<NPCDto> buildDtoSetFrom(Set<NPC> npcs) {
+        npcs.stream().map({ npc -> buildDtoFrom(npc) }).collect(Collectors.toSet())
     }
 
 }

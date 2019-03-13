@@ -25,9 +25,9 @@ class CombatController {
     @Autowired CombatServiceImpl combatService
 
     @GetMapping
-    ResponseEntity<List<CombatDto>> getAllCombats() {
-        List<Combat> combats = combatService.getAllCombats()
-        List<CombatDto> combatDtos = combatService.buildDtoListFrom(combats)
+    ResponseEntity<Set<CombatDto>> getAllCombats() {
+        Set<Combat> combats = combatService.getAllCombats()
+        Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
         new ResponseEntity<>(combatDtos, HttpStatus.OK)
     }
 

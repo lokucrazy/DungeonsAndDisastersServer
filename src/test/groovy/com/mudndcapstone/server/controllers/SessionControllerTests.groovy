@@ -9,8 +9,6 @@ import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.impl.CharacterServiceImpl
 import com.mudndcapstone.server.services.impl.HistoryServiceImpl
 import com.mudndcapstone.server.services.impl.SessionServiceImpl
-
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,16 +40,17 @@ class SessionControllerTests {
     @Test
     void givenSessionList_whenSessionServiceReturnsList_thenSessionControllerReturnsList() {
         // Given
-        List<Session> sessions = [new Session()]
-        List<SessionDto> sessionDtos = sessionService.buildDtoListFrom(sessions)
+        Set<Session> sessions = [new Session()]
+        Set<SessionDto> sessionDtos = sessionService.buildDtoSetFrom(sessions)
+        ResponseEntity response
 
         // When
         Mockito.when(sessionService.getAllSessions()).thenReturn(sessions)
+        response = sessionController.getAllSessions()
 
         // Then
-        ResponseEntity response = sessionController.getAllSessions()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, sessionDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == sessionDtos
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getAllSessions()
     }
 
@@ -60,35 +59,37 @@ class SessionControllerTests {
         // Given
         String testUuid = UUID.randomUUID().toString()
         Session session = new Session()
-        List<Character> characters = [new Character(), new Character()]
-        List<CharacterDto> characterDtos
+        HashSet<Character> characters = [new Character(), new Character()]
+        Set<CharacterDto> characterDtos
+        ResponseEntity response
 
         // When
         session.setIdentifier(UUID.randomUUID().toString())
         session.setCharacters(characters)
-        characterDtos = characterService.buildDtoListFrom(session.characters)
+        characterDtos = characterService.buildDtoSetFrom(session.characters)
         Mockito.when(sessionService.getSessionById(testUuid)).thenReturn(session)
+        response = sessionController.getAllSessionsCharacters(testUuid)
 
         // Then
-        ResponseEntity response = sessionController.getAllSessionsCharacters(testUuid)
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, characterDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == characterDtos
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(testUuid)
     }
 
     @Test
     void givenHistoryList_whenHistoryServiceReturnsList_thenHistoryControllerReturnsList() {
         // Given
-        List<History> histories = [new History()]
-        List<HistoryDto> historyDtos = historyService.buildDtoListFrom(histories)
+        Set<History> histories = [new History()]
+        Set<HistoryDto> historyDtos = historyService.buildDtoSetFrom(histories)
+        ResponseEntity response
 
         // When
         Mockito.when(historyService.getAllHistories()).thenReturn(histories)
+        response = sessionController.getAllHistories()
 
         // Then
-        ResponseEntity response = sessionController.getAllHistories()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, historyDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == historyDtos
         Mockito.verify(historyService, Mockito.atLeastOnce()).getAllHistories()
     }
 

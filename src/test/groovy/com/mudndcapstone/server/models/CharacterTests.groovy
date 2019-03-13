@@ -4,7 +4,6 @@ import com.mudndcapstone.server.utils.BeingAbilities
 import com.mudndcapstone.server.utils.CharacterAlignment
 import com.mudndcapstone.server.utils.CharacterClass
 import com.mudndcapstone.server.utils.CharacterRace
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,10 +19,10 @@ class CharacterTests {
         Character character = new Character()
 
         // Then
-        Assert.assertNull(character.id)
-        Assert.assertNull(character.name)
-        Assert.assertNull(character.user)
-        Assert.assertEquals(character.level, 0)
+        assert !character.identifier
+        assert !character.name
+        assert !character.user
+        assert character.level == 0
     }
 
     @Test
@@ -31,7 +30,7 @@ class CharacterTests {
         // Given
         Character character = new Character()
         User user = new User()
-        List<Session> sessions = [new Session()]
+        Set<Session> sessions = [new Session()]
         BeingAbilities abilities = new BeingAbilities()
 
         // When
@@ -48,18 +47,18 @@ class CharacterTests {
         character.setSessions(sessions)
 
         // Then
-        Assert.assertNull(character.id)
-        Assert.assertEquals(character.name, "King Sir the IV")
-        Assert.assertEquals(character.characterClass, CharacterClass.MONK)
-        Assert.assertEquals(character.level, 1)
-        Assert.assertEquals(character.experience, 500)
-        Assert.assertEquals(character.background, "King of Kingland")
-        Assert.assertEquals(character.race, CharacterRace.DRAGONBORN)
-        Assert.assertEquals(character.alignment, CharacterAlignment.NEUTRAL)
-        Assert.assertEquals(character.abilities, abilities)
-        Assert.assertEquals(character.abilities.charisma, 100)
-        Assert.assertEquals(character.user, user)
-        Assert.assertEquals(character.sessions, sessions)
+        assert !character.identifier
+        assert character.name == "King Sir the IV"
+        assert character.characterClass == CharacterClass.MONK
+        assert character.level == 1
+        assert character.experience == 500
+        assert character.background == "King of Kingland"
+        assert character.race == CharacterRace.DRAGONBORN
+        assert character.alignment == CharacterAlignment.NEUTRAL
+        assert character.abilities == abilities
+        assert character.abilities.charisma == 100
+        assert character.user == user
+        assert character.sessions == sessions
     }
 
 }

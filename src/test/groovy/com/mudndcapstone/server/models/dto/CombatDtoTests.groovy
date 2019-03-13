@@ -1,7 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,10 +15,10 @@ class CombatDtoTests {
         CombatDto combatDto = new CombatDto()
 
         // Then
-        Assert.assertNull(combatDto.identifier)
-        Assert.assertNull(combatDto.previousCombatId)
-        Assert.assertNull(combatDto.sessionId)
-        Assert.assertNull(combatDto.enemyIds)
+        assert !combatDto.identifier
+        assert !combatDto.previousCombatId
+        assert !combatDto.sessionId
+        assert !combatDto.enemyIds
     }
 
     @Test
@@ -28,7 +26,7 @@ class CombatDtoTests {
         // Given
         String testUuid = UUID.randomUUID().toString()
         CombatDto combatDto = new CombatDto()
-        List<String> enemyIds = [testUuid]
+        Set<String> enemyIds = [testUuid]
 
         // When
         combatDto.setPreviousCombatId(testUuid)
@@ -36,10 +34,10 @@ class CombatDtoTests {
         combatDto.setEnemyIds(enemyIds)
 
         // Then
-        Assert.assertNull(combatDto.identifier)
-        Assert.assertEquals(combatDto.previousCombatId, testUuid)
-        Assert.assertEquals(combatDto.sessionId, testUuid)
-        Assert.assertEquals(combatDto.enemyIds, enemyIds)
+        assert !combatDto.identifier
+        assert combatDto.previousCombatId == testUuid
+        assert combatDto.sessionId == testUuid
+        assert combatDto.enemyIds == enemyIds
     }
 
 }

@@ -2,7 +2,6 @@ package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.repositories.SessionRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,13 +30,15 @@ class SessionServiceImplTests {
     void givenSession_whenSessionRepositorySavesSession_thenSessionServiceReturnsSession() {
         // Given
         Session session = new Session()
+        Session found
 
         // When
         sessionRepository.save(session)
         Mockito.when(sessionRepository.findById(session.identifier)).thenReturn(Optional.of(session))
+        found = sessionService.getSessionById(session.identifier)
 
         // Then
-        Assert.assertEquals(sessionService.getSessionById(session.identifier), session)
+        assert session == found
     }
 
 }

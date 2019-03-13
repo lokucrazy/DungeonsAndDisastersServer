@@ -2,7 +2,6 @@ package com.mudndcapstone.server.services.impl
 
 import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.repositories.EnemyRepository
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,13 +30,15 @@ class EnemyServiceImplTests {
     void givenEnemy_whenEnemyRepositorySavesEnemy_thenEnemyServiceReturnsEnemy() {
         // Given
         Enemy enemy = new Enemy()
+        Enemy found
 
         // When
         enemyRepository.save(enemy)
         Mockito.when(enemyRepository.findById(enemy.identifier)).thenReturn(Optional.of(enemy))
+        found = enemyService.getEnemyById(enemy.identifier)
 
         // Then
-        Assert.assertEquals(enemyService.getEnemyById(enemy.identifier), enemy)
+        assert enemy == found
     }
 
 }

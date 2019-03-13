@@ -15,8 +15,8 @@ class EnemyServiceImpl {
     @Autowired EnemyRepository enemyRepository
     @Autowired ModelMapper modelMapper
 
-    List<Enemy> getAllEnemies() {
-        enemyRepository.findAll().asList()
+    Set<Enemy> getAllEnemies() {
+        enemyRepository.findAll().toSet()
     }
 
     Enemy getEnemyById(String id) {
@@ -45,8 +45,8 @@ class EnemyServiceImpl {
         enemyDto
     }
 
-    List<EnemyDto> buildDtoListFrom(List<Enemy> enemys) {
-        enemys.stream().map({ enemy -> buildDtoFrom(enemy) }).collect(Collectors.toList())
+    Set<EnemyDto> buildDtoSetFrom(Set<Enemy> enemys) {
+        enemys.stream().map({ enemy -> buildDtoFrom(enemy) }).collect(Collectors.toSet())
     }
 
 }

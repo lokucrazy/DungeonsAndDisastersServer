@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.repositories
 
 import com.mudndcapstone.server.models.User
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,8 +24,8 @@ class UserRepositoryTests {
         found = userRepository.findById(user.identifier).orElse(null)
 
         // Then
-        Assert.assertNotNull(found)
-        Assert.assertEquals(found.identifier, user.identifier)
+        assert found
+        assert user == found
     }
 
 }

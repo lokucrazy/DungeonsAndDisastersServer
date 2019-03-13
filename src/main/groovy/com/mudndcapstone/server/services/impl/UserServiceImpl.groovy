@@ -16,8 +16,8 @@ class UserServiceImpl {
     @Autowired ModelMapper modelMapper
 
     /* Users */
-    List<User> getAllUsers() {
-        userRepository.findAll().asList()
+    Set<User> getAllUsers() {
+        userRepository.findAll().toSet()
     }
 
     User getUserById(String id) {
@@ -33,8 +33,8 @@ class UserServiceImpl {
     }
 
     /* DMs */
-    List<User> getAllDMs() {
-        userRepository.findAllDMs().asList()
+    Set<User> getAllDMs() {
+        userRepository.findAllDMs().toSet()
     }
 
     User getDMById(String id) {
@@ -49,17 +49,17 @@ class UserServiceImpl {
     UserDto buildDtoFrom(User user) {
         UserDto userDto = modelMapper.map(user, UserDto)
 
-        List<String> characterIds = user.characters ?
-                user.characters.stream().map({ character -> character.identifier }).collect(Collectors.toList()) :
+        Set<String> characterIds = user.characters ?
+                user.characters.stream().map({ character -> character.identifier }).collect(Collectors.toSet()) :
                 null
-        List<String> sessionIds = user.sessions ?
-                user.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toList()) :
+        Set<String> sessionIds = user.sessions ?
+                user.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) :
                 null
-        List<String> dmSessionIds = user.dmSessions ?
-                user.dmSessions.stream().map({ dmSession -> dmSession.identifier }).collect(Collectors.toList()) :
+        Set<String> dmSessionIds = user.dmSessions ?
+                user.dmSessions.stream().map({ dmSession -> dmSession.identifier }).collect(Collectors.toSet()) :
                 null
-        List<String> npcIds = user.npcs ?
-                user.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toList()) :
+        Set<String> npcIds = user.npcs ?
+                user.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) :
                 null
 
         userDto.setCharacterIds(characterIds)
@@ -70,8 +70,8 @@ class UserServiceImpl {
         userDto
     }
 
-    List<UserDto> buildDtoListFrom(List<User> users) {
-        users.stream().map({ user -> buildDtoFrom(user) }).collect(Collectors.toList())
+    Set<UserDto> buildDtoSetFrom(Set<User> users) {
+        users.stream().map({ user -> buildDtoFrom(user) }).collect(Collectors.toSet())
     }
 
 }

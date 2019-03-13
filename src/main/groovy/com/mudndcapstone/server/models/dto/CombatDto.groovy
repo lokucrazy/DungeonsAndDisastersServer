@@ -5,5 +5,5 @@ import com.fasterxml.jackson.annotation.JsonProperty
 class CombatDto extends EntityDto {
     @JsonProperty(value = "prev_session_id") String previousCombatId
     @JsonProperty(value = "session_id") String sessionId
-    @JsonProperty(value = "enemy_ids") List<String> enemyIds
+    @JsonProperty(value = "enemy_ids") Set<String> enemyIds
 }

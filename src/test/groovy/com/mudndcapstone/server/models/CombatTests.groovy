@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,10 +15,10 @@ class CombatTests {
         Combat combat = new Combat()
 
         // Then
-        Assert.assertNull(combat.id)
-        Assert.assertNull(combat.previousCombat)
-        Assert.assertNull(combat.session)
-        Assert.assertNull(combat.enemies)
+        assert !combat.identifier
+        assert !combat.previousCombat
+        assert !combat.session
+        assert !combat.enemies
     }
 
     @Test
@@ -28,7 +27,7 @@ class CombatTests {
         Combat combat = new Combat()
         Combat previousCombat = new Combat()
         Session session = new Session()
-        List<Enemy> enemies = [new Enemy()]
+        Set<Enemy> enemies = [new Enemy()]
 
         // When
         combat.setPreviousCombat(previousCombat)
@@ -36,10 +35,10 @@ class CombatTests {
         combat.setEnemies(enemies)
 
         // Then
-        Assert.assertNull(combat.id)
-        Assert.assertEquals(combat.previousCombat, previousCombat)
-        Assert.assertEquals(combat.session, session)
-        Assert.assertEquals(combat.enemies, enemies)
+        assert !combat.identifier
+        assert combat.previousCombat == previousCombat
+        assert combat.session == session
+        assert combat.enemies == enemies
     }
 
 }

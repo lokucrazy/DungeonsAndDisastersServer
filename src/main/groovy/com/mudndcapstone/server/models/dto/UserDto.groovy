@@ -9,8 +9,8 @@ class UserDto extends EntityDto {
     @NotNull String password
     Date birthdate
     List<String> notes
-    @JsonProperty(value = "character_ids") List<String> characterIds
-    @JsonProperty(value = "session_ids") List<String> sessionIds
-    @JsonProperty(value = "dm_session_ids") List<String> dmSessionIds
-    @JsonProperty(value = "npc_ids") List<String> npcIds
+    @JsonProperty(value = "character_ids") Set<String> characterIds
+    @JsonProperty(value = "session_ids") Set<String> sessionIds
+    @JsonProperty(value = "dm_session_ids") Set<String> dmSessionIds
+    @JsonProperty(value = "npc_ids") Set<String> npcIds
 }
