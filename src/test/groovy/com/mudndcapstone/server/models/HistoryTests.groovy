@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,10 +15,10 @@ class HistoryTests {
         History history = new History()
 
         // Then
-        Assert.assertNull(history.id)
-        Assert.assertNull(history.nonCombatLog)
-        Assert.assertNull(history.combatLog)
-        Assert.assertNull(history.history)
+        assert !history.identifier
+        assert !history.nonCombatLog
+        assert !history.combatLog
+        assert !history.history
     }
 
     @Test
@@ -38,11 +37,11 @@ class HistoryTests {
         history.setDateEnded(dateEnded)
 
         // Then
-        Assert.assertNull(history.id)
-        Assert.assertEquals(history.nonCombatLog, nonCombatLog)
-        Assert.assertEquals(history.combatLog, combatLog)
-        Assert.assertEquals(history.history, previousHistory)
-        Assert.assertEquals(history.dateEnded, dateEnded)
+        assert !history.identifier
+        assert history.nonCombatLog == nonCombatLog
+        assert history.combatLog == combatLog
+        assert history.history == previousHistory
+        assert history.dateEnded == dateEnded
     }
 
 }

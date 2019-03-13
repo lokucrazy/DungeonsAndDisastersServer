@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.repositories
 
 import com.mudndcapstone.server.models.Character
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,8 +24,8 @@ class CharacterRepositoryTests {
         found = characterRepository.findById(character.identifier).orElse(null)
 
         // Then
-        Assert.assertNotNull(found)
-        Assert.assertEquals(found.identifier, character.identifier)
+        assert found
+        assert character == found
     }
 
 }

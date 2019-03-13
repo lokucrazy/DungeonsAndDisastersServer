@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,18 +15,18 @@ class SessionDtoTests {
         SessionDto sessionDto = new SessionDto()
 
         // Then
-        Assert.assertNull(sessionDto.identifier)
-        Assert.assertNull(sessionDto.dmId)
-        Assert.assertNull(sessionDto.nonCombatLog)
-        Assert.assertNull(sessionDto.combatLog)
-        Assert.assertNull(sessionDto.dateEnded)
-        Assert.assertNull(sessionDto.historyId)
-        Assert.assertNull(sessionDto.chatId)
-        Assert.assertNull(sessionDto.mapId)
-        Assert.assertNull(sessionDto.combatId)
-        Assert.assertNull(sessionDto.npcIds)
-        Assert.assertNull(sessionDto.playerIds)
-        Assert.assertNull(sessionDto.characterIds)
+        assert !sessionDto.identifier
+        assert !sessionDto.dmId
+        assert !sessionDto.nonCombatLog
+        assert !sessionDto.combatLog
+        assert !sessionDto.dateEnded
+        assert !sessionDto.historyId
+        assert !sessionDto.chatId
+        assert !sessionDto.mapId
+        assert !sessionDto.combatId
+        assert !sessionDto.npcIds
+        assert !sessionDto.playerIds
+        assert !sessionDto.characterIds
     }
 
     @Test
@@ -55,18 +54,18 @@ class SessionDtoTests {
         sessionDto.setCharacterIds(characterIds)
 
         // Then
-        Assert.assertNull(sessionDto.identifier)
-        Assert.assertEquals(sessionDto.dmId, 100)
-        Assert.assertEquals(sessionDto.nonCombatLog, nonCombatLog)
-        Assert.assertEquals(sessionDto.combatLog, combatLog)
-        Assert.assertEquals(sessionDto.dateEnded, dateEnded)
-        Assert.assertEquals(sessionDto.historyId, 300)
-        Assert.assertEquals(sessionDto.chatId, 500)
-        Assert.assertEquals(sessionDto.mapId, 700)
-        Assert.assertEquals(sessionDto.combatId, 900)
-        Assert.assertEquals(sessionDto.npcIds, npcIds)
-        Assert.assertEquals(sessionDto.playerIds, playerIds)
-        Assert.assertEquals(sessionDto.characterIds, characterIds)
+        assert !sessionDto.identifier
+        assert sessionDto.dmId == 100
+        assert sessionDto.nonCombatLog == nonCombatLog
+        assert sessionDto.combatLog == combatLog
+        assert sessionDto.dateEnded == dateEnded
+        assert sessionDto.historyId == 300
+        assert sessionDto.chatId == 500
+        assert sessionDto.mapId == 700
+        assert sessionDto.combatId == 900
+        assert sessionDto.npcIds == npcIds
+        assert sessionDto.playerIds == playerIds
+        assert sessionDto.characterIds == characterIds
     }
 
 }

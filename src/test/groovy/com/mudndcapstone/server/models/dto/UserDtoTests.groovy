@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,15 +15,15 @@ class UserDtoTests {
         UserDto userDto = new UserDto()
 
         // Then
-        Assert.assertNull(userDto.identifier)
-        Assert.assertNull(userDto.username)
-        Assert.assertNull(userDto.password)
-        Assert.assertNull(userDto.birthdate)
-        Assert.assertNull(userDto.notes)
-        Assert.assertNull(userDto.characterIds)
-        Assert.assertNull(userDto.sessionIds)
-        Assert.assertNull(userDto.dmSessionIds)
-        Assert.assertNull(userDto.npcIds)
+        assert !userDto.identifier
+        assert !userDto.username
+        assert !userDto.password
+        assert !userDto.birthdate
+        assert !userDto.notes
+        assert !userDto.characterIds
+        assert !userDto.sessionIds
+        assert !userDto.dmSessionIds
+        assert !userDto.npcIds
     }
 
     @Test
@@ -49,15 +48,15 @@ class UserDtoTests {
         userDto.setNpcIds(npcIds)
 
         // Then
-        Assert.assertNull(userDto.identifier)
-        Assert.assertEquals(userDto.username, "test")
-        Assert.assertEquals(userDto.password, "test")
-        Assert.assertEquals(userDto.birthdate, birthdate)
-        Assert.assertEquals(userDto.notes, notes)
-        Assert.assertEquals(userDto.characterIds, characterIds)
-        Assert.assertEquals(userDto.sessionIds, sessionIds)
-        Assert.assertEquals(userDto.dmSessionIds, dmSessionIds)
-        Assert.assertEquals(userDto.npcIds, npcIds)
+        assert !userDto.identifier
+        assert userDto.username == "test"
+        assert userDto.password == "test"
+        assert userDto.birthdate == birthdate
+        assert userDto.notes == notes
+        assert userDto.characterIds == characterIds
+        assert userDto.sessionIds == sessionIds
+        assert userDto.dmSessionIds == dmSessionIds
+        assert userDto.npcIds == npcIds
     }
 
 }

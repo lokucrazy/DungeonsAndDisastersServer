@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models.dto
 
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,11 +15,11 @@ class HistoryDtoTests {
         HistoryDto historyDto = new HistoryDto()
 
         // Then
-        Assert.assertNull(historyDto.identifier)
-        Assert.assertNull(historyDto.nonCombatLog)
-        Assert.assertNull(historyDto.combatLog)
-        Assert.assertNull(historyDto.dateEnded)
-        Assert.assertNull(historyDto.historyId)
+        assert !historyDto.identifier
+        assert !historyDto.nonCombatLog
+        assert !historyDto.combatLog
+        assert !historyDto.dateEnded
+        assert !historyDto.historyId
     }
 
     @Test
@@ -38,11 +37,11 @@ class HistoryDtoTests {
         historyDto.setHistoryId(500)
 
         // Then
-        Assert.assertNull(historyDto.identifier)
-        Assert.assertEquals(historyDto.nonCombatLog, nonCombatLog)
-        Assert.assertEquals(historyDto.combatLog, combatLog)
-        Assert.assertEquals(historyDto.dateEnded, dateEnded)
-        Assert.assertEquals(historyDto.historyId, 500)
+        assert !historyDto.identifier
+        assert historyDto.nonCombatLog == nonCombatLog
+        assert historyDto.combatLog == combatLog
+        assert historyDto.dateEnded == dateEnded
+        assert historyDto.historyId == 500
     }
 
 }

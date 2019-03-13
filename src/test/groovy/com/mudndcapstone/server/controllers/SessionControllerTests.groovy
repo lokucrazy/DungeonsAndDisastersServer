@@ -9,7 +9,6 @@ import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.impl.CharacterServiceImpl
 import com.mudndcapstone.server.services.impl.HistoryServiceImpl
 import com.mudndcapstone.server.services.impl.SessionServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,14 +42,15 @@ class SessionControllerTests {
         // Given
         Set<Session> sessions = [new Session()]
         Set<SessionDto> sessionDtos = sessionService.buildDtoSetFrom(sessions)
+        ResponseEntity response
 
         // When
         Mockito.when(sessionService.getAllSessions()).thenReturn(sessions)
+        response = sessionController.getAllSessions()
 
         // Then
-        ResponseEntity response = sessionController.getAllSessions()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, sessionDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == sessionDtos
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getAllSessions()
     }
 
@@ -60,17 +60,18 @@ class SessionControllerTests {
         Session session = new Session()
         HashSet<Character> characters = [new Character(), new Character()]
         Set<CharacterDto> characterDtos
+        ResponseEntity response
 
         // When
         session.setIdentifier(1000)
         session.setCharacters(characters)
         characterDtos = characterService.buildDtoSetFrom(session.characters)
         Mockito.when(sessionService.getSessionById(1000)).thenReturn(session)
+        response = sessionController.getAllSessionsCharacters(1000)
 
         // Then
-        ResponseEntity response = sessionController.getAllSessionsCharacters(1000)
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, characterDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == characterDtos
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(1000)
     }
 
@@ -79,14 +80,15 @@ class SessionControllerTests {
         // Given
         Set<History> histories = [new History()]
         Set<HistoryDto> historyDtos = historyService.buildDtoSetFrom(histories)
+        ResponseEntity response
 
         // When
         Mockito.when(historyService.getAllHistories()).thenReturn(histories)
+        response = sessionController.getAllHistories()
 
         // Then
-        ResponseEntity response = sessionController.getAllHistories()
-        Assert.assertEquals(response.statusCode, HttpStatus.OK)
-        Assert.assertEquals(response.body, historyDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == historyDtos
         Mockito.verify(historyService, Mockito.atLeastOnce()).getAllHistories()
     }
 

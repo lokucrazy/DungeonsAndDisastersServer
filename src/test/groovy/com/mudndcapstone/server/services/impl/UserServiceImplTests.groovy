@@ -31,13 +31,15 @@ class UserServiceImplTests {
     void givenUser_whenUserRepositorySavesUser_thenUserServiceReturnsUser() {
         // Given
         User user = new User()
+        User found
 
         // When
         userRepository.save(user)
         Mockito.when(userRepository.findById(user.identifier)).thenReturn(Optional.of(user))
+        found = userService.getUserById(user.identifier)
 
         // Then
-        Assert.assertEquals(userService.getUserById(user.identifier), user)
+        assert user == found
     }
 
 }

@@ -6,7 +6,6 @@ import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.models.dto.NPCDto
 import com.mudndcapstone.server.services.impl.EnemyServiceImpl
 import com.mudndcapstone.server.services.impl.NPCServiceImpl
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,14 +38,15 @@ class BeingControllerTests {
         // Given
         Set<Enemy> enemies = [new Enemy()]
         Set<EnemyDto> enemyDtos = enemyService.buildDtoSetFrom(enemies)
+        ResponseEntity response
 
         // When
         Mockito.when(enemyService.getAllEnemies()).thenReturn(enemies)
+        response = beingController.getAllEnemies()
 
         // Then
-        ResponseEntity response = beingController.getAllEnemies()
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
-        Assert.assertEquals(response.body, enemyDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == enemyDtos
         Mockito.verify(enemyService, Mockito.atLeastOnce()).getAllEnemies()
     }
 
@@ -55,14 +55,15 @@ class BeingControllerTests {
         // Given
         Set<NPC> npcs = [new NPC()]
         Set<NPCDto> npcDtos = npcService.buildDtoSetFrom(npcs)
+        ResponseEntity response
 
         // When
         Mockito.when(npcService.getAllNPCs()).thenReturn(npcs)
+        response = beingController.getAllNPCs()
 
         // Then
-        ResponseEntity response = beingController.getAllNPCs()
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK)
-        Assert.assertEquals(response.body, npcDtos)
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == npcDtos
         Mockito.verify(npcService, Mockito.atLeastOnce()).getAllNPCs()
     }
 

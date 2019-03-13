@@ -4,7 +4,6 @@ import com.mudndcapstone.server.utils.BeingAbilities
 import com.mudndcapstone.server.utils.CharacterAlignment
 import com.mudndcapstone.server.utils.CharacterClass
 import com.mudndcapstone.server.utils.CharacterRace
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,16 +19,16 @@ class CharacterDtoTests {
         CharacterDto characterDto = new CharacterDto()
 
         // Then
-        Assert.assertNull(characterDto.identifier)
-        Assert.assertNull(characterDto.userId)
-        Assert.assertNull(characterDto.characterClass)
-        Assert.assertNull(characterDto.background)
-        Assert.assertNull(characterDto.race)
-        Assert.assertNull(characterDto.alignment)
-        Assert.assertEquals(characterDto.level, 0)
-        Assert.assertEquals(characterDto.experience, 0)
-        Assert.assertNull(characterDto.abilities)
-        Assert.assertNull(characterDto.sessionIds)
+        assert !characterDto.identifier
+        assert !characterDto.userId
+        assert !characterDto.characterClass
+        assert !characterDto.background
+        assert !characterDto.race
+        assert !characterDto.alignment
+        assert characterDto.level == 0
+        assert characterDto.experience == 0
+        assert !characterDto.abilities
+        assert !characterDto.sessionIds
     }
 
     @Test
@@ -53,18 +52,18 @@ class CharacterDtoTests {
         characterDto.setSessionIds(sessionIds)
 
         // Then
-        Assert.assertNull(characterDto.identifier)
-        Assert.assertEquals(characterDto.name, "King Sir the IV")
-        Assert.assertEquals(characterDto.characterClass, CharacterClass.MONK)
-        Assert.assertEquals(characterDto.level, 1)
-        Assert.assertEquals(characterDto.experience, 500)
-        Assert.assertEquals(characterDto.background, "King of Kingland")
-        Assert.assertEquals(characterDto.race, CharacterRace.DRAGONBORN)
-        Assert.assertEquals(characterDto.alignment, CharacterAlignment.NEUTRAL)
-        Assert.assertEquals(characterDto.abilities, abilities)
-        Assert.assertEquals(characterDto.abilities.charisma, 100)
-        Assert.assertEquals(characterDto.userId, 500)
-        Assert.assertEquals(characterDto.sessionIds, sessionIds)
+        assert !characterDto.identifier
+        assert characterDto.name == "King Sir the IV"
+        assert characterDto.characterClass == CharacterClass.MONK
+        assert characterDto.level == 1
+        assert characterDto.experience == 500
+        assert characterDto.background == "King of Kingland"
+        assert characterDto.race == CharacterRace.DRAGONBORN
+        assert characterDto.alignment == CharacterAlignment.NEUTRAL
+        assert characterDto.abilities == abilities
+        assert characterDto.abilities.charisma == 100
+        assert characterDto.userId == 500
+        assert characterDto.sessionIds == sessionIds
     }
 
 }
