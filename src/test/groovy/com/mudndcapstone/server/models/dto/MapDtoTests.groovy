@@ -23,8 +23,8 @@ class MapDtoTests {
     @Test
     void givenMapDto_whenAddProperties_thenMapDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         MapDto mapDto = new MapDto()
+        String testUuid = UUID.randomUUID().toString()
         List<String> images = ["test image 1"]
 
         // When

@@ -33,7 +33,7 @@ class UserControllerTests {
     void givenUser_whenUserServiceGetsUser_thenUserControllerReturnsUser() {
         // Given
         User user = new User()
-        String userId = UUID.randomUUID()
+        String userId = UUID.randomUUID().toString()
         UserDto userDto
         ResponseEntity response
 

@@ -57,14 +57,14 @@ class SessionControllerTests {
     @Test
     void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         Session session = new Session()
+        String testUuid = UUID.randomUUID().toString()
         HashSet<Character> characters = [new Character(), new Character()]
         Set<CharacterDto> characterDtos
         ResponseEntity response
 
         // When
-        session.setIdentifier(UUID.randomUUID().toString())
+        session.setIdentifier(testUuid)
         session.setCharacters(characters)
         characterDtos = characterService.buildDtoSetFrom(session.characters)
         Mockito.when(sessionService.getSessionById(testUuid)).thenReturn(session)

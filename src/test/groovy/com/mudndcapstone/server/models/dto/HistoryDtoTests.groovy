@@ -25,8 +25,8 @@ class HistoryDtoTests {
     @Test
     void givenHistoryDto_whenAddProperties_thenHistoryDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         HistoryDto historyDto = new HistoryDto()
+        String testUuid = UUID.randomUUID().toString()
         List<String> nonCombatLog = ["nc test"]
         List<String> combatLog = ["c test"]
         Date dateEnded = new Date()

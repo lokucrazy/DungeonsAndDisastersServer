@@ -34,9 +34,9 @@ class CharacterDtoTests {
     @Test
     void givenCharacterDto_whenAddProperties_thenCharacterDtoObjectsHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         CharacterDto characterDto = new CharacterDto()
-        Set<String> sessionIds = [testUuid]
+        String testUuid = UUID.randomUUID().toString()
+        Set<String> sessionIds = ["test session"]
         BeingAbilities abilities = new BeingAbilities()
 
         // When

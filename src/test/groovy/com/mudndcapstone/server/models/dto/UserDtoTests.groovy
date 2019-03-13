@@ -29,14 +29,13 @@ class UserDtoTests {
     @Test
     void givenUserDto_whenAddProperties_thenUserDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         UserDto userDto = new UserDto()
         Date birthdate = new Date()
         List<String> notes = ["n test"]
-        Set<String> characterIds = [testUuid]
-        Set<String> sessionIds = [testUuid]
-        Set<String> dmSessionIds = [testUuid]
-        Set<String> npcIds = [testUuid]
+        Set<String> characterIds = [UUID.randomUUID().toString()]
+        Set<String> sessionIds = [UUID.randomUUID().toString()]
+        Set<String> dmSessionIds = [UUID.randomUUID().toString()]
+        Set<String> npcIds = [UUID.randomUUID().toString()]
 
         // When
         userDto.setUsername("test")

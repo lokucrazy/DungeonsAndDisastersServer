@@ -22,8 +22,8 @@ class EnemyDtoTests {
     @Test
     void givenEnemyDto_whenAddProperties_thenEnemyDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         EnemyDto enemyDto = new EnemyDto()
+        String testUuid = UUID.randomUUID().toString()
 
         // When
         enemyDto.setCombatId(testUuid)

@@ -24,8 +24,8 @@ class ChatDtoTests {
     @Test
     void givenChatDto_whenAddProperties_thenCharacterObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         ChatDto chat = new ChatDto()
+        String testUuid = UUID.randomUUID().toString()
         List<String> log = [""]
 
         // When

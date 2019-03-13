@@ -32,38 +32,42 @@ class SessionDtoTests {
     @Test
     void givenSessionDto_whenAddProperties_thenSessionDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         SessionDto sessionDto = new SessionDto()
+        String dmId = UUID.randomUUID().toString()
         List<String> nonCombatLog = ["nc test"]
         List<String> combatLog = ["c test"]
         Date dateEnded = new Date()
-        Set<String> npcIds = [testUuid]
-        Set<String> playerIds = [testUuid]
-        Set<String> characterIds = [testUuid]
+        String historyId = UUID.randomUUID().toString()
+        String chatId = UUID.randomUUID().toString()
+        String mapId = UUID.randomUUID().toString()
+        String combatId = UUID.randomUUID().toString()
+        Set<String> npcIds = [UUID.randomUUID().toString()]
+        Set<String> playerIds = [UUID.randomUUID().toString()]
+        Set<String> characterIds = [UUID.randomUUID().toString()]
 
         // When
-        sessionDto.setDmId(testUuid)
+        sessionDto.setDmId(dmId)
         sessionDto.setNonCombatLog(nonCombatLog)
         sessionDto.setCombatLog(combatLog)
         sessionDto.setDateEnded(dateEnded)
-        sessionDto.setHistoryId(testUuid)
-        sessionDto.setChatId(testUuid)
-        sessionDto.setMapId(testUuid)
-        sessionDto.setCombatId(testUuid)
+        sessionDto.setHistoryId(historyId)
+        sessionDto.setChatId(chatId)
+        sessionDto.setMapId(mapId)
+        sessionDto.setCombatId(combatId)
         sessionDto.setNpcIds(npcIds)
         sessionDto.setPlayerIds(playerIds)
         sessionDto.setCharacterIds(characterIds)
 
         // Then
         assert !sessionDto.identifier
-        assert sessionDto.dmId == testUuid
+        assert sessionDto.dmId == dmId
         assert sessionDto.nonCombatLog == nonCombatLog
         assert sessionDto.combatLog == combatLog
         assert sessionDto.dateEnded == dateEnded
-        assert sessionDto.historyId == testUuid
-        assert sessionDto.chatId == testUuid
-        assert sessionDto.mapId == testUuid
-        assert sessionDto.combatId == testUuid
+        assert sessionDto.historyId == historyId
+        assert sessionDto.chatId == chatId
+        assert sessionDto.mapId == mapId
+        assert sessionDto.combatId == combatId
         assert sessionDto.npcIds == npcIds
         assert sessionDto.playerIds == playerIds
         assert sessionDto.characterIds == characterIds

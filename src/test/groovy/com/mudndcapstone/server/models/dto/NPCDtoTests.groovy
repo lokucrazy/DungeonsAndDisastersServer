@@ -28,8 +28,9 @@ class NPCDtoTests {
     @Test
     void givenNPCDto_whenAddProperties_thenNPCDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         NPCDto npcDto = new NPCDto()
+        String sessionId = UUID.randomUUID().toString()
+        String dmId = UUID.randomUUID().toString()
         String initialLocation = "A1"
         BeingAbilities abilities = new BeingAbilities()
 
@@ -38,8 +39,8 @@ class NPCDtoTests {
         npcDto.setIsAlive(true)
         npcDto.setInitialLocation(initialLocation)
         npcDto.setAbilities(abilities)
-        npcDto.setSessionId(testUuid)
-        npcDto.setDmId(testUuid)
+        npcDto.setSessionId(sessionId)
+        npcDto.setDmId(dmId)
 
         // Then
         assert !npcDto.identifier
@@ -47,8 +48,8 @@ class NPCDtoTests {
         assert npcDto.isAlive
         assert npcDto.initialLocation == initialLocation
         assert npcDto.abilities == abilities
-        assert npcDto.sessionId == testUuid
-        assert npcDto.dmId == testUuid
+        assert npcDto.sessionId == sessionId
+        assert npcDto.dmId == dmId
     }
 
 }

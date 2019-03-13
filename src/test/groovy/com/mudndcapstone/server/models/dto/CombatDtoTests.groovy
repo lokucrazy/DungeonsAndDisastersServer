@@ -24,19 +24,20 @@ class CombatDtoTests {
     @Test
     void givenCombatDto_whenAddProperties_thenCombatDtoObjectHasProperties() {
         // Given
-        String testUuid = UUID.randomUUID().toString()
         CombatDto combatDto = new CombatDto()
-        Set<String> enemyIds = [testUuid]
+        String previousCombatId = UUID.randomUUID().toString()
+        String sessionId = UUID.randomUUID().toString()
+        Set<String> enemyIds = [UUID.randomUUID().toString()]
 
         // When
-        combatDto.setPreviousCombatId(testUuid)
-        combatDto.setSessionId(testUuid)
+        combatDto.setPreviousCombatId(previousCombatId)
+        combatDto.setSessionId(sessionId)
         combatDto.setEnemyIds(enemyIds)
 
         // Then
         assert !combatDto.identifier
-        assert combatDto.previousCombatId == testUuid
-        assert combatDto.sessionId == testUuid
+        assert combatDto.previousCombatId == previousCombatId
+        assert combatDto.sessionId == sessionId
         assert combatDto.enemyIds == enemyIds
     }
 
