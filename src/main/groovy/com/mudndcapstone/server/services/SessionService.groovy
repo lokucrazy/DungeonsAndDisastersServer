@@ -26,8 +26,7 @@ class SessionService {
     }
 
     Session createSession(Session session) {
-        User dm = session.dm
-        if (!dm) return null
+        if (!session.dm) return null
 
         sessionRepository.save(session)
     }
@@ -39,6 +38,7 @@ class SessionService {
     Session buildSessionFrom(SessionDto sessionDto) {
         Session session = modelMapper.map(sessionDto, Session)
         User dm = userService.getUserById(sessionDto.dmId)
+
         session.setDm(dm)
 
         session

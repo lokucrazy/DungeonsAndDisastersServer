@@ -1,15 +1,19 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Character
+import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CharacterDto
+import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.SessionService
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -27,6 +31,7 @@ class SessionControllerTests {
 
     @Mock SessionService sessionService
     @Mock CharacterService characterService
+    @Mock ChatService chatService
     @Mock HistoryService historyService
 
     @InjectMocks
@@ -74,6 +79,85 @@ class SessionControllerTests {
         assert response.statusCode == HttpStatus.OK
         assert response.body == characterDtos
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById(testUuid)
+    }
+
+    @Test
+    void givenSessionWithNoChats_whenGettingSessionChats_thenSessionControllerReturnsEmptyChatLog() {
+        // Given
+        Session session = new Session()
+        ResponseEntity response
+
+        // When
+        Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
+        response = sessionController.getSessionChats("test")
+
+        // Then
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == []
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
+    }
+
+    @Test
+    void givenSessionWithChats_whenGettingSessionChats_thenSessionControllerReturnsChats() {
+        // Given
+        Session session = new Session()
+        Chat chat = new Chat()
+        List<String> chatLog = ["message 1", "message 2"]
+        ChatDto chatDto
+        ResponseEntity response
+
+        // When
+        chat.setLog(chatLog)
+        session.setChatLog(chat)
+        Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
+        response = sessionController.getSessionChats("test")
+        chatDto = chatService.buildDtoFrom(session.chatLog)
+
+        // Then
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == chatDto
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
+    }
+
+    @Test
+    void givenSessionWithNoChats_whenAddingSessionChats_thenSessionControllerReturnsSessionWithNewChat() {
+        // Given
+        Session session = new Session()
+        ChatDto chatDto
+        ResponseEntity response
+
+        // When
+        Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
+        response = sessionController.createChat("test", "hello world")
+        chatDto = chatService.buildDtoFrom(session.chatLog)
+
+        // Then
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == chatDto
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
+    }
+
+    @Ignore("broken") // TODO: fix broken test
+    @Test
+    void givenSessionWithChats_whenAddingSessionChats_thenSessionControllerReturnsSessionWithNewChat() {
+        // Given
+        Session session = new Session()
+        Chat chat = new Chat()
+        List<String> chatLog = ["message 1", "message 2"]
+        ChatDto chatDto
+        ResponseEntity response
+
+        // When
+        chat.setLog(chatLog)
+        session.setChatLog(chat)
+        Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
+        response = sessionController.createChat("test", "hello world")
+        chatDto = chatService.buildDtoFrom(session.chatLog)
+
+        // Then
+        assert response.statusCode == HttpStatus.OK
+        assert response.body == chatDto
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
 
     @Test
