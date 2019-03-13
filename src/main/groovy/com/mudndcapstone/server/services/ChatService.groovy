@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Chat
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.repositories.ChatRepository
 import org.modelmapper.ModelMapper
@@ -13,6 +14,7 @@ import java.util.stream.Collectors
 class ChatService {
 
     @Autowired ChatRepository chatRepository
+    @Autowired SessionService sessionService
     @Autowired ModelMapper modelMapper
 
     Set<Chat> getAllChats() {
@@ -24,6 +26,18 @@ class ChatService {
     }
 
     Chat createChat(Chat chat) {
+        if (!chat.session) return null
+
+        chatRepository.save(chat)
+    }
+
+    Chat createChat(ChatDto chatDto) {
+        if (!chatDto.sessionId) return null
+
+        Session session = sessionService.getSessionById(chatDto.sessionId)
+        if (!session) return null
+
+        Chat chat = buildChatFrom(chatDto)
         chatRepository.save(chat)
     }
 
@@ -33,6 +47,10 @@ class ChatService {
 
     Chat buildChatFrom(ChatDto chatDto) {
         Chat chat = modelMapper.map(chatDto, Chat)
+        Session session = sessionService.getSessionById(chatDto.sessionId)
+
+        chat.setSession(session)
+
         chat
     }
 

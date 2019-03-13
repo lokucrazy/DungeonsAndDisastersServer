@@ -8,4 +8,9 @@ class ChatDto extends EntityDto {
     @NotNull @JsonProperty(value = "session_id") String sessionId
     List<String> log
     String note
+
+    void addMessage(String message) {
+        if (!log) log = []
+        log << message
+    }
 }

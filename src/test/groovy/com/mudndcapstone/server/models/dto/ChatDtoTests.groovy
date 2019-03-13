@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
+import com.mudndcapstone.server.models.Chat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -12,32 +13,63 @@ class ChatDtoTests {
     @Test
     void givenEmptyChatDto_thenReturnEmptyChatDtoObject() {
         // Given
-        ChatDto chat = new ChatDto()
+        ChatDto chatDto = new ChatDto()
 
         // Then
-        assert !chat.identifier
-        assert !chat.sessionId
-        assert !chat.log
-        assert !chat.note
+        assert !chatDto.identifier
+        assert !chatDto.sessionId
+        assert !chatDto.log
+        assert !chatDto.note
     }
 
     @Test
     void givenChatDto_whenAddProperties_thenCharacterObjectHasProperties() {
         // Given
-        ChatDto chat = new ChatDto()
+        ChatDto chatDto = new ChatDto()
         String testUuid = UUID.randomUUID().toString()
         List<String> log = [""]
 
         // When
-        chat.setSessionId(testUuid)
-        chat.setLog(log)
-        chat.setNote("test note")
+        chatDto.setSessionId(testUuid)
+        chatDto.setLog(log)
+        chatDto.setNote("test note")
 
         // Then
-        assert !chat.identifier
-        assert chat.sessionId == testUuid
-        assert chat.log == log
-        assert chat.note == "test note"
+        assert !chatDto.identifier
+        assert chatDto.sessionId == testUuid
+        assert chatDto.log == log
+        assert chatDto.note == "test note"
+    }
+
+    @Test
+    void givenChatWithEmptyLog_whenAddMessage_thenChatHasLogWithOneMessage() {
+        // Given
+        ChatDto chatDto = new ChatDto()
+        String message = "test message"
+
+        // When
+        chatDto.addMessage(message)
+
+        // Then
+        assert chatDto.log
+        assert chatDto.log.size() == 1
+        assert chatDto.log[0] == message
+    }
+
+    @Test
+    void givenChatWithLog_whenAddMessage_thenChatHasMessageAddedToLog() {
+        // Given
+        ChatDto chatDto = new ChatDto()
+        chatDto.log = ["hey player2", "sup player1?"]
+        String message = "player3 also says hi"
+
+        // When
+        chatDto.addMessage(message)
+
+        // Then
+        assert chatDto.log
+        assert chatDto.log.size() == 3
+        assert chatDto.log[-1] == message
     }
 
 }
