@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 
 abstract class Node {
-    Long id
+    Long internalId
     @Id @GeneratedValue(strategy = UuidStrategy) String identifier
     @CreatedDate Date createdAt
     @LastModifiedDate Date modifiedAt
