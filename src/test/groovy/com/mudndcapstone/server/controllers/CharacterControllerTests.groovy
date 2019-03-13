@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.CharacterDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
+import com.mudndcapstone.server.services.CharacterService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class CharacterControllerTests {
 
-    @Mock CharacterServiceImpl characterService
+    @Mock CharacterService characterService
 
     @InjectMocks
     CharacterController characterController

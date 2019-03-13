@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.dto.CombatDto
-import com.mudndcapstone.server.services.impl.CombatServiceImpl
+import com.mudndcapstone.server.services.CombatService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class CombatControllerTests {
 
-    @Mock CombatServiceImpl combatService
+    @Mock CombatService combatService
 
     @InjectMocks
     CombatController combatController

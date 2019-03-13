@@ -5,9 +5,9 @@ import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import com.mudndcapstone.server.services.impl.HistoryServiceImpl
-import com.mudndcapstone.server.services.impl.SessionServiceImpl
+import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.HistoryService
+import com.mudndcapstone.server.services.SessionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,9 +18,9 @@ import javax.validation.Valid
 @RestController
 class SessionController {
 
-    @Autowired SessionServiceImpl sessionService
-    @Autowired CharacterServiceImpl characterService
-    @Autowired HistoryServiceImpl historyService
+    @Autowired SessionService sessionService
+    @Autowired CharacterService characterService
+    @Autowired HistoryService historyService
 
     /* Sessions */
     @GetMapping("/sessions")

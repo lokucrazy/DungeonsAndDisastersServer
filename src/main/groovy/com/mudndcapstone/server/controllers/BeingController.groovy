@@ -4,8 +4,8 @@ import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.NPC
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.models.dto.NPCDto
-import com.mudndcapstone.server.services.impl.EnemyServiceImpl
-import com.mudndcapstone.server.services.impl.NPCServiceImpl
+import com.mudndcapstone.server.services.EnemyService
+import com.mudndcapstone.server.services.NPCService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -23,8 +23,8 @@ import javax.validation.Valid
 @RestController
 class BeingController {
 
-    @Autowired NPCServiceImpl npcService
-    @Autowired EnemyServiceImpl enemyService
+    @Autowired NPCService npcService
+    @Autowired EnemyService enemyService
 
     /* Enemies */
     @GetMapping("/enemies")

@@ -6,9 +6,9 @@ import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import com.mudndcapstone.server.services.impl.HistoryServiceImpl
-import com.mudndcapstone.server.services.impl.SessionServiceImpl
+import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.HistoryService
+import com.mudndcapstone.server.services.SessionService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,9 +25,9 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class SessionControllerTests {
 
-    @Mock SessionServiceImpl sessionService
-    @Mock CharacterServiceImpl characterService
-    @Mock HistoryServiceImpl historyService
+    @Mock SessionService sessionService
+    @Mock CharacterService characterService
+    @Mock HistoryService historyService
 
     @InjectMocks
     SessionController sessionController

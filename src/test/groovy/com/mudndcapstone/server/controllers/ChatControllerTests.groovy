@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.dto.ChatDto
-import com.mudndcapstone.server.services.impl.ChatServiceImpl
+import com.mudndcapstone.server.services.ChatService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class ChatControllerTests {
 
-    @Mock ChatServiceImpl chatService
+    @Mock ChatService chatService
 
     @InjectMocks
     ChatController chatController

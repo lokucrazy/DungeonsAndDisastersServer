@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.dto.ChatDto
-import com.mudndcapstone.server.services.impl.ChatServiceImpl
+import com.mudndcapstone.server.services.ChatService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ import javax.validation.Valid
 @RequestMapping("/chats")
 class ChatController {
 
-    @Autowired ChatServiceImpl chatService
+    @Autowired ChatService chatService
 
     @GetMapping
     ResponseEntity<Set<ChatDto>> getAllChats() {

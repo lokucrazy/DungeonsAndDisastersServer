@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.dto.MapDto
-import com.mudndcapstone.server.services.impl.MapServiceImpl
+import com.mudndcapstone.server.services.MapService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ import javax.validation.Valid
 @RequestMapping("/maps")
 class MapController {
 
-    @Autowired MapServiceImpl mapService
+    @Autowired MapService mapService
 
     @GetMapping
     ResponseEntity<Set<MapDto>> getAllMaps() {

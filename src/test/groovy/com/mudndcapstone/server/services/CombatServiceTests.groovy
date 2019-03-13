@@ -1,4 +1,4 @@
-package com.mudndcapstone.server.services.impl
+package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.repositories.CombatRepository
@@ -14,12 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner)
 @DataNeo4jTest
-class CombatServiceImplTests {
+class CombatServiceTests {
 
     @Mock CombatRepository combatRepository
 
     @InjectMocks
-    CombatServiceImpl combatService
+    CombatService combatService
 
     @Before
     void setup() {

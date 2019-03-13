@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.dto.CombatDto
-import com.mudndcapstone.server.services.impl.CombatServiceImpl
+import com.mudndcapstone.server.services.CombatService
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ import javax.validation.Valid
 @RequestMapping("/combats")
 class CombatController {
 
-    @Autowired CombatServiceImpl combatService
+    @Autowired CombatService combatService
 
     @GetMapping
     ResponseEntity<Set<CombatDto>> getAllCombats() {

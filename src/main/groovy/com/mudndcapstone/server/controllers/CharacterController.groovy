@@ -2,7 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.CharacterDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
+import com.mudndcapstone.server.services.CharacterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,7 +21,7 @@ import javax.validation.Valid
 @RequestMapping("/characters")
 class CharacterController {
 
-    @Autowired CharacterServiceImpl characterService
+    @Autowired CharacterService characterService
 
     @GetMapping
     ResponseEntity<Set<CharacterDto>> getAllCharacters() {

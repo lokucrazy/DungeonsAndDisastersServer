@@ -1,4 +1,4 @@
-package com.mudndcapstone.server.services.impl
+package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.repositories.CharacterRepository
@@ -14,12 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner)
 @DataNeo4jTest
-class CharacterServiceImplTests {
+class CharacterServiceTests {
 
     @Mock CharacterRepository characterRepository
 
     @InjectMocks
-    CharacterServiceImpl characterService
+    CharacterService characterService
 
     @Before
     void setup() {

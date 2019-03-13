@@ -3,8 +3,8 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.UserDto
-import com.mudndcapstone.server.services.impl.CharacterServiceImpl
-import com.mudndcapstone.server.services.impl.UserServiceImpl
+import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,8 +15,8 @@ import javax.validation.Valid
 @RestController
 class UserController {
 
-    @Autowired UserServiceImpl userService
-    @Autowired CharacterServiceImpl characterService
+    @Autowired UserService userService
+    @Autowired CharacterService characterService
 
     /* Users */
     @GetMapping("/users")
