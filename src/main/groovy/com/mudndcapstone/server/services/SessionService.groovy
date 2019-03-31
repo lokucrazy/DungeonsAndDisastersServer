@@ -27,12 +27,23 @@ class SessionService {
 
     Session createSession(Session session) {
         if (!session.dm) return null
+        if (sessionRepository.existsById(session.identifier)) return null
+        sessionRepository.save(session)
+    }
 
+    Session updateSession(Session session) {
+        if (!session.dm) return null
+        if (!sessionRepository.existsById(session.identifier)) return null
         sessionRepository.save(session)
     }
 
     void deleteSession(String id) {
         sessionRepository.deleteById(id)
+    }
+
+    Session moveRelationships(String oldId, String newId) {
+        if (!oldId || !newId) { return null }
+        sessionRepository.refactorRelationships(oldId, newId).orElse(null)
     }
 
     Session buildSessionFrom(SessionDto sessionDto) {

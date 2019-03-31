@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.repositories.SessionRepository
 import org.junit.Before
 import org.junit.Test
@@ -39,6 +40,42 @@ class SessionServiceTests {
 
         // Then
         assert session == found
+    }
+
+    @Test
+    void givenOldSessionAndNewSession_WhenSessionMoveRelationships_thenReturnsNewSession() {
+        // Given
+        Session oldSession = new Session()
+        Session newSession = new Session()
+        Session sessionPostMove
+
+        // When
+        sessionRepository.save(oldSession)
+        sessionRepository.save(newSession)
+        Mockito.when(sessionRepository.refactorRelationships(oldSession.identifier, newSession.identifier))
+                .thenReturn(Optional.of(newSession))
+        sessionPostMove = sessionService.moveRelationships(oldSession.identifier, newSession.identifier)
+
+        // Then
+        assert sessionPostMove == newSession
+    }
+
+    @Test
+    void givenExistingSession_whenSessionUpdateSession_thenReturnsUpdatedSession() {
+        // Given
+        Session session = new Session()
+        session.identifier = "identifier"
+        session.dm = new User()
+        Session updated
+
+        // When
+        sessionRepository.save(session)
+        Mockito.when(sessionRepository.existsById(session.identifier)).thenReturn(true)
+        Mockito.when(sessionRepository.save(session)).thenReturn(session)
+        updated = sessionService.updateSession(session)
+
+        // Then
+        assert updated != null
     }
 
 }

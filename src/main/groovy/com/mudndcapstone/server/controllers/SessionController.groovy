@@ -2,6 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.History
+import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.ChatDto
@@ -10,6 +11,7 @@ import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.CharacterService
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
+import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +27,7 @@ class SessionController {
     @Autowired SessionService sessionService
     @Autowired CharacterService characterService
     @Autowired ChatService chatService
+    @Autowired MapService mapService
     @Autowired HistoryService historyService
 
     /* Sessions */
@@ -37,8 +40,21 @@ class SessionController {
 
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
+        if (!sessionDto || !sessionDto.dmId) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
-        Session session = sessionService.createSession(sessionRequest)
+        Session session
+        if (!sessionRequest.identifier) {
+            sessionRequest.chatLog = chatService.createChat(new Chat())
+            sessionRequest.mapList = mapService.createMap(new Map())
+            session = sessionService.createSession(sessionRequest)
+        } else {
+            Session newSession = sessionService.createSession(new Session())
+            session = sessionService.moveRelationships(sessionRequest.identifier, newSession.identifier)
+            History history = historyService.convertSessionToHistory(sessionRequest.identifier)
+            session.history = history
+            session = sessionService.updateSession(session)
+        }
+
         if (!session) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
 
         SessionDto created = sessionService.buildDtoFrom(session)
@@ -97,7 +113,7 @@ class SessionController {
         chatDto.addMessage(message)
 
         // Update chat node with new log
-        Chat updated = chatService.createChat(chatDto)
+        Chat updated = chatService.createChatFromDTO(chatDto)
 
         List<String> chats = PaginationHandler.getPage(updated.log, page, count)
         new ResponseEntity<>(chats, HttpStatus.OK)

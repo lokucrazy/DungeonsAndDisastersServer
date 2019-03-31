@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.History
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.repositories.HistoryRepository
 import org.modelmapper.ModelMapper
@@ -21,6 +22,10 @@ class HistoryService {
 
     History getHistoryById(String id) {
         historyRepository.findById(id).orElse(null)
+    }
+
+    History convertSessionToHistory(String id) {
+        historyRepository.removeSessionLabel(id).orElse(null)
     }
 
     void deleteHistory(String id) {

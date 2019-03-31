@@ -31,7 +31,7 @@ class ChatService {
         chatRepository.save(chat)
     }
 
-    Chat createChat(ChatDto chatDto) {
+    Chat createChatFromDTO(ChatDto chatDto) {
         if (!chatDto.sessionId) return null
 
         Session session = sessionService.getSessionById(chatDto.sessionId)
