@@ -7,7 +7,7 @@ import org.neo4j.ogm.annotation.Relationship
 class Combat extends Node {
     Combat previousCombat
 
-    @Relationship(type = "HAS_COMBAT_LOG", direction = Relationship.INCOMING)
+    @Relationship(type = "HAS_COMBAT_LIST", direction = Relationship.INCOMING)
     Session session
 
     @Relationship(type = "INVOLVES_ENEMY", direction = Relationship.OUTGOING)
