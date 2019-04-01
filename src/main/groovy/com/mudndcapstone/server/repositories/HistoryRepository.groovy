@@ -12,12 +12,7 @@ interface HistoryRepository extends Neo4jRepository<History, String> {
     @Query("""MATCH (h {identifier:{0}})
               REMOVE h:Session
               WITH h
-              OPTIONAL MATCH (h)-[r]->(i)
-              RETURN h,r,i""")
-    Optional<History> removeSessionLabel(String identifier);
-
-    @Query("""MATCH (h {identifier:{0}})
-              REMOVE h:Session
-              RETURN labels(h)""")
-    Result testRemoveLabel(String identifier)
+              OPTIONAL MATCH (h)-[r]->()
+              RETURN h,r""")
+    Optional<History> removeSessionLabel(String identifier)
 }

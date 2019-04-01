@@ -40,9 +40,10 @@ class SessionService {
         sessionRepository.deleteById(id)
     }
 
-    Session moveRelationships(String oldId, String newId) {
-        if (!oldId || !newId) { return null }
-        sessionRepository.refactorRelationships(oldId, newId).orElse(null)
+    Session moveRelationships(String oldId) {
+        if (!oldId) { return null }
+        Session newSession = sessionRepository.save(new Session())
+        sessionRepository.refactorRelationships(oldId, newSession.identifier).orElse(null)
     }
 
     Session buildSessionFrom(SessionDto sessionDto) {

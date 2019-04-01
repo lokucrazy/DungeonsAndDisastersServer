@@ -51,11 +51,14 @@ class SessionController {
             sessionRequest.mapList = mapService.createMap(new Map(session: sessionRequest))
             session = sessionService.updateSession(sessionRequest)
         } else {
-            Session newSession = sessionService.createSession(new Session())
-            session = sessionService.moveRelationships(sessionRequest.identifier, newSession.identifier)
+            session = sessionService.moveRelationships(sessionRequest.identifier)
             History history = historyService.convertSessionToHistory(sessionRequest.identifier)
-            session.history = history
-            session = sessionService.updateSession(session)
+            if (session && history) {
+                session.history = history
+                session = sessionService.updateSession(session)
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+            }
         }
 
         if (!session) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
