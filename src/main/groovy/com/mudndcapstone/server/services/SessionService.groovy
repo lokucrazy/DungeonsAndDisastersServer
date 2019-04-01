@@ -27,12 +27,11 @@ class SessionService {
 
     Session createSession(Session session) {
         if (!session.dm) return null
-        if (sessionRepository.existsById(session.identifier)) return null
         sessionRepository.save(session)
     }
 
     Session updateSession(Session session) {
-        if (!session.dm) return null
+        if (!session.dm || !session.identifier) return null
         if (!sessionRepository.existsById(session.identifier)) return null
         sessionRepository.save(session)
     }

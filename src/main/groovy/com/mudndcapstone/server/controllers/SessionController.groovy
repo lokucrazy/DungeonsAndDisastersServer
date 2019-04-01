@@ -17,6 +17,7 @@ import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
 import javax.validation.Valid
@@ -38,6 +39,7 @@ class SessionController {
         new ResponseEntity<>(sessionDtos, HttpStatus.OK)
     }
 
+    @Transactional
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
         if (!sessionDto || !sessionDto.dmId) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)

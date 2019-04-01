@@ -47,6 +47,8 @@ class SessionServiceTests {
         // Given
         Session oldSession = new Session()
         Session newSession = new Session()
+        oldSession.identifier = "oldIdentifier"
+        newSession.identifier = "newIdentifier"
         Session sessionPostMove
 
         // When
