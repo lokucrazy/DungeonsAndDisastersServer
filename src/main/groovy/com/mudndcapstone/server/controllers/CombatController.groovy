@@ -7,6 +7,7 @@ import com.mudndcapstone.server.services.CombatService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,10 +32,30 @@ class CombatController {
         new ResponseEntity<>(combatDtos, HttpStatus.OK)
     }
 
+    @Transactional
     @PostMapping
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
+        if (!combatDto.sessionId) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
         Combat combatRequest = combatService.buildCombatFrom(combatDto)
-        Combat combat = combatService.createCombat(combatRequest)
+        Combat combat
+
+        if (!combatRequest.identifier) {
+            if (combatRequest.session) {
+                combat = combatService.createCombat(combatRequest)
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+            }
+        } else {
+            Combat lastCombat = combatService.getLastNode(combatRequest.identifier)
+            combatRequest.session = null
+            combatRequest.identifier = null
+            if (lastCombat) {
+                lastCombat.nextCombat = combatService.createCombat(combatRequest)
+                combat = combatService.updateCombat(lastCombat).nextCombat
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+            }
+        }
         if (!combat) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
 
         CombatDto created = combatService.buildDtoFrom(combat)

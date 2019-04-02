@@ -48,7 +48,7 @@ class SessionController {
         if (!sessionRequest.identifier) {
             sessionService.createSession(sessionRequest)
             sessionRequest.chatLog = chatService.createChat(new Chat(session: sessionRequest))
-            sessionRequest.mapList = mapService.createMap(new Map(session: sessionRequest))
+            sessionRequest.map = mapService.createMap(new Map(session: sessionRequest))
             session = sessionService.updateSession(sessionRequest)
         } else {
             session = sessionService.moveRelationships(sessionRequest.identifier)

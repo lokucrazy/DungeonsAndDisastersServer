@@ -16,7 +16,7 @@ class CombatDtoTests {
 
         // Then
         assert !combatDto.identifier
-        assert !combatDto.previousCombatId
+        assert !combatDto.nextCombatId
         assert !combatDto.sessionId
         assert !combatDto.enemyIds
     }
@@ -30,13 +30,13 @@ class CombatDtoTests {
         Set<String> enemyIds = [UUID.randomUUID().toString()]
 
         // When
-        combatDto.setPreviousCombatId(previousCombatId)
+        combatDto.setNextCombatId(previousCombatId)
         combatDto.setSessionId(sessionId)
         combatDto.setEnemyIds(enemyIds)
 
         // Then
         assert !combatDto.identifier
-        assert combatDto.previousCombatId == previousCombatId
+        assert combatDto.nextCombatId == previousCombatId
         assert combatDto.sessionId == sessionId
         assert combatDto.enemyIds == enemyIds
     }

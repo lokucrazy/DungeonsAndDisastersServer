@@ -38,12 +38,12 @@ class SessionRepositoryTests {
         Session oldSession = new Session()
         Session newSession = new Session()
         oldSession.chatLog = new Chat()
-        oldSession.mapList = new Map()
+        oldSession.map = new Map()
         Session newSessionPostMove
 
         // When
         chatRepository.save(oldSession.chatLog)
-        mapRepository.save(oldSession.mapList)
+        mapRepository.save(oldSession.map)
         sessionRepository.save(oldSession)
         sessionRepository.save(newSession)
 
@@ -52,7 +52,7 @@ class SessionRepositoryTests {
         // Then
         assert newSession.identifier == newSessionPostMove.identifier
         assert newSessionPostMove.chatLog != null
-        assert newSessionPostMove.mapList != null
+        assert newSessionPostMove.map != null
     }
 
     @Test

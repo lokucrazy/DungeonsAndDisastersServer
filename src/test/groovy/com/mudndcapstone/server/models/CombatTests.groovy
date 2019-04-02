@@ -16,7 +16,7 @@ class CombatTests {
 
         // Then
         assert !combat.identifier
-        assert !combat.previousCombat
+        assert !combat.nextCombat
         assert !combat.session
         assert !combat.enemies
     }
@@ -30,13 +30,13 @@ class CombatTests {
         Set<Enemy> enemies = [new Enemy()]
 
         // When
-        combat.setPreviousCombat(previousCombat)
+        combat.setNextCombat(previousCombat)
         combat.setSession(session)
         combat.setEnemies(enemies)
 
         // Then
         assert !combat.identifier
-        assert combat.previousCombat == previousCombat
+        assert combat.nextCombat == previousCombat
         assert combat.session == session
         assert combat.enemies == enemies
     }

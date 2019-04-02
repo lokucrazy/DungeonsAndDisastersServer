@@ -61,8 +61,8 @@ class SessionService {
         String dmId = session.dm ? session.dm.identifier : null
         String historyId = session.history ? session.history.identifier : null
         String chatId = session.chatLog ? session.chatLog.identifier : null
-        String mapId = session.mapList ? session.mapList.identifier : null
-        String combatId = session.combatList ? session.combatList.identifier : null
+        String mapId = session.map ? session.map.identifier : null
+        String combatId = session.combat ? session.combat.identifier : null
         Set<String> npcIds = session.npcs ?
                 session.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) :
                 null
