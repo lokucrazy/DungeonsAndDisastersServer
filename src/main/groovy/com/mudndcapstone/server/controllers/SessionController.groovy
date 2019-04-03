@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.validation.BindException
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
 
@@ -39,10 +41,10 @@ class SessionController {
         new ResponseEntity<>(sessionDtos, HttpStatus.OK)
     }
 
-    @Transactional
+    @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
-        if (!sessionDto || !sessionDto.dmId) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!sessionDto || !sessionDto.dmId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session dto or session dm not found")
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
         Session session
         if (!sessionRequest.identifier) {
@@ -57,11 +59,11 @@ class SessionController {
                 session.history = history
                 session = sessionService.updateSession(session)
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found to move relationships from")
             }
         }
 
-        if (!session) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session could not be created")
 
         SessionDto created = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(created, HttpStatus.CREATED)

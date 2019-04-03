@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
 
@@ -32,10 +33,10 @@ class CombatController {
         new ResponseEntity<>(combatDtos, HttpStatus.OK)
     }
 
-    @Transactional
+    @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
-        if (!combatDto.sessionId) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session id could not be found")
         Combat combatRequest = combatService.buildCombatFrom(combatDto)
         Combat combat
 
@@ -43,7 +44,7 @@ class CombatController {
             if (combatRequest.session) {
                 combat = combatService.createCombat(combatRequest)
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session does not exist, or has been turned into a history node")
             }
         } else {
             Combat lastCombat = combatService.getLastNode(combatRequest.identifier)
@@ -53,10 +54,10 @@ class CombatController {
                 lastCombat.nextCombat = combatService.createCombat(combatRequest)
                 combat = combatService.updateCombat(lastCombat).nextCombat
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "combat identifier does not exist")
             }
         }
-        if (!combat) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 
         CombatDto created = combatService.buildDtoFrom(combat)
         new ResponseEntity<>(created, HttpStatus.OK)
