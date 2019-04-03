@@ -183,7 +183,7 @@ class SessionControllerTests {
 
         // When
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        response = sessionController.getSessionChats("test")
+        response = sessionController.getSessionChats("test",Optional.empty(),Optional.empty())
 
         // Then
         assert response.statusCode == HttpStatus.OK
@@ -198,19 +198,17 @@ class SessionControllerTests {
         Session session = new Session()
         Chat chat = new Chat()
         List<String> chatLog = ["message 1", "message 2"]
-        ChatDto chatDto
         ResponseEntity response
 
         // When
         chat.setLog(chatLog)
         session.setChatLog(chat)
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        response = sessionController.getSessionChats("test")
-        chatDto = chatService.buildDtoFrom(session.chatLog)
+        response = sessionController.getSessionChats("test",Optional.empty(),Optional.empty())
 
         // Then
         assert response.statusCode == HttpStatus.OK
-        assert response.body == chatDto
+        assert response.body == chatLog
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
 
@@ -219,40 +217,38 @@ class SessionControllerTests {
     void givenSessionWithNoChats_whenAddingSessionChats_thenSessionControllerReturnsSessionWithNewChat() {
         // Given
         Session session = new Session()
-        ChatDto chatDto
         ResponseEntity response
 
         // When
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        response = sessionController.createChat("test", "hello world")
-        chatDto = chatService.buildDtoFrom(session.chatLog)
+        Mockito.when(chatService.createChat((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
+        response = sessionController.createChat("test", "hello world",Optional.empty(),Optional.empty())
 
         // Then
         assert response.statusCode == HttpStatus.OK
-        assert response.body == chatDto
+        assert response.body == ["hello world"]
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
 
-    @Ignore("broken") // TODO: fix broken test
     @Test
     void givenSessionWithChats_whenAddingSessionChats_thenSessionControllerReturnsSessionWithNewChat() {
         // Given
         Session session = new Session()
         Chat chat = new Chat()
         List<String> chatLog = ["message 1", "message 2"]
-        ChatDto chatDto
         ResponseEntity response
 
         // When
         chat.setLog(chatLog)
         session.setChatLog(chat)
+        Mockito.when(chatService.buildDtoFrom(session.chatLog)).thenReturn(new ChatDto(sessionId: "test", log: chatLog))
+        Mockito.when(chatService.createChat((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        response = sessionController.createChat("test", "hello world")
-        chatDto = chatService.buildDtoFrom(session.chatLog)
+        response = sessionController.createChat("test", "hello world",Optional.empty(),Optional.empty())
 
         // Then
         assert response.statusCode == HttpStatus.OK
-        assert response.body == chatDto
+        assert response.body == ["message 1", "message 2", "hello world"]
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
 
