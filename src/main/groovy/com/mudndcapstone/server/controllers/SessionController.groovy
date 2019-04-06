@@ -1,17 +1,13 @@
 package com.mudndcapstone.server.controllers
 
-import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
-import com.mudndcapstone.server.models.dto.CharacterDto
-import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.CharacterService
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.SessionService
-import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -63,44 +59,6 @@ class SessionController {
     ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.OK)
-    }
-
-    @GetMapping("/sessions/{sessionId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
-
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(session.characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
-    }
-
-    @GetMapping("/sessions/{sessionId}/chats")
-    ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!session.chatLog || !session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
-
-        List<String> chats = PaginationHandler.getPage(session.chatLog.log, page, count)
-        new ResponseEntity<>(chats, HttpStatus.OK)
-    }
-
-    @PostMapping("/sessions/{sessionId}/chats")
-    ResponseEntity<List<String>> createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        // TODO: validate and strip string
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-
-        // Find or create DTO with session id and message appended to log
-        ChatDto chatDto = session.chatLog ? chatService.buildDtoFrom(session.chatLog) : new ChatDto()
-        if (!chatDto.sessionId) chatDto.setSessionId(session.identifier)
-        chatDto.addMessage(message)
-
-        // Update chat node with new log
-        Chat updated = chatService.createChat(chatDto)
-
-        List<String> chats = PaginationHandler.getPage(updated.log, page, count)
-        new ResponseEntity<>(chats, HttpStatus.OK)
     }
 
     /* History */
