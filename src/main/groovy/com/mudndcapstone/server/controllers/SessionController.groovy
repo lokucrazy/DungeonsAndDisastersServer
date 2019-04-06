@@ -4,8 +4,6 @@ import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.CharacterService
-import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.SessionService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +17,6 @@ import javax.validation.Valid
 class SessionController {
 
     @Autowired SessionService sessionService
-    @Autowired CharacterService characterService
-    @Autowired ChatService chatService
     @Autowired HistoryService historyService
 
     /* Sessions */
