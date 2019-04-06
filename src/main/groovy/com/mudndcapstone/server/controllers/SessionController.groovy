@@ -3,6 +3,7 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
@@ -11,6 +12,7 @@ import com.mudndcapstone.server.services.CharacterService
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.services.UserService
 import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -26,6 +28,7 @@ class SessionController {
     @Autowired CharacterService characterService
     @Autowired ChatService chatService
     @Autowired HistoryService historyService
+    @Autowired UserService userService
 
     /* Sessions */
     @GetMapping("/sessions")
@@ -37,6 +40,9 @@ class SessionController {
 
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
+        User dm = userService.getUserById(sessionDto.dmId)
+        if (!dm) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
         Session session = sessionService.createSession(sessionRequest)
         if (!session) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
