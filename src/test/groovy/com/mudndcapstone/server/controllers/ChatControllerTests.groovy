@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.test.context.junit4.SpringRunner
 
 import static org.mockito.ArgumentMatchers.notNull
-import static org.mockito.ArgumentMatchers.notNull
 
 @RunWith(SpringRunner)
 @SpringBootTest
