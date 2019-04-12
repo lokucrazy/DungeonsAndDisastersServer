@@ -4,6 +4,7 @@ import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
@@ -13,6 +14,7 @@ import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.services.UserService
 import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -28,6 +30,7 @@ import javax.validation.Valid
 class SessionController {
 
     @Autowired SessionService sessionService
+    @Autowired UserService userService
     @Autowired CharacterService characterService
     @Autowired ChatService chatService
     @Autowired MapService mapService
@@ -72,7 +75,7 @@ class SessionController {
     @GetMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> getSessionById(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
 
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
@@ -81,6 +84,22 @@ class SessionController {
     @PutMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @PutMapping("/sessions/{sessionId}/users/{userId}")
+    ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
+        if (!sessionId || !userId ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or userIds not found")
+        Session session = sessionService.getSessionById(sessionId)
+        User user = userService.getUserById(userId)
+        SessionDto sessionDto
+
+        session = sessionService.attachUserToSession(session, user)
+        if (session) {
+            sessionDto = sessionService.buildDtoFrom(session)
+            return new ResponseEntity<SessionDto>(sessionDto, HttpStatus.OK)
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
+        }
     }
 
     @DeleteMapping("/sessions/{sessionId}")
@@ -102,8 +121,9 @@ class SessionController {
     @GetMapping("/sessions/{sessionId}/chats")
     ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
         Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!session.chatLog || !session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found")
+        if (!session.chatLog) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session does not a have chat node attached")
+        if (!session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
 
         List<String> chats = PaginationHandler.getPage(session.chatLog.log, page, count)
         new ResponseEntity<>(chats, HttpStatus.OK)

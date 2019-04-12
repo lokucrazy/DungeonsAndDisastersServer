@@ -93,7 +93,7 @@ class SessionControllerTests {
         // When
         Mockito.when(sessionService.buildSessionFrom(oldSessionDto)).thenReturn(oldSession)
         Mockito.when(sessionService.createSession(any(Session))).thenReturn(newSession)
-        Mockito.when(sessionService.moveRelationships(oldSession.identifier, newSession.identifier)).thenReturn(newSession)
+        Mockito.when(sessionService.moveRelationships(oldSession.identifier)).thenReturn(newSession)
         Mockito.when(historyService.convertSessionToHistory(oldSession.identifier)).thenReturn(history)
         Mockito.when(sessionService.updateSession(newSession)).thenReturn(newSession)
         Mockito.when(sessionService.buildDtoFrom(newSession)).thenReturn(newSessionDto)
@@ -104,7 +104,7 @@ class SessionControllerTests {
         assert response.body == newSessionDto
         assert newSessionDto.identifier == newSession.identifier
         Mockito.verify(sessionService, Mockito.atLeastOnce()).createSession(any(Session))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).moveRelationships(any(String), any(String))
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).moveRelationships(any(String))
         Mockito.verify(historyService, Mockito.atLeastOnce()).convertSessionToHistory(any(String))
         Mockito.verify(sessionService, Mockito.atLeastOnce()).updateSession(any(Session))
     }
@@ -191,7 +191,6 @@ class SessionControllerTests {
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
 
-    @Ignore("fixed in a different branch")
     @Test
     void givenSessionWithChats_whenGettingSessionChats_thenSessionControllerReturnsChats() {
         // Given
@@ -212,7 +211,6 @@ class SessionControllerTests {
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
 
-    @Ignore("fixed in a different branch")
     @Test
     void givenSessionWithNoChats_whenAddingSessionChats_thenSessionControllerReturnsSessionWithNewChat() {
         // Given
@@ -221,7 +219,7 @@ class SessionControllerTests {
 
         // When
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        Mockito.when(chatService.createChat((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
+        Mockito.when(chatService.createChatFromDTO((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
         response = sessionController.createChat("test", "hello world",Optional.empty(),Optional.empty())
 
         // Then
@@ -242,7 +240,7 @@ class SessionControllerTests {
         chat.setLog(chatLog)
         session.setChatLog(chat)
         Mockito.when(chatService.buildDtoFrom(session.chatLog)).thenReturn(new ChatDto(sessionId: "test", log: chatLog))
-        Mockito.when(chatService.createChat((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
+        Mockito.when(chatService.createChatFromDTO((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
         response = sessionController.createChat("test", "hello world",Optional.empty(),Optional.empty())
 

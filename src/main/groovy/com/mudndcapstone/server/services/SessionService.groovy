@@ -4,6 +4,7 @@ import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.repositories.SessionRepository
+import com.mudndcapstone.server.repositories.UserRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -14,6 +15,7 @@ import java.util.stream.Collectors
 class SessionService {
 
     @Autowired SessionRepository sessionRepository
+    @Autowired UserRepository userRepository
     @Autowired UserService userService
     @Autowired ModelMapper modelMapper
 
@@ -31,8 +33,17 @@ class SessionService {
     }
 
     Session updateSession(Session session) {
-        if (!session.dm || !session.identifier) return null
+        if (!session.dm) return null
+        sessionRepository.save(session)
+    }
+
+    Session attachUserToSession(Session session, User user) {
+        if (!session || !user) return null
         if (!sessionRepository.existsById(session.identifier)) return null
+        if (!userRepository.existsById(user.identifier)) return null
+
+        if (!session.players) { session.players = [] }
+        session.players.add(user)
         sessionRepository.save(session)
     }
 
