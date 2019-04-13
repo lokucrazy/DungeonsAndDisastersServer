@@ -60,7 +60,7 @@ class SessionControllerTests {
         Mockito.when(sessionService.buildSessionFrom(any(SessionDto))).thenReturn(session)
         Mockito.when(chatService.createChat(any(Chat))).thenReturn(chat)
         Mockito.when(mapService.createMap(any(Map))).thenReturn(map)
-        Mockito.when(sessionService.createSession(any(Session))).thenReturn(session)
+        Mockito.when(sessionService.forgeSession(any(Session))).thenReturn(session)
         Mockito.when(sessionService.buildDtoFrom(any(Session))).thenReturn(sessionDto)
         response = sessionController.createSession(sessionDto)
 
@@ -69,7 +69,7 @@ class SessionControllerTests {
         assert response.body == sessionDto
         Mockito.verify(chatService, Mockito.atLeastOnce()).createChat(any(Chat))
         Mockito.verify(mapService, Mockito.atLeastOnce()).createMap(any(Map))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).createSession(any(Session))
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).forgeSession(any(Session))
     }
 
     @Test
@@ -92,10 +92,10 @@ class SessionControllerTests {
 
         // When
         Mockito.when(sessionService.buildSessionFrom(oldSessionDto)).thenReturn(oldSession)
-        Mockito.when(sessionService.createSession(any(Session))).thenReturn(newSession)
+        Mockito.when(sessionService.forgeSession(any(Session))).thenReturn(newSession)
         Mockito.when(sessionService.moveRelationships(oldSession.identifier)).thenReturn(newSession)
         Mockito.when(historyService.convertSessionToHistory(oldSession.identifier)).thenReturn(history)
-        Mockito.when(sessionService.updateSession(newSession)).thenReturn(newSession)
+        Mockito.when(sessionService.forgeSession(newSession)).thenReturn(newSession)
         Mockito.when(sessionService.buildDtoFrom(newSession)).thenReturn(newSessionDto)
         response = sessionController.createSession(oldSessionDto)
 
@@ -103,10 +103,10 @@ class SessionControllerTests {
         assert response.statusCode == HttpStatus.CREATED
         assert response.body == newSessionDto
         assert newSessionDto.identifier == newSession.identifier
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).createSession(any(Session))
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).forgeSession(any(Session))
         Mockito.verify(sessionService, Mockito.atLeastOnce()).moveRelationships(any(String))
         Mockito.verify(historyService, Mockito.atLeastOnce()).convertSessionToHistory(any(String))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).updateSession(any(Session))
+        Mockito.verify(sessionService, Mockito.atLeastOnce()).forgeSession(any(Session))
     }
 
     @Test

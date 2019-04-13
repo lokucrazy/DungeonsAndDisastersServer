@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.validation.BindException
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
@@ -51,16 +50,16 @@ class SessionController {
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
         Session session
         if (!sessionRequest.identifier) {
-            sessionService.createSession(sessionRequest)
+            sessionRequest.identifier = null
             sessionRequest.chatLog = chatService.createChat(new Chat(session: sessionRequest))
             sessionRequest.map = mapService.createMap(new Map(session: sessionRequest))
-            session = sessionService.updateSession(sessionRequest)
+            session = sessionService.forgeSession(sessionRequest)
         } else {
             session = sessionService.moveRelationships(sessionRequest.identifier)
             History history = historyService.convertSessionToHistory(sessionRequest.identifier)
             if (session && history) {
                 session.history = history
-                session = sessionService.updateSession(session)
+                session = sessionService.forgeSession(session)
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found to move relationships from")
             }

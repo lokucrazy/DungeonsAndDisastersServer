@@ -56,7 +56,7 @@ class SessionServiceTests {
         sessionRepository.save(newSession)
         Mockito.when(sessionRepository.refactorRelationships(oldSession.identifier, newSession.identifier))
                 .thenReturn(Optional.of(newSession))
-        sessionPostMove = sessionService.moveRelationships(oldSession.identifier, newSession.identifier)
+        sessionPostMove = sessionService.moveRelationships(oldSession.identifier)
 
         // Then
         assert sessionPostMove == newSession
@@ -74,7 +74,7 @@ class SessionServiceTests {
         sessionRepository.save(session)
         Mockito.when(sessionRepository.existsById(session.identifier)).thenReturn(true)
         Mockito.when(sessionRepository.save(session)).thenReturn(session)
-        updated = sessionService.updateSession(session)
+        updated = sessionService.forgeSession(session)
 
         // Then
         assert updated != null

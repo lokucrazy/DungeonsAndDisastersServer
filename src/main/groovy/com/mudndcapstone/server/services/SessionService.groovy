@@ -27,12 +27,7 @@ class SessionService {
         sessionRepository.findById(id).orElse(null)
     }
 
-    Session createSession(Session session) {
-        if (!session.dm) return null
-        sessionRepository.save(session)
-    }
-
-    Session updateSession(Session session) {
+    Session forgeSession(Session session) {
         if (!session.dm) return null
         sessionRepository.save(session)
     }
