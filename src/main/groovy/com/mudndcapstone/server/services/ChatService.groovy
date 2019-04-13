@@ -31,6 +31,14 @@ class ChatService {
         chatRepository.save(chat)
     }
 
+    Chat addMessage(Chat chat, String message) {
+        if (!chat) return null
+        if (!message) return chat
+
+        chat.log == null ? chat.log = [message] : chat.log << message
+        chatRepository.save(chat)
+    }
+
     Chat createChatFromDTO(ChatDto chatDto) {
         if (!chatDto.sessionId) return null
 

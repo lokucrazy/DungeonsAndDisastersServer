@@ -117,34 +117,34 @@ class SessionController {
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
-    @GetMapping("/sessions/{sessionId}/chats")
-    ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found")
-        if (!session.chatLog) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session does not a have chat node attached")
-        if (!session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
-
-        List<String> chats = PaginationHandler.getPage(session.chatLog.log, page, count)
-        new ResponseEntity<>(chats, HttpStatus.OK)
-    }
-
-    @PostMapping("/sessions/{sessionId}/chats")
-    ResponseEntity<List<String>> createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        // TODO: validate and strip string
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-
-        // Find or create DTO with session id and message appended to log
-        ChatDto chatDto = session.chatLog ? chatService.buildDtoFrom(session.chatLog) : new ChatDto()
-        if (!chatDto.sessionId) chatDto.setSessionId(session.identifier)
-        chatDto.addMessage(message)
-
-        // Update chat node with new log
-        Chat updated = chatService.createChatFromDTO(chatDto)
-
-        List<String> chats = PaginationHandler.getPage(updated.log, page, count)
-        new ResponseEntity<>(chats, HttpStatus.OK)
-    }
+//    @GetMapping("/sessions/{sessionId}/chats")
+//    ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
+//        Session session = sessionService.getSessionById(sessionId)
+//        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found")
+//        if (!session.chatLog) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session does not a have chat node attached")
+//        if (!session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
+//
+//        List<String> chats = PaginationHandler.getPage(session.chatLog.log, page, count)
+//        new ResponseEntity<>(chats, HttpStatus.OK)
+//    }
+//
+//    @PostMapping("/sessions/{sessionId}/chats")
+//    ResponseEntity<List<String>> createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
+//
+//        Session session = sessionService.getSessionById(sessionId)
+//        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+//
+//        // Find or create DTO with session id and message appended to log
+//        ChatDto chatDto = session.chatLog ? chatService.buildDtoFrom(session.chatLog) : new ChatDto()
+//        if (!chatDto.sessionId) chatDto.setSessionId(session.identifier)
+//        chatDto.addMessage(message)
+//
+//        // Update chat node with new log
+//        Chat updated = chatService.createChatFromDTO(chatDto)
+//
+//        List<String> chats = PaginationHandler.getPage(updated.log, page, count)
+//        new ResponseEntity<>(chats, HttpStatus.OK)
+//    }
 
     /* History */
     @GetMapping("/histories")
