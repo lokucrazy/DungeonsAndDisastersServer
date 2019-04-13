@@ -36,27 +36,11 @@ class CombatController {
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
-        if (!combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session id could not be found")
         Combat combatRequest = combatService.buildCombatFrom(combatDto)
+        if (!combatRequest.session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found, either it doesn't exist or is a history")
         Combat combat
 
-        if (!combatRequest.identifier) {
-            if (combatRequest.session) {
-                combat = combatService.createCombat(combatRequest)
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session does not exist, or has been turned into a history node")
-            }
-        } else {
-            Combat lastCombat = combatService.getLastNode(combatRequest.identifier)
-            combatRequest.session = null
-            combatRequest.identifier = null
-            if (lastCombat) {
-                lastCombat.nextCombat = combatService.createCombat(combatRequest)
-                combat = combatService.updateCombat(lastCombat).nextCombat
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "combat identifier does not exist")
-            }
-        }
+        combat = combatService.createCombatInSession(combatRequest)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 
         CombatDto created = combatService.buildDtoFrom(combat)

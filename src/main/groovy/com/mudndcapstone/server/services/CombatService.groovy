@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Combat
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.repositories.CombatRepository
 import org.modelmapper.ModelMapper
@@ -38,8 +39,26 @@ class CombatService {
         combatRepository.deleteById(id)
     }
 
-    Combat getLastNode(String id) {
-        combatRepository.findLastNodeInPath(id).orElse(null)
+    Combat createCombatInSession(Combat combat) {
+        if (!combat) return null
+        Session session = combat.session
+
+        if (session.combat == null) {
+            combatRepository.save(combat)
+        } else {
+            combat.session = null
+            Combat lastCombat = findLastCombat(session.combat)
+            lastCombat.nextCombat = combat
+            combatRepository.save(lastCombat)
+            combat
+        }
+    }
+
+    Combat findLastCombat(Combat combat) {
+        combat = combatRepository.findById(combat.identifier).orElse(null)
+        if (!combat) return null
+
+        combat.nextCombat == null ? combat : findLastCombat(combat.nextCombat)
     }
 
     Combat buildCombatFrom(CombatDto combatDto) {
