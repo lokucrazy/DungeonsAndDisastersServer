@@ -1,16 +1,19 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
+import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.ChatDto
+import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.CharacterService
 import com.mudndcapstone.server.services.ChatService
+import com.mudndcapstone.server.services.CombatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
@@ -31,6 +34,7 @@ class SessionController {
     @Autowired SessionService sessionService
     @Autowired UserService userService
     @Autowired CharacterService characterService
+    @Autowired CombatService combatService
     @Autowired ChatService chatService
     @Autowired MapService mapService
     @Autowired HistoryService historyService
@@ -79,7 +83,17 @@ class SessionController {
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
-  
+
+    @GetMapping("/sessions/{sessionId}/characters")
+    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
+
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(session.characters)
+        new ResponseEntity<>(characterDtos, HttpStatus.OK)
+    }
+
     @PutMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
@@ -93,28 +107,34 @@ class SessionController {
         SessionDto sessionDto
 
         session = sessionService.attachUserToSession(session, user)
-        if (session) {
-            sessionDto = sessionService.buildDtoFrom(session)
-            return new ResponseEntity<SessionDto>(sessionDto, HttpStatus.OK)
-        } else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
-        }
+
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
+
+        sessionDto = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(sessionDto, HttpStatus.OK)
+    }
+
+    @Transactional(rollbackFor = ResponseStatusException)
+    @PostMapping("/sessions/{sessionId}/combat")
+    ResponseEntity<CombatDto> insertCombat(@PathVariable String sessionId, @RequestBody CombatDto combatDto) {
+        if (!sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId not found")
+        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
+        Session session = sessionService.getSessionById(sessionId)
+        Combat combatRequest = combatService.buildCombatFrom(combatDto)
+        Combat combat
+
+        combat = combatService.insertCombatInPath(session, combatRequest)
+
+        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
+
+        CombatDto created = combatService.buildDtoFrom(combat)
+        new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
     @DeleteMapping("/sessions/{sessionId}")
     ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.OK)
-    }
-
-    @GetMapping("/sessions/{sessionId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
-
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(session.characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
 //    @GetMapping("/sessions/{sessionId}/chats")

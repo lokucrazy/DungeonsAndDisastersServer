@@ -31,7 +31,6 @@ class CombatService {
 
     Combat updateCombat(Combat combat) {
         if (!combat.identifier) return null
-        if (!combatRepository.existsById(combat.identifier)) return null
         combatRepository.save(combat)
     }
 
@@ -59,6 +58,23 @@ class CombatService {
         if (!combat) return null
 
         combat.nextCombat == null ? combat : findLastCombat(combat.nextCombat)
+    }
+
+    Combat insertCombatInPath(Session session, Combat newCombat) {
+        if (!session || !newCombat) return null
+        Combat prevCombat = combatRepository.findPreviousCombat(session.combat.identifier).orElse(null)
+        Combat nextCombat = session.combat
+
+        if (prevCombat) {
+            prevCombat.nextCombat = newCombat
+            combatRepository.save(prevCombat)
+        }
+        newCombat.nextCombat = nextCombat
+        newCombat = combatRepository.save(newCombat)
+
+        session.combat = newCombat
+        sessionService.forgeSession(session)
+        newCombat
     }
 
     Combat buildCombatFrom(CombatDto combatDto) {
