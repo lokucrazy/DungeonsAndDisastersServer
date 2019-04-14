@@ -3,6 +3,7 @@ package com.mudndcapstone.server.services
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.repositories.CombatRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +25,7 @@ class CombatService {
     }
 
     Combat createCombat(Combat combat) {
+        Auditor.enableAuditing(combat)
         combatRepository.save(combat)
     }
 

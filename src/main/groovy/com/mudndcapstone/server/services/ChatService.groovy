@@ -4,6 +4,7 @@ import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.repositories.ChatRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,6 +29,7 @@ class ChatService {
     Chat createChat(Chat chat) {
         if (!chat.session) return null
 
+        Auditor.enableAuditing(chat)
         chatRepository.save(chat)
     }
 
@@ -38,6 +40,7 @@ class ChatService {
         if (!session) return null
 
         Chat chat = buildChatFrom(chatDto)
+        Auditor.enableAuditing(chat)
         chatRepository.save(chat)
     }
 

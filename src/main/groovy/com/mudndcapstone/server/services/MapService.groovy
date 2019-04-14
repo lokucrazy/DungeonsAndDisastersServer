@@ -3,6 +3,7 @@ package com.mudndcapstone.server.services
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.dto.MapDto
 import com.mudndcapstone.server.repositories.MapRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +25,7 @@ class MapService {
     }
 
     Map createMap(Map map) {
+        Auditor.enableAuditing(map)
         mapRepository.save(map)
     }
 
