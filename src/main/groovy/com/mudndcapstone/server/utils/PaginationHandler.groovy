@@ -9,8 +9,8 @@ class PaginationHandler {
 
     static <T> List<T> getPage(List<T> elements, Optional<Integer> _page, Optional<Integer> _count) {
         PagedListHolder pagedListHolder = new PagedListHolder(elements)
-        int page = _page.orElse(DEFAULT_PAGE)
-        int count = _count.orElse(DEFAULT_PAGE_SIZE)
+        int page = _page ? _page.orElse(DEFAULT_PAGE) : DEFAULT_PAGE
+        int count = _count ? _count.orElse(DEFAULT_PAGE_SIZE) : DEFAULT_PAGE_SIZE
 
         pagedListHolder.setPageSize(count)
 
