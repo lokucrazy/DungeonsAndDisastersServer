@@ -2,7 +2,9 @@ package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
+import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.SessionDto
+import com.mudndcapstone.server.repositories.CharacterRepository
 import com.mudndcapstone.server.repositories.SessionRepository
 import com.mudndcapstone.server.repositories.UserRepository
 import org.modelmapper.ModelMapper
@@ -16,6 +18,7 @@ class SessionService {
 
     @Autowired SessionRepository sessionRepository
     @Autowired UserRepository userRepository
+    @Autowired CharacterRepository characterRepository
     @Autowired UserService userService
     @Autowired ModelMapper modelMapper
 
@@ -39,6 +42,16 @@ class SessionService {
 
         if (!session.players) { session.players = [] }
         session.players.add(user)
+        sessionRepository.save(session)
+    }
+
+    Session attachCharacterToSession(Session session, Character character) {
+        if (!session || !character) return null
+        if (!sessionRepository.existsById(session.identifier)) return null
+        if (!characterRepository.existsById(character.identifier)) return null
+
+        if (!session.characters) { session.characters = [] }
+        session.characters.add(character)
         sessionRepository.save(session)
     }
 

@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.History
@@ -19,6 +20,7 @@ import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.services.UserService
 import com.mudndcapstone.server.utils.PaginationHandler
+import com.sun.net.httpserver.HttpsServer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -111,6 +113,21 @@ class SessionController {
         if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
 
         sessionDto = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(sessionDto, HttpStatus.OK)
+    }
+
+    @PutMapping("/sessions/{sessionId}/characters/{characterId}")
+    ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
+        if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
+        Session session = sessionService.getSessionById(sessionId)
+        Character character = characterService.getCharacterById(characterId)
+        if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
+
+        session = sessionService.attachCharacterToSession(session, character)
+
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
+
+        SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
 
