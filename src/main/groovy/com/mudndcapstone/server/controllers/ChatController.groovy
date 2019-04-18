@@ -1,37 +1,32 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.ChatService
-
+import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/chats")
 class ChatController {
 
     @Autowired ChatService chatService
+    @Autowired SessionService sessionService
 
-    @GetMapping
+    @GetMapping("/chats")
     ResponseEntity<Set<ChatDto>> getAllChats() {
         Set<Chat> chats = chatService.getAllChats()
         Set<ChatDto> chatDtos = chatService.buildDtoSetFrom(chats)
         new ResponseEntity<>(chatDtos, HttpStatus.OK)
     }
 
-    @PostMapping
+    @PostMapping("/chats")
     ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
         Chat chatRequest = chatService.buildChatFrom(chatDto)
         Chat chat = chatService.createChat(chatRequest)
@@ -41,7 +36,7 @@ class ChatController {
         new ResponseEntity<>(created, HttpStatus.OK)
     }
 
-    @GetMapping("/{chatId}")
+    @GetMapping("/chats/{chatId}")
     ResponseEntity<ChatDto> getChatById(@PathVariable String chatId) {
         Chat chat = chatService.getChatById(chatId)
         if (!chat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
@@ -50,15 +45,43 @@ class ChatController {
         new ResponseEntity<>(chatDto, HttpStatus.OK)
     }
 
-    @PutMapping("/{chatId}")
+    @PutMapping("/chats/{chatId}")
     ResponseEntity<ChatDto> updateChat(@PathVariable String chatId, @Valid @RequestBody ChatDto chatDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
-    @DeleteMapping("/{chatId}")
+    @DeleteMapping("/chats/{chatId}")
     ResponseEntity deleteChat(@PathVariable String chatId) {
         chatService.deleteChat(chatId)
         new ResponseEntity(HttpStatus.OK)
+    }
+
+    @GetMapping("/sessions/{sessionId}/chats")
+    ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!session.chatLog || !session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
+
+        List<String> chats = PaginationHandler.getPage(session.chatLog.log, page, count)
+        new ResponseEntity<>(chats, HttpStatus.OK)
+    }
+
+    @PostMapping("/sessions/{sessionId}/chats")
+    ResponseEntity<List<String>> createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
+        // TODO: validate and strip string
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
+        // Find or create DTO with session id and message appended to log
+        ChatDto chatDto = session.chatLog ? chatService.buildDtoFrom(session.chatLog) : new ChatDto()
+        if (!chatDto.sessionId) chatDto.setSessionId(session.identifier)
+        chatDto.addMessage(message)
+
+        // Update chat node with new log
+        Chat updated = chatService.createChat(chatDto)
+
+        List<String> chats = PaginationHandler.getPage(updated.log, page, count)
+        new ResponseEntity<>(chats, HttpStatus.OK)
     }
 
 }

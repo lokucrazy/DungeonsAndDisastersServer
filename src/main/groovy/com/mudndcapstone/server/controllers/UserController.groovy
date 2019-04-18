@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.User
-import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.UserDto
 import com.mudndcapstone.server.services.CharacterService
 import com.mudndcapstone.server.services.UserService
@@ -54,16 +53,6 @@ class UserController {
     ResponseEntity deleteUser(@PathVariable String userId) {
         userService.deleteUserById(userId)
         new ResponseEntity(HttpStatus.OK)
-    }
-
-    @GetMapping("/users/{userId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
-        User user = userService.getUserById(userId)
-        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
-
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(user.characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
     /* DMs */
