@@ -74,7 +74,7 @@ class SessionServiceTests {
         sessionRepository.save(session)
         Mockito.when(sessionRepository.existsById(session.identifier)).thenReturn(true)
         Mockito.when(sessionRepository.save(session)).thenReturn(session)
-        updated = sessionService.forgeSession(session)
+        updated = sessionService.upsertSession(session)
 
         // Then
         assert updated != null

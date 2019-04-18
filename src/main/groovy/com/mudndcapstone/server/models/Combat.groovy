@@ -5,7 +5,6 @@ import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
 class Combat extends Node {
-
     @Relationship(type = "NEXT_COMBAT", direction = Relationship.OUTGOING)
     Combat nextCombat
 

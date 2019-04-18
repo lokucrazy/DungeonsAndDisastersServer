@@ -73,7 +73,7 @@ class CombatService {
         newCombat = combatRepository.save(newCombat)
 
         session.combat = newCombat
-        sessionService.forgeSession(session)
+        sessionService.upsertSession(session)
         newCombat
     }
 

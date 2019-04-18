@@ -30,7 +30,7 @@ class SessionService {
         sessionRepository.findById(id).orElse(null)
     }
 
-    Session forgeSession(Session session) {
+    Session upsertSession(Session session) {
         if (!session.dm) return null
         sessionRepository.save(session)
     }

@@ -1,25 +1,14 @@
 package com.mudndcapstone.server.controllers
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonValue
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.utils.Messenger
 import com.mudndcapstone.server.utils.PaginationHandler
-import org.apache.tomcat.util.json.JSONParser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
@@ -57,16 +46,14 @@ class ChatController {
     }
 
     @PutMapping("/{chatId}")
-    ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        if (!chatId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "chatId not found")
+    ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger) {
         Chat chatRequest = chatService.getChatById(chatId)
-        Chat chat
+        if (!chatRequest) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "chatId not found")
 
-        chat = chatService.addMessage(chatRequest, messenger.message)
-
+        Chat chat = chatService.addMessage(chatRequest, messenger.message)
         if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "message could not be added")
-        List<String> messages = PaginationHandler.getPage(chat.log, page, count)
 
+        List<String> messages = PaginationHandler.getPage(chat.log, null, null)
         new ResponseEntity<>(messages, HttpStatus.OK)
     }
 

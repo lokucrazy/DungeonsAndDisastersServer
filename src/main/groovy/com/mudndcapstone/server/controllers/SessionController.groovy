@@ -8,7 +8,6 @@ import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
-import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
@@ -19,8 +18,6 @@ import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.services.UserService
-import com.mudndcapstone.server.utils.PaginationHandler
-import com.sun.net.httpserver.HttpsServer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -59,16 +56,14 @@ class SessionController {
             sessionRequest.identifier = null
             sessionRequest.chatLog = chatService.createChat(new Chat(session: sessionRequest))
             sessionRequest.map = mapService.createMap(new Map(session: sessionRequest))
-            session = sessionService.forgeSession(sessionRequest)
+            session = sessionService.upsertSession(sessionRequest)
         } else {
             session = sessionService.moveRelationships(sessionRequest.identifier)
             History history = historyService.convertSessionToHistory(sessionRequest.identifier)
-            if (session && history) {
-                session.history = history
-                session = sessionService.forgeSession(session)
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found to move relationships from")
-            }
+            if (!session || !history) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session not found to move relationships from")
+
+            session.history = history
+            session = sessionService.upsertSession(session)
         }
 
         if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session could not be created")
@@ -109,7 +104,6 @@ class SessionController {
         SessionDto sessionDto
 
         session = sessionService.attachUserToSession(session, user)
-
         if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
 
         sessionDto = sessionService.buildDtoFrom(session)
@@ -124,7 +118,6 @@ class SessionController {
         if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
 
         session = sessionService.attachCharacterToSession(session, character)
-
         if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
 
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
@@ -138,10 +131,8 @@ class SessionController {
         if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
         Session session = sessionService.getSessionById(sessionId)
         Combat combatRequest = combatService.buildCombatFrom(combatDto)
-        Combat combat
 
-        combat = combatService.insertCombatInPath(session, combatRequest)
-
+        Combat combat = combatService.insertCombatInPath(session, combatRequest)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 
         CombatDto created = combatService.buildDtoFrom(combat)
@@ -153,35 +144,6 @@ class SessionController {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.OK)
     }
-
-//    @GetMapping("/sessions/{sessionId}/chats")
-//    ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-//        Session session = sessionService.getSessionById(sessionId)
-//        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session not found")
-//        if (!session.chatLog) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session does not a have chat node attached")
-//        if (!session.chatLog.log) return new ResponseEntity<>([], HttpStatus.OK)
-//
-//        List<String> chats = PaginationHandler.getPage(session.chatLog.log, page, count)
-//        new ResponseEntity<>(chats, HttpStatus.OK)
-//    }
-//
-//    @PostMapping("/sessions/{sessionId}/chats")
-//    ResponseEntity<List<String>> createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-//
-//        Session session = sessionService.getSessionById(sessionId)
-//        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-//
-//        // Find or create DTO with session id and message appended to log
-//        ChatDto chatDto = session.chatLog ? chatService.buildDtoFrom(session.chatLog) : new ChatDto()
-//        if (!chatDto.sessionId) chatDto.setSessionId(session.identifier)
-//        chatDto.addMessage(message)
-//
-//        // Update chat node with new log
-//        Chat updated = chatService.createChatFromDTO(chatDto)
-//
-//        List<String> chats = PaginationHandler.getPage(updated.log, page, count)
-//        new ResponseEntity<>(chats, HttpStatus.OK)
-//    }
 
     /* History */
     @GetMapping("/histories")

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface SessionRepository extends Neo4jRepository<Session, String> {
-
     @Query("""MATCH (o:Session {identifier:{0}})
               MATCH (n:Session {identifier:{1}})
               MATCH (o)-[r]->() WHERE NOT type(r)='HAS_PREVIOUS_SESSION'

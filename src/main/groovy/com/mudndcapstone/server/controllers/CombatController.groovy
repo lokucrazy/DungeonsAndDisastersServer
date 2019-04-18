@@ -38,9 +38,8 @@ class CombatController {
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
         Combat combatRequest = combatService.buildCombatFrom(combatDto)
         if (!combatRequest.session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found, either it doesn't exist or is a history")
-        Combat combat
 
-        combat = combatService.createCombatInSession(combatRequest)
+        Combat combat = combatService.createCombatInSession(combatRequest)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 
         CombatDto created = combatService.buildDtoFrom(combat)
