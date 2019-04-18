@@ -3,7 +3,7 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.ChatService
-import com.mudndcapstone.server.utils.Messenger
+import com.mudndcapstone.server.models.Messenger
 import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
