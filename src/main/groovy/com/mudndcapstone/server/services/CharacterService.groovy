@@ -3,6 +3,7 @@ package com.mudndcapstone.server.services
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.repositories.CharacterRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +25,7 @@ class CharacterService {
     }
 
     Character createCharacter(Character character) {
+        Auditor.enableAuditing(character)
         characterRepository.save(character)
     }
 

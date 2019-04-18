@@ -4,6 +4,7 @@ import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.repositories.SessionRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,6 +29,7 @@ class SessionService {
     Session createSession(Session session) {
         if (!session.dm) return null
 
+        Auditor.enableAuditing(session)
         sessionRepository.save(session)
     }
 

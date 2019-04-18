@@ -3,6 +3,7 @@ package com.mudndcapstone.server.services
 import com.mudndcapstone.server.models.NPC
 import com.mudndcapstone.server.models.dto.NPCDto
 import com.mudndcapstone.server.repositories.NPCRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +25,7 @@ class NPCService {
     }
 
     NPC createNPC(NPC npc) {
+        Auditor.enableAuditing(npc)
         npcRepository.save(npc)
     }
 
