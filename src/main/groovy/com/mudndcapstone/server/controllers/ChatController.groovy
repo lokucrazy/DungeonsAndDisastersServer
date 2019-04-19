@@ -76,21 +76,8 @@ class ChatController {
     }
 
     @PostMapping("/sessions/{sessionId}/chats")
-    ResponseEntity<List<String>> createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        // TODO: validate and strip string
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-
-        // Find or create DTO with session id and message appended to log
-        ChatDto chatDto = session.chatLog ? chatService.buildDtoFrom(session.chatLog) : new ChatDto()
-        if (!chatDto.sessionId) chatDto.setSessionId(session.identifier)
-        chatDto.addMessage(message)
-
-        // Update chat node with new log
-        Chat updated = chatService.createChat(chatDto)
-
-        List<String> chats = PaginationHandler.getPage(updated.log, page, count)
-        new ResponseEntity<>(chats, HttpStatus.OK)
+    ResponseEntity createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
+        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
 }

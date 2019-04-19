@@ -40,33 +40,18 @@ class CombatService {
         combatRepository.deleteById(id)
     }
 
-    /* TODO: this is confusing + shouldn't this go in SessionService? */
-    Combat createCombatInSession(Combat combat) {
-        if (!combat) return null
-        Session session = combat.session
+    Combat createCombatInSession(Combat combat, Session session) {
+        if (!combat || !session) return null
+        if (!session.combat) return combatRepository.save(combat)
 
-        /* TODO: Is this check necessary? Above we are grabbing the combat's session so that session's combat *can't* be null below..? */
-        if (session.combat == null) {
-            combatRepository.save(combat)
-        } else {
-            combat.session = null
-            Combat lastCombat = findLastCombat(session.combat)
-            lastCombat.nextCombat = combat
-            combatRepository.save(lastCombat)
-            combat
-        }
+        combat.session = null
+        Combat lastCombat = findLastCombat(session.combat)
+        lastCombat.nextCombat = combat
+        combatRepository.save(lastCombat)
+        combat
     }
 
-    Combat findLastCombat(Combat combat) {
-        /* @TODO: Not sure this check if necessary? Any combat being passed in to this method should exist in DB */
-        combat = combatRepository.findById(combat.identifier).orElse(null)
-        if (!combat) return null
-
-        if (!combat.nextCombat) return combat
-        return findLastCombat(combat.nextCombat)
-    }
-
-    Combat insertCombatInPath(Session session, Combat newCombat) {
+    Combat insertCombatInPath(Combat newCombat, Session session) {
         if (!session || !newCombat) return null
         Combat prevCombat = combatRepository.findPreviousCombat(session.combat.identifier).orElse(null)
         Combat nextCombat = session.combat
@@ -80,6 +65,11 @@ class CombatService {
         session.combat = newCombat
         sessionService.upsertSession(session)
         newCombat
+    }
+
+    Combat findLastCombat(Combat combat) {
+        if (!combat.nextCombat) return combat
+        return findLastCombat(combat.nextCombat)
     }
 
     Combat buildCombatFrom(CombatDto combatDto, Session session) {

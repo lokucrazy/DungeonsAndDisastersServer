@@ -35,7 +35,6 @@ class CombatController {
         new ResponseEntity<>(combatDtos, HttpStatus.OK)
     }
 
-    /* TODO: Is it necessary to rollback when there's only one DB call? */
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
@@ -43,7 +42,7 @@ class CombatController {
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found with given id")
 
         Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = combatService.createCombatInSession(combatRequest)
+        Combat combat = combatService.createCombatInSession(combatRequest, session)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 
         CombatDto created = combatService.buildDtoFrom(combat)

@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.History
-import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.repositories.HistoryRepository
 import org.modelmapper.ModelMapper

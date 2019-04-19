@@ -1,25 +1,11 @@
 package com.mudndcapstone.server.controllers
 
-import com.mudndcapstone.server.models.Character
-import com.mudndcapstone.server.models.Chat
-import com.mudndcapstone.server.models.Combat
-import com.mudndcapstone.server.models.History
-import com.mudndcapstone.server.models.Map
-import com.mudndcapstone.server.models.Session
-import com.mudndcapstone.server.models.User
+import com.mudndcapstone.server.models.*
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.CharacterService
-import com.mudndcapstone.server.services.ChatService
-import com.mudndcapstone.server.services.CombatService
-import com.mudndcapstone.server.services.HistoryService
-import com.mudndcapstone.server.services.MapService
-import com.mudndcapstone.server.services.SessionService
-import com.mudndcapstone.server.services.UserService
-import com.mudndcapstone.server.services.UserService
-import com.mudndcapstone.server.utils.PaginationHandler
+import com.mudndcapstone.server.services.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -145,7 +131,7 @@ class SessionController {
         if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
 
         Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = combatService.insertCombatInPath(session, combatRequest)
+        Combat combat = combatService.insertCombatInPath(combatRequest, session)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 
         CombatDto created = combatService.buildDtoFrom(combat)
