@@ -38,10 +38,12 @@ class CombatService {
         combatRepository.deleteById(id)
     }
 
+    /* TODO: this is confusing + shouldn't this go in SessionService? */
     Combat createCombatInSession(Combat combat) {
         if (!combat) return null
         Session session = combat.session
 
+        /* TODO: Is this check necessary? Above we are grabbing the combat's session so that session's combat *can't* be null below..? */
         if (session.combat == null) {
             combatRepository.save(combat)
         } else {
@@ -54,10 +56,12 @@ class CombatService {
     }
 
     Combat findLastCombat(Combat combat) {
+        /* @TODO: Not sure this check if necessary? Any combat being passed in to this method should exist in DB */
         combat = combatRepository.findById(combat.identifier).orElse(null)
         if (!combat) return null
 
-        combat.nextCombat == null ? combat : findLastCombat(combat.nextCombat)
+        if (!combat.nextCombat) return combat
+        return findLastCombat(combat.nextCombat)
     }
 
     Combat insertCombatInPath(Session session, Combat newCombat) {
@@ -71,28 +75,29 @@ class CombatService {
         }
         newCombat.nextCombat = nextCombat
         newCombat = combatRepository.save(newCombat)
-
         session.combat = newCombat
         sessionService.upsertSession(session)
         newCombat
     }
 
-    Combat buildCombatFrom(CombatDto combatDto) {
+    Combat buildCombatFrom(CombatDto combatDto, Session session) {
         Combat combat = modelMapper.map(combatDto, Combat)
-        combat.session = sessionService.getSessionById(combatDto.sessionId)
+
+        combat.session = session
+
         combat
     }
 
     CombatDto buildDtoFrom(Combat combat) {
         CombatDto combatDto = modelMapper.map(combat, CombatDto)
 
-        String previousCombatId = combat.nextCombat ? combat.nextCombat.identifier : null
+        String nextCombatId = combat.nextCombat ? combat.nextCombat.identifier : null
         String sessionId = combat.session ? combat.session.identifier : null
         Set<String> enemyIds = combat.enemies ?
                 combat.enemies.stream().map({ enemy -> enemy.identifier }).collect(Collectors.toSet()) :
                 null
 
-        combatDto.setNextCombatId(previousCombatId)
+        combatDto.setNextCombatId(nextCombatId)
         combatDto.setSessionId(sessionId)
         combatDto.setEnemyIds(enemyIds)
 

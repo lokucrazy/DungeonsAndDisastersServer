@@ -5,6 +5,7 @@ import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
@@ -14,6 +15,7 @@ import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.HistoryService
 import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.services.UserService
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -37,6 +39,7 @@ class SessionControllerTests {
     @Mock ChatService chatService
     @Mock MapService mapService
     @Mock HistoryService historyService
+    @Mock UserService userService
 
     @InjectMocks
     SessionController sessionController
@@ -49,15 +52,15 @@ class SessionControllerTests {
     @Test
     void givenSessionDTOWithNoIdentifier_whenSessionServiceCreate_thenSessionControllerReturnsSession() {
         // Given
+        SessionDto sessionDto = new SessionDto()
         Session session = new Session()
         Chat chat = new Chat()
         Map map = new Map()
-        SessionDto sessionDto = new SessionDto()
-        sessionDto.dmId = "test"
         ResponseEntity response
 
         // When
-        Mockito.when(sessionService.buildSessionFrom(any(SessionDto))).thenReturn(session)
+        Mockito.when(userService.getUserById())
+        Mockito.when(sessionService.buildSessionFrom(any(SessionDto), any(User))).thenReturn(session)
         Mockito.when(chatService.createChat(any(Chat))).thenReturn(chat)
         Mockito.when(mapService.createMap(any(Map))).thenReturn(map)
         Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(session)
@@ -91,7 +94,7 @@ class SessionControllerTests {
         ResponseEntity response
 
         // When
-        Mockito.when(sessionService.buildSessionFrom(oldSessionDto)).thenReturn(oldSession)
+        Mockito.when(sessionService.buildSessionFrom(oldSessionDto, any(User))).thenReturn(oldSession)
         Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(newSession)
         Mockito.when(sessionService.moveRelationships(oldSession.identifier)).thenReturn(newSession)
         Mockito.when(historyService.convertSessionToHistory(oldSession.identifier)).thenReturn(history)
@@ -219,7 +222,7 @@ class SessionControllerTests {
 
         // When
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        Mockito.when(chatService.createChatFromDTO((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
+        Mockito.when(chatService.buildChatFrom((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
         response = sessionController.createChat("test", "hello world",Optional.empty(),Optional.empty())
 
         // Then
@@ -240,7 +243,7 @@ class SessionControllerTests {
         chat.setLog(chatLog)
         session.setChatLog(chat)
         Mockito.when(chatService.buildDtoFrom(session.chatLog)).thenReturn(new ChatDto(sessionId: "test", log: chatLog))
-        Mockito.when(chatService.createChatFromDTO((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
+        Mockito.when(chatService.buildChatFrom((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
         response = sessionController.createChat("test", "hello world",Optional.empty(),Optional.empty())
 

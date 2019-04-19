@@ -19,7 +19,6 @@ class SessionService {
     @Autowired SessionRepository sessionRepository
     @Autowired UserRepository userRepository
     @Autowired CharacterRepository characterRepository
-    @Autowired UserService userService
     @Autowired ModelMapper modelMapper
 
     Set<Session> getAllSessions() {
@@ -40,8 +39,8 @@ class SessionService {
         if (!sessionRepository.existsById(session.identifier)) return null
         if (!userRepository.existsById(user.identifier)) return null
 
-        if (!session.players) { session.players = [] }
-        session.players.add(user)
+        if (!session.players) session.players = []
+        session.players << user
         sessionRepository.save(session)
     }
 
@@ -50,8 +49,8 @@ class SessionService {
         if (!sessionRepository.existsById(session.identifier)) return null
         if (!characterRepository.existsById(character.identifier)) return null
 
-        if (!session.characters) { session.characters = [] }
-        session.characters.add(character)
+        if (!session.characters) session.characters = []
+        session.characters << character
         sessionRepository.save(session)
     }
 
@@ -60,14 +59,15 @@ class SessionService {
     }
 
     Session moveRelationships(String oldId) {
-        if (!oldId) { return null }
+        Session oldSession = sessionRepository.findById(oldId).orElse(null)
+        if (!oldSession) return null
+
         Session newSession = sessionRepository.save(new Session())
-        sessionRepository.refactorRelationships(oldId, newSession.identifier).orElse(null)
+        sessionRepository.refactorRelationships(oldSession.identifier, newSession.identifier).orElse(null)
     }
 
-    Session buildSessionFrom(SessionDto sessionDto) {
+    Session buildSessionFrom(SessionDto sessionDto, User dm) {
         Session session = modelMapper.map(sessionDto, Session)
-        User dm = userService.getUserById(sessionDto.dmId)
 
         session.setDm(dm)
 

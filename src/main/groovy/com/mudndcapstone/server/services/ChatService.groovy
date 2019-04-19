@@ -39,16 +39,6 @@ class ChatService {
         chatRepository.save(chat)
     }
 
-    Chat createChatFromDTO(ChatDto chatDto) {
-        if (!chatDto.sessionId) return null
-
-        Session session = sessionService.getSessionById(chatDto.sessionId)
-        if (!session) return null
-
-        Chat chat = buildChatFrom(chatDto)
-        chatRepository.save(chat)
-    }
-
     void deleteChat(String id) {
         chatRepository.deleteById(id)
     }

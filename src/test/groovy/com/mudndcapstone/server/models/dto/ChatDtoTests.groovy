@@ -1,6 +1,6 @@
 package com.mudndcapstone.server.models.dto
 
-import com.mudndcapstone.server.models.Chat
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -39,37 +39,6 @@ class ChatDtoTests {
         assert chatDto.sessionId == testUuid
         assert chatDto.log == log
         assert chatDto.note == "test note"
-    }
-
-    @Test
-    void givenChatWithEmptyLog_whenAddMessage_thenChatHasLogWithOneMessage() {
-        // Given
-        ChatDto chatDto = new ChatDto()
-        String message = "test message"
-
-        // When
-        chatDto.addMessage(message)
-
-        // Then
-        assert chatDto.log
-        assert chatDto.log.size() == 1
-        assert chatDto.log[0] == message
-    }
-
-    @Test
-    void givenChatWithLog_whenAddMessage_thenChatHasMessageAddedToLog() {
-        // Given
-        ChatDto chatDto = new ChatDto()
-        chatDto.log = ["hey player2", "sup player1?"]
-        String message = "player3 also says hi"
-
-        // When
-        chatDto.addMessage(message)
-
-        // Then
-        assert chatDto.log
-        assert chatDto.log.size() == 3
-        assert chatDto.log[-1] == message
     }
 
 }

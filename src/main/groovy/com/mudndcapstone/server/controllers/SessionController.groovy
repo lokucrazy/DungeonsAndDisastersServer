@@ -49,15 +49,19 @@ class SessionController {
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
-        if (!sessionDto || !sessionDto.dmId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session dto or session dm not found")
-        Session sessionRequest = sessionService.buildSessionFrom(sessionDto)
+        User dm = userService.getUserById(sessionDto.dmId)
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user with given dmId not found")
+
+        Session sessionRequest = sessionService.buildSessionFrom(sessionDto, dm)
         Session session
+
         if (!sessionRequest.identifier) {
-            sessionRequest.identifier = null
+            /* Entirely new session */
             sessionRequest.chatLog = chatService.createChat(new Chat(session: sessionRequest))
             sessionRequest.map = mapService.createMap(new Map(session: sessionRequest))
             session = sessionService.upsertSession(sessionRequest)
         } else {
+            /* Previous session exists */
             session = sessionService.moveRelationships(sessionRequest.identifier)
             History history = historyService.convertSessionToHistory(sessionRequest.identifier)
             if (!session || !history) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session not found to move relationships from")
@@ -98,15 +102,16 @@ class SessionController {
 
     @PutMapping("/sessions/{sessionId}/users/{userId}")
     ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
-        if (!sessionId || !userId ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or userIds not found")
         Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+
         User user = userService.getUserById(userId)
-        SessionDto sessionDto
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user could not be found")
 
         session = sessionService.attachUserToSession(session, user)
         if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
 
-        sessionDto = sessionService.buildDtoFrom(session)
+        SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
 
@@ -127,11 +132,11 @@ class SessionController {
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping("/sessions/{sessionId}/combat")
     ResponseEntity<CombatDto> insertCombat(@PathVariable String sessionId, @RequestBody CombatDto combatDto) {
-        if (!sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId not found")
-        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
         Session session = sessionService.getSessionById(sessionId)
-        Combat combatRequest = combatService.buildCombatFrom(combatDto)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
 
+        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
         Combat combat = combatService.insertCombatInPath(session, combatRequest)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 

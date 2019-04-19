@@ -43,22 +43,22 @@ class SessionServiceTests {
     }
 
     @Test
-    void givenOldSessionAndNewSession_WhenSessionMoveRelationships_thenReturnsNewSession() {
+    void givenOldSessionAndNewSession_whenSessionMoveRelationships_thenReturnsNewSession() {
         // Given
         Session oldSession = new Session()
         Session newSession = new Session()
-        oldSession.identifier = "oldIdentifier"
-        newSession.identifier = "newIdentifier"
+        String oldSessionIdentifier = "oldIdentifier"
+        String newSessionIdentifier = "newIdentifier"
         Session sessionPostMove
 
         // When
-        sessionRepository.save(oldSession)
-        sessionRepository.save(newSession)
-        Mockito.when(sessionRepository.refactorRelationships(oldSession.identifier, newSession.identifier))
-                .thenReturn(Optional.of(newSession))
-        sessionPostMove = sessionService.moveRelationships(oldSession.identifier)
+        oldSession.identifier = oldSessionIdentifier
+        newSession.identifier = newSessionIdentifier
+        Mockito.when(sessionRepository.findById(oldSessionIdentifier)).thenReturn(Optional.of(oldSession))
+        Mockito.when(sessionRepository.save(Mockito.any(Session))).thenReturn(newSession)
+        Mockito.when(sessionRepository.refactorRelationships(oldSessionIdentifier, newSessionIdentifier)).thenReturn(Optional.of(newSession))
+        sessionPostMove = sessionService.moveRelationships(oldSessionIdentifier)
 
-        // Then
         assert sessionPostMove == newSession
     }
 

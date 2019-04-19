@@ -25,7 +25,6 @@ class MapService {
 
     Map createMap(Map map) {
         if (!map.session) return null
-
         mapRepository.save(map)
     }
 

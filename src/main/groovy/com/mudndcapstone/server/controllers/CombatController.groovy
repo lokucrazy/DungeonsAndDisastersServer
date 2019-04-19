@@ -1,9 +1,10 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Combat
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.services.CombatService
-
+import com.mudndcapstone.server.services.SessionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,6 +26,7 @@ import javax.validation.Valid
 class CombatController {
 
     @Autowired CombatService combatService
+    @Autowired SessionService sessionService
 
     @GetMapping
     ResponseEntity<Set<CombatDto>> getAllCombats() {
@@ -33,12 +35,14 @@ class CombatController {
         new ResponseEntity<>(combatDtos, HttpStatus.OK)
     }
 
+    /* TODO: Is it necessary to rollback when there's only one DB call? */
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
-        Combat combatRequest = combatService.buildCombatFrom(combatDto)
-        if (!combatRequest.session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found, either it doesn't exist or is a history")
+        Session session = sessionService.getSessionById(combatDto.sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found with given id")
 
+        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
         Combat combat = combatService.createCombatInSession(combatRequest)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
 

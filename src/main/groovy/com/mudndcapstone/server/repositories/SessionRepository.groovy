@@ -14,5 +14,5 @@ interface SessionRepository extends Neo4jRepository<Session, String> {
               CALL apoc.refactor.from(r,n) YIELD input, output
               MATCH (n)-[r1]->(i)
               RETURN n,r1,i""")
-    Optional<Session> refactorRelationships(String oldSession, String newSession)
+    Optional<Session> refactorRelationships(String oldSessionId, String newSessionId)
 }

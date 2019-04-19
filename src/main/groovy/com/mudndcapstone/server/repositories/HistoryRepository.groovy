@@ -14,5 +14,5 @@ interface HistoryRepository extends Neo4jRepository<History, String> {
               WITH h
               OPTIONAL MATCH (h)-[r]->()
               RETURN h,r""")
-    Optional<History> removeSessionLabel(String identifier)
+    Optional<History> removeSessionLabel(String sessionId)
 }
