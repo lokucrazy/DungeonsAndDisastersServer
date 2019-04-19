@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.*
-import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
@@ -84,16 +83,6 @@ class SessionController {
         new ResponseEntity(HttpStatus.OK)
     }
 
-    @GetMapping("/sessions/{sessionId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
-
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(session.characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
-    }
-
     @PutMapping("/sessions/{sessionId}/users/{userId}")
     ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
         Session session = sessionService.getSessionById(sessionId)
@@ -112,6 +101,7 @@ class SessionController {
     @PutMapping("/sessions/{sessionId}/characters/{characterId}")
     ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
         if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
+
         Session session = sessionService.getSessionById(sessionId)
         Character character = characterService.getCharacterById(characterId)
         if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
