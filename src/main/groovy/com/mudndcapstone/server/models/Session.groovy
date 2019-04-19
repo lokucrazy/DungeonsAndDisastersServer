@@ -9,10 +9,10 @@ class Session extends History {
     Chat chatLog
 
     @Relationship(type = "HAS_MAP_LIST", direction = Relationship.OUTGOING)
-    Map mapList
+    Map map
 
     @Relationship(type = "HAS_COMBAT_LIST", direction = Relationship.OUTGOING)
-    Combat combatList
+    Combat combat
 
     @Relationship(type = "HAS_DM", direction = Relationship.OUTGOING)
     User dm

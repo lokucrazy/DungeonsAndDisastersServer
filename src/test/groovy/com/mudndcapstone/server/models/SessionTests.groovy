@@ -17,8 +17,8 @@ class SessionTests {
         // Then
         assert !session.identifier
         assert !session.chatLog
-        assert !session.mapList
-        assert !session.combatList
+        assert !session.map
+        assert !session.combat
         assert !session.dm
         assert !session.npcs
         assert !session.players
@@ -39,8 +39,8 @@ class SessionTests {
 
         // When
         session.setChatLog(chatLog)
-        session.setMapList(mapList)
-        session.setCombatList(combatList)
+        session.setMap(mapList)
+        session.setCombat(combatList)
         session.setDm(dm)
         session.setNpcs(npcs)
         session.setPlayers(players)
@@ -49,8 +49,8 @@ class SessionTests {
         // Then
         assert !session.identifier
         assert session.chatLog == chatLog
-        assert session.mapList == mapList
-        assert session.combatList == combatList
+        assert session.map == mapList
+        assert session.combat == combatList
         assert session.dm == dm
         assert session.npcs == npcs
         assert session.players == players

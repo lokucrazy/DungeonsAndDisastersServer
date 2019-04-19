@@ -33,14 +33,11 @@ class ChatService {
         chatRepository.save(chat)
     }
 
-    Chat createChat(ChatDto chatDto) {
-        if (!chatDto.sessionId) return null
+    Chat addMessage(Chat chat, String message) {
+        if (!chat) return null
+        if (!message) return chat
 
-        Session session = sessionService.getSessionById(chatDto.sessionId)
-        if (!session) return null
-
-        Chat chat = buildChatFrom(chatDto)
-        Auditor.enableAuditing(chat)
+        chat.log == null ? chat.log = [message] : chat.log << message
         chatRepository.save(chat)
     }
 

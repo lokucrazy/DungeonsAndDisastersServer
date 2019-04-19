@@ -23,6 +23,10 @@ class HistoryService {
         historyRepository.findById(id).orElse(null)
     }
 
+    History convertSessionToHistory(String id) {
+        historyRepository.removeSessionLabel(id).orElse(null)
+    }
+
     void deleteHistory(String id) {
         historyRepository.deleteById(id)
     }
