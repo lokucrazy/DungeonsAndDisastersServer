@@ -2,6 +2,7 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.Messenger
 import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.SessionService
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
 
@@ -45,9 +47,16 @@ class ChatController {
         new ResponseEntity<>(chatDto, HttpStatus.OK)
     }
 
-    @PutMapping("/chats/{chatId}")
-    ResponseEntity<ChatDto> updateChat(@PathVariable String chatId, @Valid @RequestBody ChatDto chatDto) {
-        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    @PutMapping("/{chatId}")
+    ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger) {
+        Chat chatRequest = chatService.getChatById(chatId)
+        if (!chatRequest) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "chatId not found")
+
+        Chat chat = chatService.addMessage(chatRequest, messenger.message)
+        if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "message could not be added")
+
+        List<String> messages = PaginationHandler.getPage(chat.log, null, null)
+        new ResponseEntity<>(messages, HttpStatus.OK)
     }
 
     @DeleteMapping("/chats/{chatId}")

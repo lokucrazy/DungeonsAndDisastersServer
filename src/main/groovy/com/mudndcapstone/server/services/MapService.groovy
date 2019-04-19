@@ -25,6 +25,8 @@ class MapService {
     }
 
     Map createMap(Map map) {
+        if (!map.session) return null
+
         Auditor.enableAuditing(map)
         mapRepository.save(map)
     }

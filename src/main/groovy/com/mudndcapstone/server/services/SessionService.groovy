@@ -2,9 +2,12 @@ package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
+import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.SessionDto
+import com.mudndcapstone.server.repositories.CharacterRepository
 import com.mudndcapstone.server.repositories.SessionRepository
 import com.mudndcapstone.server.utils.Auditor
+import com.mudndcapstone.server.repositories.UserRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -15,6 +18,8 @@ import java.util.stream.Collectors
 class SessionService {
 
     @Autowired SessionRepository sessionRepository
+    @Autowired UserRepository userRepository
+    @Autowired CharacterRepository characterRepository
     @Autowired UserService userService
     @Autowired ModelMapper modelMapper
 
@@ -26,7 +31,7 @@ class SessionService {
         sessionRepository.findById(id).orElse(null)
     }
 
-    Session createSession(Session session) {
+    Session upsertSession(Session session) {
         if (!session.dm) return null
 
         Auditor.enableAuditing(session)
@@ -37,9 +42,35 @@ class SessionService {
         sessionRepository.deleteById(id)
     }
 
-    Session buildSessionFrom(SessionDto sessionDto) {
+    Session attachUserToSession(Session session, User user) {
+        if (!session || !user) return null
+        if (!sessionRepository.existsById(session.identifier)) return null
+        if (!userRepository.existsById(user.identifier)) return null
+
+        if (!session.players) session.players = []
+        session.players << user
+        sessionRepository.save(session)
+    }
+
+    Session attachCharacterToSession(Session session, Character character) {
+        if (!session || !character) return null
+        if (!sessionRepository.existsById(session.identifier)) return null
+        if (!characterRepository.existsById(character.identifier)) return null
+
+        if (!session.characters) session.characters = []
+        session.characters << character
+    }
+
+    Session moveRelationships(String oldId) {
+        Session oldSession = sessionRepository.findById(oldId).orElse(null)
+        if (!oldSession) return null
+
+        Session newSession = sessionRepository.save(new Session())
+        sessionRepository.refactorRelationships(oldSession.identifier, newSession.identifier).orElse(null)
+    }
+
+    Session buildSessionFrom(SessionDto sessionDto, User dm) {
         Session session = modelMapper.map(sessionDto, Session)
-        User dm = userService.getUserById(sessionDto.dmId)
 
         session.setDm(dm)
 
@@ -52,8 +83,8 @@ class SessionService {
         String dmId = session.dm ? session.dm.identifier : null
         String historyId = session.history ? session.history.identifier : null
         String chatId = session.chatLog ? session.chatLog.identifier : null
-        String mapId = session.mapList ? session.mapList.identifier : null
-        String combatId = session.combatList ? session.combatList.identifier : null
+        String mapId = session.map ? session.map.identifier : null
+        String combatId = session.combat ? session.combat.identifier : null
         Set<String> npcIds = session.npcs ?
                 session.npcs.stream().map({ npc -> npc.identifier }).collect(Collectors.toSet()) :
                 null
