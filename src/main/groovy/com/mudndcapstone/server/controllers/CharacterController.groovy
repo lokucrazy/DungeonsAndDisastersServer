@@ -82,11 +82,11 @@ class CharacterController {
 
     @PutMapping("/sessions/{sessionId}/characters/{characterId}")
     ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
-        if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
-
         Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+
         Character character = characterService.getCharacterById(characterId)
-        if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
+        if (!character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "character could not be found")
 
         session = sessionService.attachCharacterToSession(session, character)
         if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
