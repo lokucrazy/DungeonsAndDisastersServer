@@ -59,6 +59,7 @@ class SessionService {
 
         if (!session.characters) session.characters = []
         session.characters << character
+        session
     }
 
     Session moveRelationships(String oldId) {
