@@ -22,13 +22,12 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/combats")
 class CombatController {
 
     @Autowired CombatService combatService
     @Autowired SessionService sessionService
 
-    @GetMapping
+    @GetMapping("/combats")
     ResponseEntity<Set<CombatDto>> getAllCombats() {
         Set<Combat> combats = combatService.getAllCombats()
         Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
@@ -36,7 +35,7 @@ class CombatController {
     }
 
     @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping
+    @PostMapping("/combats")
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
         Session session = sessionService.getSessionById(combatDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found with given id")
@@ -49,7 +48,22 @@ class CombatController {
         new ResponseEntity<>(created, HttpStatus.OK)
     }
 
-    @GetMapping("/{combatId}")
+    @Transactional(rollbackFor = ResponseStatusException)
+    @PostMapping("/sessions/{sessionId}/combat")
+    ResponseEntity<CombatDto> insertCombat(@PathVariable String sessionId, @RequestBody CombatDto combatDto) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
+
+        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
+        Combat combat = combatService.insertCombatInPath(combatRequest, session)
+        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
+
+        CombatDto created = combatService.buildDtoFrom(combat)
+        new ResponseEntity<>(created, HttpStatus.CREATED)
+    }
+
+    @GetMapping("/combats/{combatId}")
     ResponseEntity<CombatDto> getCombatById(@PathVariable String combatId) {
         Combat combat = combatService.getCombatById(combatId)
         if (!combat) return new ResponseEntity(HttpStatus.BAD_REQUEST)
@@ -58,12 +72,12 @@ class CombatController {
         new ResponseEntity<>(combatDto, HttpStatus.OK)
     }
 
-    @PutMapping("/{combatId}")
+    @PutMapping("/combats/{combatId}")
     ResponseEntity<CombatDto> updateCombat(@PathVariable String combatId, @Valid @RequestBody CombatDto combatDto) {
         new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
-    @DeleteMapping("/{combatId}")
+    @DeleteMapping("/combats/{combatId}")
     ResponseEntity deleteCombat(@PathVariable String combatId) {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.OK)

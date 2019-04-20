@@ -1,13 +1,17 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
+import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.models.dto.UserDto
 import com.mudndcapstone.server.services.CharacterService
+import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
 
@@ -16,6 +20,7 @@ class UserController {
 
     @Autowired UserService userService
     @Autowired CharacterService characterService
+    @Autowired SessionService sessionService
 
     /* Users */
     @GetMapping("/users")
@@ -33,6 +38,21 @@ class UserController {
 
         UserDto created = userService.buildDtoFrom(user)
         new ResponseEntity<>(created, HttpStatus.CREATED)
+    }
+
+    @PutMapping("/sessions/{sessionId}/users/{userId}")
+    ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+
+        User user = userService.getUserById(userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user could not be found")
+
+        session = sessionService.attachUserToSession(session, user)
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
+
+        SessionDto sessionDto = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
 
     @GetMapping("/users/{userId}")

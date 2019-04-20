@@ -83,51 +83,6 @@ class SessionController {
         new ResponseEntity(HttpStatus.OK)
     }
 
-    @PutMapping("/sessions/{sessionId}/users/{userId}")
-    ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
-
-        User user = userService.getUserById(userId)
-        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user could not be found")
-
-        session = sessionService.attachUserToSession(session, user)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
-
-        SessionDto sessionDto = sessionService.buildDtoFrom(session)
-        new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
-    @PutMapping("/sessions/{sessionId}/characters/{characterId}")
-    ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
-        if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
-
-        Session session = sessionService.getSessionById(sessionId)
-        Character character = characterService.getCharacterById(characterId)
-        if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
-
-        session = sessionService.attachCharacterToSession(session, character)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
-
-        SessionDto sessionDto = sessionService.buildDtoFrom(session)
-        new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
-    @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping("/sessions/{sessionId}/combat")
-    ResponseEntity<CombatDto> insertCombat(@PathVariable String sessionId, @RequestBody CombatDto combatDto) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
-        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
-
-        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = combatService.insertCombatInPath(combatRequest, session)
-        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
-
-        CombatDto created = combatService.buildDtoFrom(combat)
-        new ResponseEntity<>(created, HttpStatus.CREATED)
-    }
-
     /* History */
     @GetMapping("/histories")
     ResponseEntity<Set<HistoryDto>> getAllHistories() {
