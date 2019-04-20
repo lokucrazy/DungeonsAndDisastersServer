@@ -47,7 +47,7 @@ class ChatController {
         new ResponseEntity<>(chatDto, HttpStatus.OK)
     }
 
-    @PutMapping("/{chatId}")
+    @PutMapping("/chats/{chatId}")
     ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger) {
         Chat chatRequest = chatService.getChatById(chatId)
         if (!chatRequest) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "chatId not found")

@@ -40,21 +40,6 @@ class UserController {
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
-    @PutMapping("/sessions/{sessionId}/users/{userId}")
-    ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
-
-        User user = userService.getUserById(userId)
-        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user could not be found")
-
-        session = sessionService.attachUserToSession(session, user)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
-
-        SessionDto sessionDto = sessionService.buildDtoFrom(session)
-        new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
     @GetMapping("/users/{userId}")
     ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
         User user = userService.getUserById(userId)
@@ -73,6 +58,21 @@ class UserController {
     ResponseEntity deleteUser(@PathVariable String userId) {
         userService.deleteUserById(userId)
         new ResponseEntity(HttpStatus.OK)
+    }
+
+    @PutMapping("/sessions/{sessionId}/users/{userId}")
+    ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+
+        User user = userService.getUserById(userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user could not be found")
+
+        session = sessionService.attachUserToSession(session, user)
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
+
+        SessionDto sessionDto = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
 
     /* DMs */

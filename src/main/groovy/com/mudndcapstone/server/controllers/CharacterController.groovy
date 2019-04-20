@@ -40,21 +40,6 @@ class CharacterController {
         new ResponseEntity<>(created, HttpStatus.OK)
     }
 
-    @PutMapping("/sessions/{sessionId}/characters/{characterId}")
-    ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
-        if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
-
-        Session session = sessionService.getSessionById(sessionId)
-        Character character = characterService.getCharacterById(characterId)
-        if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
-
-        session = sessionService.attachCharacterToSession(session, character)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
-
-        SessionDto sessionDto = sessionService.buildDtoFrom(session)
-        new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
     @GetMapping("/characters/{characterId}")
     ResponseEntity<CharacterDto> getCharacterById(@PathVariable String characterId) {
         Character character = characterService.getCharacterById(characterId)
@@ -75,6 +60,16 @@ class CharacterController {
         new ResponseEntity(HttpStatus.OK)
     }
 
+    @GetMapping("/users/{userId}/characters")
+    ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
+        User user = userService.getUserById(userId)
+        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
+
+        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(user.characters)
+        new ResponseEntity<>(characterDtos, HttpStatus.OK)
+    }
+
     @GetMapping("/sessions/{sessionId}/characters")
     ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
@@ -85,14 +80,19 @@ class CharacterController {
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
-    @GetMapping("/users/{userId}/characters")
-    ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
-        User user = userService.getUserById(userId)
-        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
+    @PutMapping("/sessions/{sessionId}/characters/{characterId}")
+    ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
+        if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
 
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(user.characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
+        Session session = sessionService.getSessionById(sessionId)
+        Character character = characterService.getCharacterById(characterId)
+        if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
+
+        session = sessionService.attachCharacterToSession(session, character)
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
+
+        SessionDto sessionDto = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
 
 }
