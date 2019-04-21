@@ -25,16 +25,6 @@ class MapController {
 
     @Autowired MapService mapService
 
-    @PostMapping
-    ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
-        Map mapRequest = mapService.buildMapFrom(mapDto)
-        Map map = mapService.createMap(mapRequest)
-        if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MAP_NOT_CREATED_EXCEPTION)
-
-        MapDto created = mapService.buildDtoFrom(map)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
     @GetMapping("/{mapId}")
     ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
         Map map = mapService.getMapById(mapId)

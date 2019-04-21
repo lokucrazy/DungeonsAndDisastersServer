@@ -22,16 +22,6 @@ class ChatController {
     @Autowired ChatService chatService
     @Autowired SessionService sessionService
 
-    @PostMapping("/chats")
-    ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
-        Chat chatRequest = chatService.buildChatFrom(chatDto)
-        Chat chat = chatService.createChat(chatRequest)
-        if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHAT_NOT_CREATED_EXCEPTION)
-
-        ChatDto created = chatService.buildDtoFrom(chat)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
     @PutMapping("/chats/{chatId}")
     ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger) {
         Chat chatRequest = chatService.getChatById(chatId)
