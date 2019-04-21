@@ -77,9 +77,4 @@ class ChatController {
         new ResponseEntity<>(chats, HttpStatus.OK)
     }
 
-    @PostMapping("/sessions/{sessionId}/chats")
-    ResponseEntity createChat(@PathVariable String sessionId, @RequestBody String message, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
-    }
-
 }
