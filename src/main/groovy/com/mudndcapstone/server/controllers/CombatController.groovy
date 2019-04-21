@@ -7,6 +7,7 @@ import com.mudndcapstone.server.services.CombatService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -36,14 +37,11 @@ class CombatController {
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, HttpServletRequest request) {
         Session session = sessionService.getSessionById(combatDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
-        Combat combat = null
 
         Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        if (request.getMethod() == "PUT") {
-            combat = combatService.appendCombatToPath(combatRequest, session)
-        } else if (request.getMethod() == "POST") {
-            combat = combatService.insertCombatToPath(combatRequest, session)
-        }
+        Combat combat = (request.getMethod() == HttpMethod.POST.toString()) ?
+                combatService.insertCombatToPath(combatRequest, session) :
+                combatService.appendCombatToPath(combatRequest, session)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
 
         CombatDto created = combatService.buildDtoFrom(combat)
