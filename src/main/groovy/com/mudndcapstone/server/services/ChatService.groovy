@@ -45,11 +45,10 @@ class ChatService {
         chatRepository.deleteById(id)
     }
 
-    Chat buildChatFrom(ChatDto chatDto) {
+    Chat buildChatFrom(ChatDto chatDto, Session session) {
         Chat chat = modelMapper.map(chatDto, Chat)
-        Session session = sessionService.getSessionById(chatDto.sessionId)
 
-        chat.setSession(session)
+        chat.session = session
 
         chat
     }

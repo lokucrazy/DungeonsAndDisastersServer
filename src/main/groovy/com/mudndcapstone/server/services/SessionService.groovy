@@ -73,7 +73,7 @@ class SessionService {
     Session buildSessionFrom(SessionDto sessionDto, User dm) {
         Session session = modelMapper.map(sessionDto, Session)
 
-        session.setDm(dm)
+        session.dm = dm
 
         session
     }

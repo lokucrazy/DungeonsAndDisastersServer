@@ -1,6 +1,8 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Enemy
+import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.repositories.EnemyRepository
 import com.mudndcapstone.server.utils.Auditor
@@ -33,8 +35,12 @@ class EnemyService {
         enemyRepository.deleteById(id)
     }
 
-    Enemy buildEnemyFrom(EnemyDto enemyDto) {
+    Enemy buildEnemyFrom(EnemyDto enemyDto, Session session, User dm) {
         Enemy enemy = modelMapper.map(enemyDto, Enemy)
+
+        enemy.session = session
+        enemy.dm = dm
+
         enemy
     }
 
