@@ -40,7 +40,7 @@ class CombatService {
         combatRepository.deleteById(id)
     }
 
-    Combat createCombatInSession(Combat combat, Session session) {
+    Combat appendCombatToPath(Combat combat, Session session) {
         if (!combat || !session) return null
         if (!session.combat) return combatRepository.save(combat)
 
@@ -51,7 +51,7 @@ class CombatService {
         combat
     }
 
-    Combat insertCombatInPath(Combat newCombat, Session session) {
+    Combat insertCombatToPath(Combat newCombat, Session session) {
         if (!session || !newCombat) return null
         Combat prevCombat = combatRepository.findPreviousCombat(session.combat.identifier).orElse(null)
         Combat nextCombat = session.combat

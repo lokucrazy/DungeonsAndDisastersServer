@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 
@@ -36,13 +36,13 @@ class CombatController {
     }
 
     @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping("/combats") /* @TODO: Do we need this if we have insertCombat? */
-    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto) {
+    @PostMapping("/combats")
+    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {
         Session session = sessionService.getSessionById(combatDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
         Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = combatService.createCombatInSession(combatRequest, session)
+        Combat combat = insert ? combatService.insertCombatToPath(combatRequest, session) : combatService.appendCombatToPath(combatRequest, session)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
 
         CombatDto created = combatService.buildDtoFrom(combat)
@@ -68,20 +68,4 @@ class CombatController {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
-
-    @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping("/sessions/{sessionId}/combat")
-    ResponseEntity<CombatDto> insertCombat(@PathVariable String sessionId, @Valid @RequestBody CombatDto combatDto) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
-        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_COMBAT_NO_MATCH_EXCEPTION)
-
-        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = combatService.insertCombatInPath(combatRequest, session)
-        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
-
-        CombatDto created = combatService.buildDtoFrom(combat)
-        new ResponseEntity<>(created, HttpStatus.CREATED)
-    }
-
 }
