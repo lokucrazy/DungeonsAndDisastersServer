@@ -97,6 +97,7 @@ class CombatService {
     }
 
     Set<CombatDto> buildDtoSetFrom(Set<Combat> combats) {
+        if (!combats) return []
         combats.stream().map({ combat -> buildDtoFrom(combat) }).collect(Collectors.toSet())
     }
 

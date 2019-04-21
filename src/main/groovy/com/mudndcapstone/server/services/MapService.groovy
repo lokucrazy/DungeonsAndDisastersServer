@@ -50,6 +50,7 @@ class MapService {
     }
 
     Set<MapDto> buildDtoSetFrom(Set<Map> maps) {
+        if (!maps) return []
         maps.stream().map({ map -> buildDtoFrom(map) }).collect(Collectors.toSet())
     }
 

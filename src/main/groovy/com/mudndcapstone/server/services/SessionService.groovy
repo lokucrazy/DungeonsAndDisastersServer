@@ -109,6 +109,7 @@ class SessionService {
     }
 
     Set<SessionDto> buildDtoSetFrom(Set<Session> sessions) {
+        if (!sessions) return []
         sessions.stream().map({ session -> buildDtoFrom(session) }).collect(Collectors.toSet())
     }
 
