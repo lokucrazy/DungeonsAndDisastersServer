@@ -31,9 +31,12 @@ class CharacterController {
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
     }
 
-    @PostMapping("/characters")
+    @PostMapping("/characters") /* @TODO: /users/{userId}/characters */
     ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
-        Character characterRequest = characterService.buildCharacterFrom(characterDto)
+        User user = userService.getUserById(characterDto.userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        Character characterRequest = characterService.buildCharacterFrom(characterDto, user)
         Character character = characterService.createCharacter(characterRequest)
         if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
 
