@@ -68,5 +68,4 @@ class CombatController {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
-
 }

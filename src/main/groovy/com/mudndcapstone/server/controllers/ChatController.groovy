@@ -76,5 +76,4 @@ class ChatController {
                 []
         new ResponseEntity<>(chats, HttpStatus.OK)
     }
-
 }
