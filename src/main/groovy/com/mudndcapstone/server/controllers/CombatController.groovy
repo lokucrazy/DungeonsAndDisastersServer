@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 
+import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
 
 @RestController
@@ -36,13 +39,18 @@ class CombatController {
     }
 
     @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping("/combats")
-    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {
+    @RequestMapping(value = "/combats", method = [RequestMethod.PUT, RequestMethod.POST])
+    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, HttpServletRequest request) {
         Session session = sessionService.getSessionById(combatDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+        Combat combat = null
 
         Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = insert ? combatService.insertCombatToPath(combatRequest, session) : combatService.appendCombatToPath(combatRequest, session)
+        if (request.getMethod() == "PUT") {
+            combat = combatService.appendCombatToPath(combatRequest, session)
+        } else if (request.getMethod() == "POST") {
+            combat = combatService.insertCombatToPath(combatRequest, session)
+        }
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
 
         CombatDto created = combatService.buildDtoFrom(combat)
