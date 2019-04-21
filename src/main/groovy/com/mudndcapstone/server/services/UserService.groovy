@@ -73,6 +73,7 @@ class UserService {
     }
 
     Set<UserDto> buildDtoSetFrom(Set<User> users) {
+        if (!users) return []
         users.stream().map({ user -> buildDtoFrom(user) }).collect(Collectors.toSet())
     }
 

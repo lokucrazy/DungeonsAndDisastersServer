@@ -47,8 +47,9 @@ class EnemyService {
         enemyDto
     }
 
-    Set<EnemyDto> buildDtoSetFrom(Set<Enemy> enemys) {
-        enemys.stream().map({ enemy -> buildDtoFrom(enemy) }).collect(Collectors.toSet())
+    Set<EnemyDto> buildDtoSetFrom(Set<Enemy> enemies) {
+        if (!enemies) return []
+        enemies.stream().map({ enemy -> buildDtoFrom(enemy) }).collect(Collectors.toSet())
     }
 
 }

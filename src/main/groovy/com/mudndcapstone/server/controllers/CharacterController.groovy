@@ -8,6 +8,7 @@ import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.CharacterService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.services.UserService
+import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -34,7 +35,7 @@ class CharacterController {
     ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
         Character characterRequest = characterService.buildCharacterFrom(characterDto)
         Character character = characterService.createCharacter(characterRequest)
-        if (!character) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
 
         CharacterDto created = characterService.buildDtoFrom(character)
         new ResponseEntity<>(created, HttpStatus.OK)
@@ -43,7 +44,7 @@ class CharacterController {
     @GetMapping("/characters/{characterId}")
     ResponseEntity<CharacterDto> getCharacterById(@PathVariable String characterId) {
         Character character = characterService.getCharacterById(characterId)
-        if (!character) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+        if (!character) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHARACTER_NOT_FOUND_EXCEPTION)
 
         CharacterDto characterDto = characterService.buildDtoFrom(character)
         new ResponseEntity<>(characterDto, HttpStatus.OK)
@@ -51,20 +52,19 @@ class CharacterController {
 
     @PutMapping("/characters/{characterId}")
     ResponseEntity<CharacterDto> updateCharacter(@PathVariable String characterId, @Valid @RequestBody CharacterDto characterDto) {
-        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/characters/{characterId}")
     ResponseEntity deleteCharacter(@PathVariable String characterId) {
         characterService.deleteCharacter(characterId)
-        new ResponseEntity(HttpStatus.OK)
+        new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
     @GetMapping("/users/{userId}/characters")
     ResponseEntity<Set<CharacterDto>> getAllUsersCharacters(@PathVariable String userId) {
         User user = userService.getUserById(userId)
-        if (!user) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!user.characters) return new ResponseEntity<>([], HttpStatus.OK)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
 
         Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(user.characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
@@ -73,8 +73,7 @@ class CharacterController {
     @GetMapping("/sessions/{sessionId}/characters")
     ResponseEntity<Set<CharacterDto>> getAllSessionsCharacters(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
-        if (!session) return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
-        if (!session.characters) return new ResponseEntity<>([], HttpStatus.OK)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
         Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(session.characters)
         new ResponseEntity<>(characterDtos, HttpStatus.OK)
@@ -83,13 +82,13 @@ class CharacterController {
     @PutMapping("/sessions/{sessionId}/characters/{characterId}")
     ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
         Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
         Character character = characterService.getCharacterById(characterId)
-        if (!character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "character could not be found")
+        if (!character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.CHARACTER_NOT_FOUND_EXCEPTION)
 
         session = sessionService.attachCharacterToSession(session, character)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.SESSION_CANT_CONNECT_CHARACTER_EXCEPTION)
 
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)

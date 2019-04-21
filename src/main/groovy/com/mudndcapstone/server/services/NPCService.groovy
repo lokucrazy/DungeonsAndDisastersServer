@@ -50,6 +50,7 @@ class NPCService {
     }
 
     Set<NPCDto> buildDtoSetFrom(Set<NPC> npcs) {
+        if (!npcs) return []
         npcs.stream().map({ npc -> buildDtoFrom(npc) }).collect(Collectors.toSet())
     }
 

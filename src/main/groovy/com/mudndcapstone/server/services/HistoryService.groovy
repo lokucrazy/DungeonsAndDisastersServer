@@ -46,6 +46,7 @@ class HistoryService {
     }
 
     Set<HistoryDto> buildDtoSetFrom(Set<History> histories) {
+        if (!histories) return []
         histories.stream().map({ history -> buildDtoFrom(history) }).collect(Collectors.toSet())
     }
 
