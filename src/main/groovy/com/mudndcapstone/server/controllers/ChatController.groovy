@@ -22,13 +22,6 @@ class ChatController {
     @Autowired ChatService chatService
     @Autowired SessionService sessionService
 
-    @GetMapping("/chats")
-    ResponseEntity<Set<ChatDto>> getAllChats() {
-        Set<Chat> chats = chatService.getAllChats()
-        Set<ChatDto> chatDtos = chatService.buildDtoSetFrom(chats)
-        new ResponseEntity<>(chatDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/chats")
     ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
         Chat chatRequest = chatService.buildChatFrom(chatDto)
@@ -37,15 +30,6 @@ class ChatController {
 
         ChatDto created = chatService.buildDtoFrom(chat)
         new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
-    @GetMapping("/chats/{chatId}")
-    ResponseEntity<ChatDto> getChatById(@PathVariable String chatId) {
-        Chat chat = chatService.getChatById(chatId)
-        if (!chat) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHAT_NOT_FOUND_EXCEPTION)
-
-        ChatDto chatDto = chatService.buildDtoFrom(chat)
-        new ResponseEntity<>(chatDto, HttpStatus.OK)
     }
 
     @PutMapping("/chats/{chatId}")
@@ -60,12 +44,6 @@ class ChatController {
         new ResponseEntity<>(messages, HttpStatus.OK)
     }
 
-    @DeleteMapping("/chats/{chatId}")
-    ResponseEntity deleteChat(@PathVariable String chatId) {
-        chatService.deleteChat(chatId)
-        new ResponseEntity(HttpStatus.NO_CONTENT)
-    }
-
     @GetMapping("/sessions/{sessionId}/chats")
     ResponseEntity<List<String>> getSessionChats(@PathVariable String sessionId, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> count) {
         Session session = sessionService.getSessionById(sessionId)
@@ -76,4 +54,5 @@ class ChatController {
                 []
         new ResponseEntity<>(chats, HttpStatus.OK)
     }
+
 }

@@ -25,13 +25,6 @@ class MapController {
 
     @Autowired MapService mapService
 
-    @GetMapping
-    ResponseEntity<Set<MapDto>> getAllMaps() {
-        Set<Map> maps = mapService.getAllMaps()
-        Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
-        new ResponseEntity<>(mapDtos, HttpStatus.OK)
-    }
-
     @PostMapping
     ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
         Map mapRequest = mapService.buildMapFrom(mapDto)
@@ -54,12 +47,6 @@ class MapController {
     @PutMapping("/{mapId}")
     ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
-    }
-
-    @DeleteMapping("/{mapId}")
-    ResponseEntity deleteMap(@PathVariable String mapId) {
-        mapService.deleteMap(mapId)
-        new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
 }

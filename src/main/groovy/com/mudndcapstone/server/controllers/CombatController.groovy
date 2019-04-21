@@ -31,13 +31,6 @@ class CombatController {
     @Autowired CombatService combatService
     @Autowired SessionService sessionService
 
-    @GetMapping("/combats")
-    ResponseEntity<Set<CombatDto>> getAllCombats() {
-        Set<Combat> combats = combatService.getAllCombats()
-        Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
-        new ResponseEntity<>(combatDtos, HttpStatus.OK)
-    }
-
     @Transactional(rollbackFor = ResponseStatusException)
     @RequestMapping(value = "/combats", method = [RequestMethod.PUT, RequestMethod.POST])
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, HttpServletRequest request) {
@@ -76,4 +69,5 @@ class CombatController {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
+
 }

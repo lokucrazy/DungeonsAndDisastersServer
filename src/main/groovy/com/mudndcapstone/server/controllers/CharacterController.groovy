@@ -24,13 +24,6 @@ class CharacterController {
     @Autowired SessionService sessionService
     @Autowired UserService userService
 
-    @GetMapping("/characters")
-    ResponseEntity<Set<CharacterDto>> getAllCharacters() {
-        Set<Character> characters = characterService.getAllCharacters()
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/characters")
     ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
         Character characterRequest = characterService.buildCharacterFrom(characterDto)
