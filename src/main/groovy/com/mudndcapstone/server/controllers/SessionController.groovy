@@ -5,6 +5,7 @@ import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.*
+import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -37,7 +38,7 @@ class SessionController {
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
         User dm = userService.getUserById(sessionDto.dmId)
-        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user with given dmId not found")
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
 
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto, dm)
         Session session
@@ -50,14 +51,16 @@ class SessionController {
         } else {
             /* Previous session exists */
             session = sessionService.moveRelationships(sessionRequest.identifier)
+            if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.SESSION_CANT_REFACTOR_RELATIONSHIP_EXCEPTION)
+
             History history = historyService.convertSessionToHistory(sessionRequest.identifier)
-            if (!session || !history) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session not found to move relationships from")
+            if (!history) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.SESSION_CONVERSION_FAILED_EXCEPTION)
 
             session.history = history
             session = sessionService.upsertSession(session)
         }
 
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "session could not be created")
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.SESSION_NOT_CREATED_EXCEPTION)
 
         SessionDto created = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(created, HttpStatus.CREATED)
@@ -66,7 +69,7 @@ class SessionController {
     @GetMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> getSessionById(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
+        if (!session) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
@@ -74,58 +77,13 @@ class SessionController {
   
     @PutMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
-        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/sessions/{sessionId}")
     ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
-        new ResponseEntity(HttpStatus.OK)
-    }
-
-    @PutMapping("/sessions/{sessionId}/users/{userId}")
-    ResponseEntity<SessionDto> connectUserToSession(@PathVariable String sessionId, @PathVariable String userId) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
-
-        User user = userService.getUserById(userId)
-        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user could not be found")
-
-        session = sessionService.attachUserToSession(session, user)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "could not attach user to session")
-
-        SessionDto sessionDto = sessionService.buildDtoFrom(session)
-        new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
-    @PutMapping("/sessions/{sessionId}/characters/{characterId}")
-    ResponseEntity<SessionDto> connectCharacterToSession(@PathVariable String sessionId, @PathVariable String characterId) {
-        if (!sessionId || !characterId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId or characterId could not be found")
-
-        Session session = sessionService.getSessionById(sessionId)
-        Character character = characterService.getCharacterById(characterId)
-        if (!session || !character) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session or character could not be found")
-
-        session = sessionService.attachCharacterToSession(session, character)
-        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "character could not be added to session")
-
-        SessionDto sessionDto = sessionService.buildDtoFrom(session)
-        new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
-    @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping("/sessions/{sessionId}/combat")
-    ResponseEntity<CombatDto> insertCombat(@PathVariable String sessionId, @RequestBody CombatDto combatDto) {
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "session could not be found")
-        if (sessionId != combatDto.sessionId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sessionId does not match combatDto sessionId")
-
-        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = combatService.insertCombatInPath(combatRequest, session)
-        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "combat could not be created")
-
-        CombatDto created = combatService.buildDtoFrom(combat)
-        new ResponseEntity<>(created, HttpStatus.CREATED)
+        new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
     /* History */

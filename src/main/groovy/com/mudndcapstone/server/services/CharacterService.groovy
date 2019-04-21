@@ -54,6 +54,7 @@ class CharacterService {
     }
 
     Set<CharacterDto> buildDtoSetFrom(Set<Character> characters) {
+        if (!characters) return []
         characters.stream().map({ character -> buildDtoFrom(character) }).collect(Collectors.toSet())
     }
 

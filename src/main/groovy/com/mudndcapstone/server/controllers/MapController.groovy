@@ -3,7 +3,7 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.dto.MapDto
 import com.mudndcapstone.server.services.MapService
-
+import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
 
@@ -35,7 +36,7 @@ class MapController {
     ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
         Map mapRequest = mapService.buildMapFrom(mapDto)
         Map map = mapService.createMap(mapRequest)
-        if (!map) return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MAP_NOT_CREATED_EXCEPTION)
 
         MapDto created = mapService.buildDtoFrom(map)
         new ResponseEntity<>(created, HttpStatus.OK)
@@ -44,7 +45,7 @@ class MapController {
     @GetMapping("/{mapId}")
     ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
         Map map = mapService.getMapById(mapId)
-        if (!map) return new ResponseEntity(HttpStatus.BAD_REQUEST)
+        if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
 
         MapDto mapDto = mapService.buildDtoFrom(map)
         new ResponseEntity<>(mapDto, HttpStatus.OK)
@@ -52,13 +53,13 @@ class MapController {
 
     @PutMapping("/{mapId}")
     ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
-        new ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
     @DeleteMapping("/{mapId}")
     ResponseEntity deleteMap(@PathVariable String mapId) {
         mapService.deleteMap(mapId)
-        new ResponseEntity(HttpStatus.OK)
+        new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
 }

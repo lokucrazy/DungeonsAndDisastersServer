@@ -59,6 +59,7 @@ class SessionService {
 
         if (!session.characters) session.characters = []
         session.characters << character
+        session
     }
 
     Session moveRelationships(String oldId) {
@@ -108,6 +109,7 @@ class SessionService {
     }
 
     Set<SessionDto> buildDtoSetFrom(Set<Session> sessions) {
+        if (!sessions) return []
         sessions.stream().map({ session -> buildDtoFrom(session) }).collect(Collectors.toSet())
     }
 

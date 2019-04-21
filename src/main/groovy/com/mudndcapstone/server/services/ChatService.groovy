@@ -64,6 +64,7 @@ class ChatService {
     }
 
     Set<ChatDto> buildDtoSetFrom(Set<Chat> chats) {
+        if (!chats) return []
         chats.stream().map({ chat -> buildDtoFrom(chat) }).collect(Collectors.toSet())
     }
 
