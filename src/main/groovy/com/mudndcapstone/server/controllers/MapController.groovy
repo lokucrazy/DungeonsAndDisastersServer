@@ -20,19 +20,18 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/maps")
 class MapController {
 
     @Autowired MapService mapService
 
-    @GetMapping
+    @GetMapping("/maps")
     ResponseEntity<Set<MapDto>> getAllMaps() {
         Set<Map> maps = mapService.getAllMaps()
         Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
         new ResponseEntity<>(mapDtos, HttpStatus.OK)
     }
 
-    @PostMapping
+    @PostMapping("/maps")
     ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
         Map mapRequest = mapService.buildMapFrom(mapDto)
         Map map = mapService.createMap(mapRequest)
@@ -42,7 +41,7 @@ class MapController {
         new ResponseEntity<>(created, HttpStatus.OK)
     }
 
-    @GetMapping("/{mapId}")
+    @GetMapping("/maps/{mapId}")
     ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
         Map map = mapService.getMapById(mapId)
         if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
@@ -51,12 +50,12 @@ class MapController {
         new ResponseEntity<>(mapDto, HttpStatus.OK)
     }
 
-    @PutMapping("/{mapId}")
+    @PutMapping("/maps/{mapId}")
     ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
-    @DeleteMapping("/{mapId}")
+    @DeleteMapping("/maps/{mapId}")
     ResponseEntity deleteMap(@PathVariable String mapId) {
         mapService.deleteMap(mapId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
