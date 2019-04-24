@@ -24,13 +24,6 @@ class MapController {
 
     @Autowired MapService mapService
 
-    @GetMapping("/maps")
-    ResponseEntity<Set<MapDto>> getAllMaps() {
-        Set<Map> maps = mapService.getAllMaps()
-        Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
-        new ResponseEntity<>(mapDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/maps")
     ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
         Map mapRequest = mapService.buildMapFrom(mapDto)

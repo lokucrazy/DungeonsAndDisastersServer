@@ -28,13 +28,6 @@ class CombatController {
     @Autowired CombatService combatService
     @Autowired SessionService sessionService
 
-    @GetMapping("/combats")
-    ResponseEntity<Set<CombatDto>> getAllCombats() {
-        Set<Combat> combats = combatService.getAllCombats()
-        Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
-        new ResponseEntity<>(combatDtos, HttpStatus.OK)
-    }
-
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping("/combats")
     ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {

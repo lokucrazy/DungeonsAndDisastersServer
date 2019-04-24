@@ -24,13 +24,6 @@ class UserController {
     @Autowired SessionService sessionService
 
     /* Users */
-    @GetMapping("/users")
-    ResponseEntity<Set<UserDto>> getAllUsers() {
-        Set<User> users = userService.getAllUsers()
-        Set<UserDto> userDtos = userService.buildDtoSetFrom(users)
-        new ResponseEntity<>(userDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/users")
     ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User userRequest = userService.buildUserFrom(userDto)
@@ -77,11 +70,5 @@ class UserController {
     }
 
     /* DMs */
-    @GetMapping("/dms")
-    ResponseEntity<Set<UserDto>> getAllDMs() {
-        Set<User> dms = userService.getAllDMs()
-        Set<UserDto> dmDtos = userService.buildDtoSetFrom(dms)
-        new ResponseEntity<>(dmDtos, HttpStatus.OK)
-    }
 
 }

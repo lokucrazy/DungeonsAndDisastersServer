@@ -28,13 +28,6 @@ class BeingController {
     @Autowired EnemyService enemyService
 
     /* Enemies */
-    @GetMapping("/enemies")
-    ResponseEntity<Set<EnemyDto>> getAllEnemies() {
-        Set<Enemy> enemies = enemyService.getAllEnemies()
-        Set<EnemyDto> enemyDtos = enemyService.buildDtoSetFrom(enemies)
-        new ResponseEntity<>(enemyDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/enemies")
     ResponseEntity<EnemyDto> createEnemy(@Valid @RequestBody EnemyDto enemyDto) {
         Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto)
@@ -66,13 +59,6 @@ class BeingController {
     }
 
     /* NPCs */
-    @GetMapping("/npcs")
-    ResponseEntity<Set<NPCDto>> getAllNPCs() {
-        Set<NPC> npcs = npcService.getAllNPCs()
-        Set<NPCDto> npcDtos = npcService.buildDtoSetFrom(npcs)
-        new ResponseEntity<>(npcDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/npcs")
     ResponseEntity<NPCDto> createNPC(@Valid @RequestBody NPCDto npcDto) {
         NPC npcRequest = npcService.buildNPCFrom(npcDto)

@@ -22,13 +22,6 @@ class ChatController {
     @Autowired ChatService chatService
     @Autowired SessionService sessionService
 
-    @GetMapping("/chats")
-    ResponseEntity<Set<ChatDto>> getAllChats() {
-        Set<Chat> chats = chatService.getAllChats()
-        Set<ChatDto> chatDtos = chatService.buildDtoSetFrom(chats)
-        new ResponseEntity<>(chatDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/chats")
     ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
         Chat chatRequest = chatService.buildChatFrom(chatDto)
