@@ -24,34 +24,18 @@ class MapController {
 
     @Autowired MapService mapService
 
-    @PostMapping("/maps")
-    ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
-        Map mapRequest = mapService.buildMapFrom(mapDto)
-        Map map = mapService.createMap(mapRequest)
-        if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MAP_NOT_CREATED_EXCEPTION)
-
-        MapDto created = mapService.buildDtoFrom(map)
-        new ResponseEntity<>(created, HttpStatus.OK)
+    @PutMapping("/maps/{mapId}")
+    ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
-    @GetMapping("/maps/{mapId}")
+    @GetMapping("/sessions/{sessionId}/maps")
     ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
         Map map = mapService.getMapById(mapId)
         if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
 
         MapDto mapDto = mapService.buildDtoFrom(map)
         new ResponseEntity<>(mapDto, HttpStatus.OK)
-    }
-
-    @PutMapping("/maps/{mapId}")
-    ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
-    }
-
-    @DeleteMapping("/maps/{mapId}")
-    ResponseEntity deleteMap(@PathVariable String mapId) {
-        mapService.deleteMap(mapId)
-        new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
 }

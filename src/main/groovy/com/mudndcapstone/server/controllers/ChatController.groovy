@@ -22,25 +22,6 @@ class ChatController {
     @Autowired ChatService chatService
     @Autowired SessionService sessionService
 
-    @PostMapping("/chats")
-    ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
-        Chat chatRequest = chatService.buildChatFrom(chatDto)
-        Chat chat = chatService.createChat(chatRequest)
-        if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHAT_NOT_CREATED_EXCEPTION)
-
-        ChatDto created = chatService.buildDtoFrom(chat)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
-    @GetMapping("/chats/{chatId}")
-    ResponseEntity<ChatDto> getChatById(@PathVariable String chatId) {
-        Chat chat = chatService.getChatById(chatId)
-        if (!chat) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHAT_NOT_FOUND_EXCEPTION)
-
-        ChatDto chatDto = chatService.buildDtoFrom(chat)
-        new ResponseEntity<>(chatDto, HttpStatus.OK)
-    }
-
     @PutMapping("/chats/{chatId}")
     ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger) {
         Chat chatRequest = chatService.getChatById(chatId)
@@ -51,12 +32,6 @@ class ChatController {
 
         List<String> messages = PaginationHandler.getPage(chat.log, null, null)
         new ResponseEntity<>(messages, HttpStatus.OK)
-    }
-
-    @DeleteMapping("/chats/{chatId}")
-    ResponseEntity deleteChat(@PathVariable String chatId) {
-        chatService.deleteChat(chatId)
-        new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
     @GetMapping("/sessions/{sessionId}/chats")

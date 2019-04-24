@@ -23,17 +23,7 @@ class CharacterController {
     @Autowired CharacterService characterService
     @Autowired SessionService sessionService
     @Autowired UserService userService
-
-    @PostMapping("/characters")
-    ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
-        Character characterRequest = characterService.buildCharacterFrom(characterDto)
-        Character character = characterService.createCharacter(characterRequest)
-        if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
-
-        CharacterDto created = characterService.buildDtoFrom(character)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
+    
     @GetMapping("/characters/{characterId}")
     ResponseEntity<CharacterDto> getCharacterById(@PathVariable String characterId) {
         Character character = characterService.getCharacterById(characterId)
@@ -52,6 +42,16 @@ class CharacterController {
     ResponseEntity deleteCharacter(@PathVariable String characterId) {
         characterService.deleteCharacter(characterId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PostMapping("/users/{userId}/characters")
+    ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
+        Character characterRequest = characterService.buildCharacterFrom(characterDto)
+        Character character = characterService.createCharacter(characterRequest)
+        if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
+
+        CharacterDto created = characterService.buildDtoFrom(character)
+        new ResponseEntity<>(created, HttpStatus.OK)
     }
 
     @GetMapping("/users/{userId}/characters")

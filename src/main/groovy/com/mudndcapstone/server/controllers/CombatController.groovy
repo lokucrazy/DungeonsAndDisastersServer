@@ -28,20 +28,6 @@ class CombatController {
     @Autowired CombatService combatService
     @Autowired SessionService sessionService
 
-    @Transactional(rollbackFor = ResponseStatusException)
-    @PostMapping("/combats")
-    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {
-        Session session = sessionService.getSessionById(combatDto.sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
-
-        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = insert ? combatService.insertCombatToPath(combatRequest, session) : combatService.appendCombatToPath(combatRequest, session)
-        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
-
-        CombatDto created = combatService.buildDtoFrom(combat)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
     @GetMapping("/combats/{combatId}")
     ResponseEntity<CombatDto> getCombatById(@PathVariable String combatId) {
         Combat combat = combatService.getCombatById(combatId)
@@ -61,4 +47,19 @@ class CombatController {
         combatService.deleteCombat(combatId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
+
+    @Transactional(rollbackFor = ResponseStatusException)
+    @PostMapping("/sessions/{sessionId}/combats")
+    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {
+        Session session = sessionService.getSessionById(combatDto.sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
+        Combat combat = insert ? combatService.insertCombatToPath(combatRequest, session) : combatService.appendCombatToPath(combatRequest, session)
+        if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
+
+        CombatDto created = combatService.buildDtoFrom(combat)
+        new ResponseEntity<>(created, HttpStatus.OK)
+    }
+
 }

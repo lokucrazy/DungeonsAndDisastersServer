@@ -28,16 +28,6 @@ class BeingController {
     @Autowired EnemyService enemyService
 
     /* Enemies */
-    @PostMapping("/enemies")
-    ResponseEntity<EnemyDto> createEnemy(@Valid @RequestBody EnemyDto enemyDto) {
-        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto)
-        Enemy enemy = enemyService.createEnemy(enemyRequest)
-        if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_CREATED_EXCEPTION)
-
-        EnemyDto created = enemyService.buildDtoFrom(enemy)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
     @GetMapping("/enemies/{enemyId}")
     ResponseEntity<EnemyDto> getEnemyById(@PathVariable String enemyId) {
         Enemy enemy = enemyService.getEnemyById(enemyId)
@@ -58,8 +48,18 @@ class BeingController {
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
+    @PostMapping("/combats/{combatId}/enemies")
+    ResponseEntity<EnemyDto> createEnemy(@Valid @RequestBody EnemyDto enemyDto) {
+        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto)
+        Enemy enemy = enemyService.createEnemy(enemyRequest)
+        if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_CREATED_EXCEPTION)
+
+        EnemyDto created = enemyService.buildDtoFrom(enemy)
+        new ResponseEntity<>(created, HttpStatus.OK)
+    }
+
     /* NPCs */
-    @PostMapping("/npcs")
+    @PostMapping("/dms/{dmId}/npcs")
     ResponseEntity<NPCDto> createNPC(@Valid @RequestBody NPCDto npcDto) {
         NPC npcRequest = npcService.buildNPCFrom(npcDto)
         NPC npc = npcService.createNPC(npcRequest)
