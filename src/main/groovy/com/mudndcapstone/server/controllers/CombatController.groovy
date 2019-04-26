@@ -50,8 +50,8 @@ class CombatController {
 
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping("/sessions/{sessionId}/combats")
-    ResponseEntity<CombatDto> createCombat(@Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {
-        Session session = sessionService.getSessionById(combatDto.sessionId)
+    ResponseEntity<CombatDto> createCombat(@PathVariable String sessionId, @Valid @RequestBody CombatDto combatDto, @RequestParam boolean insert) {
+        Session session = sessionService.getSessionById(sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
         Combat combatRequest = combatService.buildCombatFrom(combatDto, session)

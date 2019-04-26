@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.NPC
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.NPCDto
 import com.mudndcapstone.server.repositories.NPCRepository
 import com.mudndcapstone.server.utils.Auditor
@@ -33,8 +34,11 @@ class NPCService {
         npcRepository.deleteById(id)
     }
 
-    NPC buildNPCFrom(NPCDto npcDto) {
+    NPC buildNPCFrom(NPCDto npcDto, User dm) {
         NPC npc = modelMapper.map(npcDto, NPC)
+
+        npc.dm = dm
+
         npc
     }
 

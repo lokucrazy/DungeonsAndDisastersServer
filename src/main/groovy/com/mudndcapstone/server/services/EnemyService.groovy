@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.services
 
+import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.repositories.EnemyRepository
@@ -33,8 +34,11 @@ class EnemyService {
         enemyRepository.deleteById(id)
     }
 
-    Enemy buildEnemyFrom(EnemyDto enemyDto) {
+    Enemy buildEnemyFrom(EnemyDto enemyDto, Combat combat) {
         Enemy enemy = modelMapper.map(enemyDto, Enemy)
+
+        enemy.combat = combat
+
         enemy
     }
 

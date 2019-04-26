@@ -1,22 +1,20 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.NPC
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.models.dto.NPCDto
+import com.mudndcapstone.server.services.CombatService
 import com.mudndcapstone.server.services.EnemyService
 import com.mudndcapstone.server.services.NPCService
+import com.mudndcapstone.server.services.UserService
 import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
@@ -26,6 +24,8 @@ class BeingController {
 
     @Autowired NPCService npcService
     @Autowired EnemyService enemyService
+    @Autowired CombatService combatService
+    @Autowired UserService userService
 
     /* Enemies */
     @GetMapping("/enemies/{enemyId}")
@@ -49,8 +49,11 @@ class BeingController {
     }
 
     @PostMapping("/combats/{combatId}/enemies")
-    ResponseEntity<EnemyDto> createEnemy(@Valid @RequestBody EnemyDto enemyDto) {
-        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto)
+    ResponseEntity<EnemyDto> createEnemy(@PathVariable String combatId, @Valid @RequestBody EnemyDto enemyDto) {
+        Combat combat = combatService.getCombatById(combatId)
+        if (!combat) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.COMBAT_NOT_FOUND_EXCEPTION)
+
+        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto, combat)
         Enemy enemy = enemyService.createEnemy(enemyRequest)
         if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_CREATED_EXCEPTION)
 
@@ -59,16 +62,6 @@ class BeingController {
     }
 
     /* NPCs */
-    @PostMapping("/dms/{dmId}/npcs")
-    ResponseEntity<NPCDto> createNPC(@Valid @RequestBody NPCDto npcDto) {
-        NPC npcRequest = npcService.buildNPCFrom(npcDto)
-        NPC npc = npcService.createNPC(npcRequest)
-        if (!npc) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.NPC_NOT_CREATED_EXCEPTION)
-
-        NPCDto created = npcService.buildDtoFrom(npc)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
     @GetMapping("/npcs/{npcId}")
     ResponseEntity<NPCDto> getNPCById(@PathVariable String npcId) {
         NPC npc = npcService.getNPCById(npcId)
@@ -87,6 +80,18 @@ class BeingController {
     ResponseEntity deleteNPC(@PathVariable String npcId) {
         npcService.deleteNPC(npcId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PostMapping("/dms/{dmId}/npcs")
+    ResponseEntity<NPCDto> createNPC(@PathVariable String dmId, @Valid @RequestBody NPCDto npcDto) {
+        User dm = userService.getDMById(dmId)
+
+        NPC npcRequest = npcService.buildNPCFrom(npcDto, dm)
+        NPC npc = npcService.createNPC(npcRequest)
+        if (!npc) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.NPC_NOT_CREATED_EXCEPTION)
+
+        NPCDto created = npcService.buildDtoFrom(npc)
+        new ResponseEntity<>(created, HttpStatus.OK)
     }
 
 }

@@ -1,8 +1,10 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Map
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.MapDto
 import com.mudndcapstone.server.services.MapService
+import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -23,6 +25,7 @@ import javax.validation.Valid
 class MapController {
 
     @Autowired MapService mapService
+    @Autowired SessionService sessionService
 
     @PutMapping("/maps/{mapId}")
     ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
@@ -30,8 +33,11 @@ class MapController {
     }
 
     @GetMapping("/sessions/{sessionId}/maps")
-    ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
-        Map map = mapService.getMapById(mapId)
+    ResponseEntity<MapDto> getMapById(@PathVariable String sessionId) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        Map map = session.map
         if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
 
         MapDto mapDto = mapService.buildDtoFrom(map)
