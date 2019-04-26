@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
+@CrossOrigin("*")
 class UserController {
 
     @Autowired UserService userService
