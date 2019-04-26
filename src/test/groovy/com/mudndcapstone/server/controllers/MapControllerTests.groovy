@@ -29,21 +29,4 @@ class MapControllerTests {
         MockitoAnnotations.initMocks(this)
     }
 
-    @Test
-    void givenMapList_whenMapServiceReturnsList_thenMapControllerReturnsList() {
-        // Given
-        Set<Map> maps = [new Map()]
-        Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
-        ResponseEntity response
-
-        // When
-        Mockito.when(mapService.getAllMaps()).thenReturn(maps)
-        response = mapController.getAllMaps()
-
-        // Then
-        assert response.statusCode == HttpStatus.OK
-        assert response.body == mapDtos
-        Mockito.verify(mapService, Mockito.atLeastOnce()).getAllMaps()
-    }
-
 }

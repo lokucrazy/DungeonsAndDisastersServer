@@ -33,23 +33,6 @@ class CharacterControllerTests {
     }
 
     @Test
-    void givenCharacterList_whenCharacterServiceReturnsList_thenCharacterControllerReturnsList() {
-        // Given
-        Set<Character> characters = [new Character()]
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(characters)
-        ResponseEntity response
-
-        // When
-        Mockito.when(characterService.getAllCharacters()).thenReturn(characters)
-        response = characterController.getAllCharacters()
-
-        // Then
-        assert response.statusCode == HttpStatus.OK
-        assert response.body == characterDtos
-        Mockito.verify(characterService, Mockito.atLeastOnce()).getAllCharacters()
-    }
-
-    @Test
     void givenSession_whenSessionHasCharacters_thenSessionControllerReturnsCharacters() {
         // Given
         Session session = new Session()

@@ -29,21 +29,4 @@ class CombatControllerTests {
         MockitoAnnotations.initMocks(this)
     }
 
-    @Test
-    void givenCombatList_whenCombatServiceReturnsList_thenCombatControllerReturnsList() {
-        // Given
-        Set<Combat> combats = [new Combat()]
-        Set<CombatDto> combatDtos = combatService.buildDtoSetFrom(combats)
-        ResponseEntity response
-
-        // When
-        Mockito.when(combatService.getAllCombats()).thenReturn(combats)
-        response = combatController.getAllCombats()
-
-        // Then
-        assert response.statusCode == HttpStatus.OK
-        assert response.body == combatDtos
-        Mockito.verify(combatService, Mockito.atLeastOnce()).getAllCombats()
-    }
-
 }
