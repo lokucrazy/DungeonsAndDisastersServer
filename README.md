@@ -61,23 +61,17 @@ _generic route can either not exist or be overridden by a custom route_
 | ------ | ------ | ------ | ------ |
 
 ### Objects
+_properties marked with_ ! _means they're required_
 
-##### UserRequest (Only for creating new users via POST /users)
-```
-{
-    "username": "",
-    "password": "",
-    "birthdate": "YYYY-mm-dd"
-}
-```
+_properties marked with_ * _means they're used for creation_
 
-##### User
+##### UserDto
 ```
 {
     "id": "",
-    "username": "",
-    "password": "",
-    "birthdate": "YYYY-mm-dd",
+!*  "username": "",
+!*  "password": "",
+!*  "birthdate": "YYYY-mm-dd",
     "notes": [],
     "created_at": "YYYY-mm-dd HH:mm a",
     "modified_at": "YYYY-mm-dd HH:mm a",
@@ -86,3 +80,121 @@ _generic route can either not exist or be overridden by a custom route_
 }
 ```
 
+#### SessionDto
+```
+{
+*   "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+!*  "dm_id": "",
+    "non_combat_log": [],
+    "combat_log": [],
+    "date_ended": "YYYY-mm-dd HH:mm a",
+    "history_id": "",
+    "chat_id": "",
+    "map_id": "",
+    "combat_id": "",
+    "npc_ids": [],
+    "player_ids": [],
+    "character_ids": []
+}
+```
+
+#### HistoryDto
+```
+{
+    "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+    "non_combat_log": [],
+    "combat_log": [],
+    "date_ended": "",
+    "history_id": ""
+}
+```
+
+#### NPCDto
+```
+{
+    "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+!*  "name": "",
+*   "health": 0,
+    "is_alive": true,
+    "initial_location": "",
+*   "abilities": {},
+*   "session_id": "",
+*   "dm_id": ""
+}
+```
+
+#### MapDto
+```
+{
+    "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+!   "session_id": "",
+    "images": []
+}
+```
+
+#### EnemyDto
+```
+{
+    "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+!*  "name": "",
+*   "health": 0,
+    "is_alive": true,
+    "initial_location": "",
+*   "abilities": {},
+*   "session_id": "",
+*   "combat_id": ""
+}
+```
+
+#### CombatDto
+```
+{
+    "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+    "next_combat_id": "",
+    "session_id": "",
+    "enemy_ids" : []
+}
+```
+
+#### ChatDto
+```
+{
+    "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+!   "session_id": "",
+    "log": [],
+    "note": ""
+}
+```
+
+#### CharacterDto
+```
+{
+!   "id": "",
+    "created_at": "YYYY-mm-dd HH:mm a",
+    "modified_at": "YYYY-mm-dd HH:mm a",
+!*  "name": "",
+!*  "user_id": "",
+!   "class": "",
+!   "background: "",
+!   "race": "",
+!   "alignment": "",
+*   "level" : 0,
+*   "experience": 0,
+*   "abilities: {},
+    "session_ids": [] 
+}
+```
