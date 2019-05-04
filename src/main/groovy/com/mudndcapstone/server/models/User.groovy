@@ -1,10 +1,12 @@
 package com.mudndcapstone.server.models
 
+import org.neo4j.ogm.annotation.Index
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
 class User extends Node {
+    @Index(unique = true)
     String username
     String password
     Date birthdate
