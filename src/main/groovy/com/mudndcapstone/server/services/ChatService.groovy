@@ -33,6 +33,12 @@ class ChatService {
         chatRepository.save(chat)
     }
 
+    Chat buildAndCreateChat(ChatDto chatDto, Session session) {
+        Chat chatRequest = buildChatFrom(chatDto, session)
+        Chat chat = createChat(chatRequest)
+        chat
+    }
+
     Chat addMessage(Chat chat, String message) {
         if (!chat) return null
         if (!message) return chat
@@ -45,11 +51,10 @@ class ChatService {
         chatRepository.deleteById(id)
     }
 
-    Chat buildChatFrom(ChatDto chatDto) {
+    Chat buildChatFrom(ChatDto chatDto, Session session) {
         Chat chat = modelMapper.map(chatDto, Chat)
-        Session session = sessionService.getSessionById(chatDto.sessionId)
 
-        chat.setSession(session)
+        chat.session = session
 
         chat
     }

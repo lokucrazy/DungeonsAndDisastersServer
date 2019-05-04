@@ -2,10 +2,14 @@ package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.NPC
+import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.models.dto.NPCDto
 import com.mudndcapstone.server.services.EnemyService
 import com.mudndcapstone.server.services.NPCService
+import com.mudndcapstone.server.services.SessionService
+import com.mudndcapstone.server.services.UserService
 import com.mudndcapstone.server.utils.Exceptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -26,6 +30,8 @@ class BeingController {
 
     @Autowired NPCService npcService
     @Autowired EnemyService enemyService
+    @Autowired SessionService sessionService
+    @Autowired UserService userService
 
     /* Enemies */
     @GetMapping("/enemies")
@@ -35,10 +41,15 @@ class BeingController {
         new ResponseEntity<>(enemyDtos, HttpStatus.OK)
     }
 
-    @PostMapping("/enemies")
-    ResponseEntity<EnemyDto> createEnemy(@Valid @RequestBody EnemyDto enemyDto) {
-        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto)
-        Enemy enemy = enemyService.createEnemy(enemyRequest)
+    @PostMapping("/sessions/{sessionId}/enemies")
+    ResponseEntity<EnemyDto> createEnemy(@PathVariable String sessionId, @Valid @RequestBody EnemyDto enemyDto) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        User dm = userService.getUserById(enemyDto.dmId)
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        Enemy enemy = enemyService.buildAndCreateEnemy(enemyDto, session, dm)
         if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_CREATED_EXCEPTION)
 
         EnemyDto created = enemyService.buildDtoFrom(enemy)
@@ -73,10 +84,15 @@ class BeingController {
         new ResponseEntity<>(npcDtos, HttpStatus.OK)
     }
 
-    @PostMapping("/npcs")
-    ResponseEntity<NPCDto> createNPC(@Valid @RequestBody NPCDto npcDto) {
-        NPC npcRequest = npcService.buildNPCFrom(npcDto)
-        NPC npc = npcService.createNPC(npcRequest)
+    @PostMapping("/sessions/{sessionId}/npcs")
+    ResponseEntity<NPCDto> createNPC(@PathVariable String sessionId, @Valid @RequestBody NPCDto npcDto) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        User dm = userService.getUserById(npcDto.dmId)
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        NPC npc = npcService.buildAndCreateNPC(npcDto, session, dm)
         if (!npc) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.NPC_NOT_CREATED_EXCEPTION)
 
         NPCDto created = npcService.buildDtoFrom(npc)

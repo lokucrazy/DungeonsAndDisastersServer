@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Character
+import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.repositories.CharacterRepository
 import com.mudndcapstone.server.utils.Auditor
@@ -29,12 +30,21 @@ class CharacterService {
         characterRepository.save(character)
     }
 
+    Character buildAndCreateCharacter(CharacterDto characterDto, User user) {
+        Character characterRequest = buildCharacterFrom(characterDto, user)
+        Character character = createCharacter(characterRequest)
+        character
+    }
+
     void deleteCharacter(String id) {
         characterRepository.deleteById(id)
     }
 
-    Character buildCharacterFrom(CharacterDto characterDto) {
+    Character buildCharacterFrom(CharacterDto characterDto, User user) {
         Character character = modelMapper.map(characterDto, Character)
+
+        character.user = user
+
         character
     }
 

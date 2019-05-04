@@ -1,6 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Map
+import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.MapDto
 import com.mudndcapstone.server.repositories.MapRepository
 import com.mudndcapstone.server.utils.Auditor
@@ -31,12 +32,21 @@ class MapService {
         mapRepository.save(map)
     }
 
+    Map buildAndCreateMap(MapDto mapDto, Session session) {
+        Map mapRequest = buildMapFrom(mapDto, session)
+        Map map = createMap(mapRequest)
+        map
+    }
+
     void deleteMap(String id) {
         mapRepository.deleteById(id)
     }
 
-    Map buildMapFrom(MapDto mapDto) {
+    Map buildMapFrom(MapDto mapDto, Session session) {
         Map map = modelMapper.map(mapDto, Map)
+
+        map.session = session
+
         map
     }
 

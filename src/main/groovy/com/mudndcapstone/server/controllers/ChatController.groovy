@@ -31,8 +31,10 @@ class ChatController {
 
     @PostMapping("/chats")
     ResponseEntity<ChatDto> createChat(@Valid @RequestBody ChatDto chatDto) {
-        Chat chatRequest = chatService.buildChatFrom(chatDto)
-        Chat chat = chatService.createChat(chatRequest)
+        Session session = sessionService.getSessionById(chatDto.sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        Chat chat = chatService.buildAndCreateChat(chatDto, session)
         if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHAT_NOT_CREATED_EXCEPTION)
 
         ChatDto created = chatService.buildDtoFrom(chat)
@@ -50,10 +52,10 @@ class ChatController {
 
     @PutMapping("/chats/{chatId}")
     ResponseEntity<List<String>> addMessage(@PathVariable String chatId, @Valid @RequestBody Messenger messenger) {
-        Chat chatRequest = chatService.getChatById(chatId)
-        if (!chatRequest) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHAT_NOT_FOUND_EXCEPTION)
+        Chat chat = chatService.getChatById(chatId)
+        if (!chat) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHAT_NOT_FOUND_EXCEPTION)
 
-        Chat chat = chatService.addMessage(chatRequest, messenger.message)
+        chat = chatService.addMessage(chat, messenger.message)
         if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MESSAGE_NOT_ADDED_EXCEPTION)
 
         List<String> messages = PaginationHandler.getPage(chat.log, null, null)

@@ -41,8 +41,7 @@ class CombatController {
         Session session = sessionService.getSessionById(combatDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
-        Combat combatRequest = combatService.buildCombatFrom(combatDto, session)
-        Combat combat = insert ? combatService.insertCombatToPath(combatRequest, session) : combatService.appendCombatToPath(combatRequest, session)
+        Combat combat = combatService.buildAndCreateCombat(combatDto, session, insert)
         if (!combat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.COMBAT_NOT_CREATED_EXCEPTION)
 
         CombatDto created = combatService.buildDtoFrom(combat)
