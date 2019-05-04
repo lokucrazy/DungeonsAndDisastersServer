@@ -33,4 +33,9 @@ class BeingControllerTests {
         MockitoAnnotations.initMocks(this)
     }
 
+    @Test
+    void initTest() {
+        assert 1 == 1
+    }
+
 }
