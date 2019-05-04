@@ -25,14 +25,14 @@ class UserService {
         userRepository.findById(id).orElse(null)
     }
 
-    User createUser(User user) {
+    User upsertUser(User user) {
         Auditor.enableAuditing(user)
         userRepository.save(user)
     }
 
     User buildAndCreateUser(UserDto userDto) {
         User userRequest = buildUserFrom(userDto)
-        User user = createUser(userRequest)
+        User user = upsertUser(userRequest)
         user
     }
 

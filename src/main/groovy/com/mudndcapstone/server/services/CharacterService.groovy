@@ -25,14 +25,14 @@ class CharacterService {
         characterRepository.findById(id).orElse(null)
     }
 
-    Character createCharacter(Character character) {
+    Character upsertCharacter(Character character) {
         Auditor.enableAuditing(character)
         characterRepository.save(character)
     }
 
     Character buildAndCreateCharacter(CharacterDto characterDto, User user) {
         Character characterRequest = buildCharacterFrom(characterDto, user)
-        Character character = createCharacter(characterRequest)
+        Character character = upsertCharacter(characterRequest)
         character
     }
 

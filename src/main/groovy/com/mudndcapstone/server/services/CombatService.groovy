@@ -26,7 +26,7 @@ class CombatService {
         combatRepository.findById(id).orElse(null)
     }
 
-    Combat createCombat(Combat combat) {
+    Combat upsertCombat(Combat combat) {
         Auditor.enableAuditing(combat)
         combatRepository.save(combat)
     }

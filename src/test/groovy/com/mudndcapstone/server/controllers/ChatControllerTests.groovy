@@ -97,7 +97,7 @@ class ChatControllerTests {
 
         // When
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
-        Mockito.when(chatService.createChat((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
+        Mockito.when(chatService.upsertChat((ChatDto)notNull())).thenReturn(new Chat(log: ["hello world"]))
         response = chatController.createChat("test", "hello world", Optional.empty(), Optional.empty())
 
         // Then
@@ -119,7 +119,7 @@ class ChatControllerTests {
         chat.setLog(chatLog)
         session.setChatLog(chat)
         Mockito.when(chatService.buildDtoFrom(session.chatLog)).thenReturn(new ChatDto(sessionId: "test", log: chatLog))
-        Mockito.when(chatService.createChat((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
+        Mockito.when(chatService.upsertChat((ChatDto)notNull())).thenReturn(new Chat(log: ["message 1", "message 2", "hello world"]))
         Mockito.when(sessionService.getSessionById("test")).thenReturn(session)
         response = chatController.createChat("test", "hello world", Optional.empty(), Optional.empty())
 

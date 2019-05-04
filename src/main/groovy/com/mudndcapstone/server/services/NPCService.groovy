@@ -26,14 +26,14 @@ class NPCService {
         npcRepository.findById(id).orElse(null)
     }
 
-    NPC createNPC(NPC npc) {
+    NPC upsertNPC(NPC npc) {
         Auditor.enableAuditing(npc)
         npcRepository.save(npc)
     }
 
     NPC buildAndCreateNPC(NPCDto npcDto, Session session, User dm) {
         NPC npcRequest = buildNPCFrom(npcDto, session, dm)
-        NPC npc = createNPC(npcRequest)
+        NPC npc = upsertNPC(npcRequest)
         npc
     }
 

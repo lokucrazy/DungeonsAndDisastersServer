@@ -26,14 +26,14 @@ class EnemyService {
         enemyRepository.findById(id).orElse(null)
     }
 
-    Enemy createEnemy(Enemy enemy) {
+    Enemy upsertEnemy(Enemy enemy) {
         Auditor.enableAuditing(enemy)
         enemyRepository.save(enemy)
     }
 
     Enemy buildAndCreateEnemy(EnemyDto enemyDto, Session session, User dm) {
         Enemy enemyRequest = buildEnemyFrom(enemyDto, session, dm)
-        Enemy enemy = createEnemy(enemyRequest)
+        Enemy enemy = upsertEnemy(enemyRequest)
         enemy
     }
 
