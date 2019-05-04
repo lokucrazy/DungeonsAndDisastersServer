@@ -6,6 +6,7 @@ import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.SessionService
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -69,5 +70,5 @@ class ChatControllerTests {
         assert response.body == chatLog
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
-
+  
 }

@@ -31,6 +31,12 @@ class CombatService {
         combatRepository.save(combat)
     }
 
+    Combat buildAndCreateCombat(CombatDto combatDto, Session session, boolean insert = false) {
+        Combat combatRequest = buildCombatFrom(combatDto, session)
+        Combat combat = insert ? insertCombatToPath(combatRequest, session) : appendCombatToPath(combatRequest, session)
+        combat
+    }
+
     Combat updateCombat(Combat combat) {
         if (!combat.identifier) return null
         combatRepository.save(combat)

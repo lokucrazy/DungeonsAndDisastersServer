@@ -30,13 +30,18 @@ class NPCService {
         npcRepository.save(npc)
     }
 
+    NPC buildAndCreateNPC(NPCDto npcDto, User dm) {
+        NPC npcRequest = buildNPCFrom(npcDto, dm)
+        NPC npc = createNPC(npcRequest)
+        npc
+    }
+
     void deleteNPC(String id) {
         npcRepository.deleteById(id)
     }
 
     NPC buildNPCFrom(NPCDto npcDto, User dm) {
         NPC npc = modelMapper.map(npcDto, NPC)
-
         npc.dm = dm
 
         npc

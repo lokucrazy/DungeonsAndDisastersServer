@@ -53,8 +53,7 @@ class BeingController {
         Combat combat = combatService.getCombatById(combatId)
         if (!combat) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.COMBAT_NOT_FOUND_EXCEPTION)
 
-        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto, combat)
-        Enemy enemy = enemyService.createEnemy(enemyRequest)
+        Enemy enemy = enemyService.buildAndCreateEnemy(enemyDto, combat)
         if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_CREATED_EXCEPTION)
 
         EnemyDto created = enemyService.buildDtoFrom(enemy)
@@ -85,9 +84,9 @@ class BeingController {
     @PostMapping("/dms/{dmId}/npcs")
     ResponseEntity<NPCDto> createNPC(@PathVariable String dmId, @Valid @RequestBody NPCDto npcDto) {
         User dm = userService.getDMById(dmId)
-
-        NPC npcRequest = npcService.buildNPCFrom(npcDto, dm)
-        NPC npc = npcService.createNPC(npcRequest)
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+      
+        NPC npc = npcService.buildAndCreateNPC(npcDto, dm)
         if (!npc) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.NPC_NOT_CREATED_EXCEPTION)
 
         NPCDto created = npcService.buildDtoFrom(npc)

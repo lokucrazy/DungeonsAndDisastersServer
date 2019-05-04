@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
+@CrossOrigin("*")
 class UserController {
 
     @Autowired UserService userService
@@ -26,8 +27,7 @@ class UserController {
     /* Users */
     @PostMapping("/users")
     ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        User userRequest = userService.buildUserFrom(userDto)
-        User user = userService.createUser(userRequest)
+        User user = userService.buildAndCreateUser(userDto)
         if (!user) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.USER_NOT_CREATED_EXCEPTION)
 
         UserDto created = userService.buildDtoFrom(user)

@@ -38,6 +38,12 @@ class SessionService {
         sessionRepository.save(session)
     }
 
+    Session buildAndCreateSession(SessionDto sessionDto, User dm) {
+        Session sessionRequest = buildSessionFrom(sessionDto, dm)
+        Session session = upsertSession(sessionRequest)
+        session
+    }
+
     void deleteSession(String id) {
         sessionRepository.deleteById(id)
     }
@@ -73,7 +79,7 @@ class SessionService {
     Session buildSessionFrom(SessionDto sessionDto, User dm) {
         Session session = modelMapper.map(sessionDto, Session)
 
-        session.setDm(dm)
+        session.dm = dm
 
         session
     }
