@@ -79,6 +79,4 @@ class SessionController {
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
-    /* History */
-
 }
