@@ -26,7 +26,7 @@ class UserService {
     }
 
     boolean existsByUsername(String username) {
-        userRepository.existsByUsername(username)
+        userRepository.findByUsername(username).orElse(null)
     }
 
     User createUser(User user) {
