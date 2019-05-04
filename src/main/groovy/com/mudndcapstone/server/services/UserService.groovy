@@ -25,6 +25,10 @@ class UserService {
         userRepository.findById(id).orElse(null)
     }
 
+    User getUserByUsername(String username) {
+        userRepository.findByUsername(username).orElse(null)
+    }
+
     User createUser(User user) {
         Auditor.enableAuditing(user)
         userRepository.save(user)
