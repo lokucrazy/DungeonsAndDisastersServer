@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserRepository extends Neo4jRepository<User, String> {
-    Optional<User> findByUsername(String username)
+    boolean existsByUsername(String username)
 
     @Query("MATCH (dm)<-[:HAS_DM]-() RETURN dm")
     List<User> findAllDMs()

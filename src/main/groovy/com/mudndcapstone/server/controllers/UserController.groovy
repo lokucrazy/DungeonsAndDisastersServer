@@ -34,7 +34,7 @@ class UserController {
 
     @PostMapping("/users")
     ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        User userExists = userService.getUserByUsername(userDto.username)
+        boolean userExists = userService.existsByUsername(userDto.username)
         if (userExists) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USERNAME_TAKEN_EXCEPTION)
 
         User user = userService.buildAndCreateUser(userDto)

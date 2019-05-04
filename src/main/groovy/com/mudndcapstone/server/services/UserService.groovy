@@ -25,8 +25,8 @@ class UserService {
         userRepository.findById(id).orElse(null)
     }
 
-    User getUserByUsername(String username) {
-        userRepository.findByUsername(username).orElse(null)
+    boolean existsByUsername(String username) {
+        userRepository.existsByUsername(username)
     }
 
     User createUser(User user) {
