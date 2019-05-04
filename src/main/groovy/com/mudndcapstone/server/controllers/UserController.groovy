@@ -69,6 +69,4 @@ class UserController {
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
     }
 
-    /* DMs */
-
 }
