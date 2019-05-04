@@ -25,8 +25,7 @@ class HistoryService {
     }
 
     History convertSessionToHistory(String id) {
-        History history = historyRepository.findById(id).orElse(null)
-        if (!history) return null
+        if (!historyRepository.existsById(id)) return null
 
         Auditor.updateAuditing(history)
         historyRepository.removeSessionLabel(id).orElse(null)
