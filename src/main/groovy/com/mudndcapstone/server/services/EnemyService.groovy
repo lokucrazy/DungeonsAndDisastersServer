@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.services
 
+import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.Enemy
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
@@ -31,9 +32,10 @@ class EnemyService {
         enemyRepository.save(enemy)
     }
 
-    Enemy buildAndCreateEnemy(EnemyDto enemyDto, Session session, User dm) {
-        Enemy enemyRequest = buildEnemyFrom(enemyDto, session, dm)
+    Enemy buildAndCreateEnemy(EnemyDto enemyDto, Combat combat) {
+        Enemy enemyRequest = buildEnemyFrom(enemyDto, combat)
         Enemy enemy = upsertEnemy(enemyRequest)
+
         enemy
     }
 
@@ -41,11 +43,10 @@ class EnemyService {
         enemyRepository.deleteById(id)
     }
 
-    Enemy buildEnemyFrom(EnemyDto enemyDto, Session session, User dm) {
+    Enemy buildEnemyFrom(EnemyDto enemyDto, Combat combat) {
         Enemy enemy = modelMapper.map(enemyDto, Enemy)
 
-        enemy.session = session
-        enemy.dm = dm
+        enemy.combat = combat
 
         enemy
     }

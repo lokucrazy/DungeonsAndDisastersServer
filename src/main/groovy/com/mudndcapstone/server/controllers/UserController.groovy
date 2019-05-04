@@ -25,15 +25,11 @@ class UserController {
     @Autowired SessionService sessionService
 
     /* Users */
-    @GetMapping("/users")
-    ResponseEntity<Set<UserDto>> getAllUsers() {
-        Set<User> users = userService.getAllUsers()
-        Set<UserDto> userDtos = userService.buildDtoSetFrom(users)
-        new ResponseEntity<>(userDtos, HttpStatus.OK)
-    }
-
     @PostMapping("/users")
     ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+        boolean userExists = userService.existsByUsername(userDto.username)
+        if (userExists) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USERNAME_TAKEN_EXCEPTION)
+
         User user = userService.buildAndCreateUser(userDto)
         if (!user) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.USER_NOT_CREATED_EXCEPTION)
 
@@ -74,14 +70,6 @@ class UserController {
 
         SessionDto sessionDto = sessionService.buildDtoFrom(session)
         new ResponseEntity<>(sessionDto, HttpStatus.OK)
-    }
-
-    /* DMs */
-    @GetMapping("/dms")
-    ResponseEntity<Set<UserDto>> getAllDMs() {
-        Set<User> dms = userService.getAllDMs()
-        Set<UserDto> dmDtos = userService.buildDtoSetFrom(dms)
-        new ResponseEntity<>(dmDtos, HttpStatus.OK)
     }
 
 }

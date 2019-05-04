@@ -44,6 +44,8 @@ class ChatService {
         if (!message) return chat
 
         chat.log == null ? chat.log = [message] : chat.log << message
+
+        Auditor.updateAuditing(chat)
         chatRepository.save(chat)
     }
 

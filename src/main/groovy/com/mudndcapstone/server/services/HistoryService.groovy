@@ -3,6 +3,7 @@ package com.mudndcapstone.server.services
 import com.mudndcapstone.server.models.History
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.repositories.HistoryRepository
+import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +25,9 @@ class HistoryService {
     }
 
     History convertSessionToHistory(String id) {
+        if (!historyRepository.existsById(id)) return null
+
+        Auditor.updateAuditing(history)
         historyRepository.removeSessionLabel(id).orElse(null)
     }
 

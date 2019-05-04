@@ -24,25 +24,6 @@ class CharacterController {
     @Autowired SessionService sessionService
     @Autowired UserService userService
 
-    @GetMapping("/characters")
-    ResponseEntity<Set<CharacterDto>> getAllCharacters() {
-        Set<Character> characters = characterService.getAllCharacters()
-        Set<CharacterDto> characterDtos = characterService.buildDtoSetFrom(characters)
-        new ResponseEntity<>(characterDtos, HttpStatus.OK)
-    }
-
-    @PostMapping("/characters") /* @TODO: /users/{userId}/characters */
-    ResponseEntity<CharacterDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
-        User user = userService.getUserById(characterDto.userId)
-        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
-
-        Character character = characterService.buildAndCreateCharacter(characterDto, user)
-        if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
-
-        CharacterDto created = characterService.buildDtoFrom(character)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
     @GetMapping("/characters/{characterId}")
     ResponseEntity<CharacterDto> getCharacterById(@PathVariable String characterId) {
         Character character = characterService.getCharacterById(characterId)
@@ -61,6 +42,18 @@ class CharacterController {
     ResponseEntity deleteCharacter(@PathVariable String characterId) {
         characterService.deleteCharacter(characterId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PostMapping("/users/{userId}/characters")
+    ResponseEntity<CharacterDto> createCharacter(@PathVariable String userId, @Valid @RequestBody CharacterDto characterDto) {
+        User user = userService.getUserById(userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        Character character = characterService.buildAndCreateCharacter(characterDto, user)
+        if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
+      
+        CharacterDto created = characterService.buildDtoFrom(character)
+        new ResponseEntity<>(created, HttpStatus.OK)
     }
 
     @GetMapping("/users/{userId}/characters")

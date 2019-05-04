@@ -39,6 +39,8 @@ class CombatService {
 
     Combat updateCombat(Combat combat) {
         if (!combat.identifier) return null
+
+        Auditor.updateAuditing(combat)
         combatRepository.save(combat)
     }
 
@@ -53,7 +55,10 @@ class CombatService {
         combat.session = null
         Combat lastCombat = findLastCombat(session.combat)
         lastCombat.nextCombat = combat
+
+        Auditor.updateAuditing(lastCombat)
         combatRepository.save(lastCombat)
+
         combat
     }
 
@@ -64,9 +69,11 @@ class CombatService {
 
         if (prevCombat) {
             prevCombat.nextCombat = newCombat
+            Auditor.updateAuditing(prevCombat)
             combatRepository.save(prevCombat)
         }
         newCombat.nextCombat = nextCombat
+        Auditor.updateAuditing(newCombat)
         newCombat = combatRepository.save(newCombat)
         session.combat = newCombat
         sessionService.upsertSession(session)

@@ -22,49 +22,26 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/maps")
 class MapController {
 
     @Autowired MapService mapService
     @Autowired SessionService sessionService
 
-    @GetMapping
-    ResponseEntity<Set<MapDto>> getAllMaps() {
-        Set<Map> maps = mapService.getAllMaps()
-        Set<MapDto> mapDtos = mapService.buildDtoSetFrom(maps)
-        new ResponseEntity<>(mapDtos, HttpStatus.OK)
-    }
-
-    @PostMapping
-    ResponseEntity<MapDto> createMap(@Valid @RequestBody MapDto mapDto) {
-        Session session = sessionService.getSessionById(mapDto.sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
-
-        Map map = mapService.buildAndCreateMap(mapDto, session)
-        if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MAP_NOT_CREATED_EXCEPTION)
-
-        MapDto created = mapService.buildDtoFrom(map)
-        new ResponseEntity<>(created, HttpStatus.OK)
-    }
-
-    @GetMapping("/{mapId}")
-    ResponseEntity<MapDto> getMapById(@PathVariable String mapId) {
-        Map map = mapService.getMapById(mapId)
-        if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
-
-        MapDto mapDto = mapService.buildDtoFrom(map)
-        new ResponseEntity<>(mapDto, HttpStatus.OK)
-    }
-
-    @PutMapping("/{mapId}")
+    @PutMapping("/maps/{mapId}")
     ResponseEntity<MapDto> updateMap(@PathVariable String mapId, @Valid @RequestBody MapDto mapDto) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
-    @DeleteMapping("/{mapId}")
-    ResponseEntity deleteMap(@PathVariable String mapId) {
-        mapService.deleteMap(mapId)
-        new ResponseEntity(HttpStatus.NO_CONTENT)
+    @GetMapping("/sessions/{sessionId}/maps")
+    ResponseEntity<MapDto> getMapById(@PathVariable String sessionId) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        Map map = session.map
+        if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
+
+        MapDto mapDto = mapService.buildDtoFrom(map)
+        new ResponseEntity<>(mapDto, HttpStatus.OK)
     }
 
 }

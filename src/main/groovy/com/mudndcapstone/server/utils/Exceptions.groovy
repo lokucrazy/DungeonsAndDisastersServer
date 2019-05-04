@@ -38,6 +38,7 @@ class Exceptions {
     /* User */
     final static String USER_NOT_CREATED_EXCEPTION = "User could not be created"
     final static String USER_NOT_FOUND_EXCEPTION = "User could not be found"
+    final static String USERNAME_TAKEN_EXCEPTION = "Username already in use"
 
     /* History */
     final static String SESSION_CONVERSION_FAILED_EXCEPTION = "Could not convert session to history"

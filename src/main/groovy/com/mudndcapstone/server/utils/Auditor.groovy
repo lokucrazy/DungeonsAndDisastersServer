@@ -11,4 +11,10 @@ class Auditor {
         node
     }
 
+    static <T extends Node> T updateAuditing(T node) {
+        node.setModifiedAt(new Date())
+
+        node
+    }
+
 }

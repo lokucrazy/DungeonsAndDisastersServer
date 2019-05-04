@@ -25,6 +25,10 @@ class UserService {
         userRepository.findById(id).orElse(null)
     }
 
+    boolean existsByUsername(String username) {
+        userRepository.findByUsername(username).orElse(null)
+    }
+
     User upsertUser(User user) {
         Auditor.enableAuditing(user)
         userRepository.save(user)
@@ -33,6 +37,7 @@ class UserService {
     User buildAndCreateUser(UserDto userDto) {
         User userRequest = buildUserFrom(userDto)
         User user = upsertUser(userRequest)
+      
         user
     }
 
