@@ -1,5 +1,5 @@
-#Dungeons And Disasters Server
-##Spring Server for Senior Capstone Project 2019
+# Dungeons And Disasters Server
+### Spring Server for Senior Capstone Project 2019
 
 A server for Dungeons and also a server for Dragons.
 
@@ -16,10 +16,10 @@ _generic route can either not exist or be overridden by a custom route_
 
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
-| GET /X/{Xid} | Get X | | X |
-| POST /X | Create X | Xdto | X |
-| PUT /X/{Xid} | Update X | Xdto | X |
-| DELETE /X/{Xid} | Delete X | | 204 |
+| GET /X/{id} | Get X | | X |
+| POST /X | Create X | XDto | X |
+| PUT /X/{id} | Update X | XDto | X |
+| DELETE /X/{id} | Delete X | | 204 |
 
 ##### Custom Routes
 
@@ -83,7 +83,7 @@ _properties marked with_ * _means they're used for creation_
 #### SessionDto
 ```
 {
-*   "id": "",
+    "id": "",
     "created_at": "YYYY-mm-dd HH:mm a",
     "modified_at": "YYYY-mm-dd HH:mm a",
 !*  "dm_id": "",
