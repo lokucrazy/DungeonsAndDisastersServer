@@ -55,6 +55,8 @@ class SessionService {
 
         if (!session.players) session.players = []
         session.players << user
+
+        Auditor.updateAuditing(session)
         sessionRepository.save(session)
     }
 
@@ -73,6 +75,9 @@ class SessionService {
         if (!oldSession) return null
 
         Session newSession = sessionRepository.save(new Session())
+
+        Auditor.updateAuditing(oldSession)
+        Auditor.enableAuditing(newSession)
         sessionRepository.refactorRelationships(oldSession.identifier, newSession.identifier).orElse(null)
     }
 
