@@ -35,6 +35,7 @@ class MapService {
     Map buildAndCreateMap(MapDto mapDto, Session session) {
         Map mapRequest = buildMapFrom(mapDto, session)
         Map map = upsertMap(mapRequest)
+
         map
     }
 

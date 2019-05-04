@@ -56,6 +56,7 @@ class UserService {
 
     User buildUserFrom(UserDto userDto) {
         User user = modelMapper.map(userDto, User)
+        
         user
     }
 

@@ -33,6 +33,7 @@ class CharacterService {
     Character buildAndCreateCharacter(CharacterDto characterDto, User user) {
         Character characterRequest = buildCharacterFrom(characterDto, user)
         Character character = upsertCharacter(characterRequest)
+
         character
     }
 
