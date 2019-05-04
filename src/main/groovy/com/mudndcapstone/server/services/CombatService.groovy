@@ -26,7 +26,7 @@ class CombatService {
         combatRepository.findById(id).orElse(null)
     }
 
-    Combat createCombat(Combat combat) {
+    Combat upsertCombat(Combat combat) {
         Auditor.enableAuditing(combat)
         combatRepository.save(combat)
     }
@@ -34,6 +34,7 @@ class CombatService {
     Combat buildAndCreateCombat(CombatDto combatDto, Session session, boolean insert = false) {
         Combat combatRequest = buildCombatFrom(combatDto, session)
         Combat combat = insert ? insertCombatToPath(combatRequest, session) : appendCombatToPath(combatRequest, session)
+
         combat
     }
 
@@ -77,6 +78,7 @@ class CombatService {
         newCombat = combatRepository.save(newCombat)
         session.combat = newCombat
         sessionService.upsertSession(session)
+
         newCombat
     }
 

@@ -62,8 +62,8 @@ class SessionControllerTests {
         // When
         Mockito.when(userService.getUserById())
         Mockito.when(sessionService.buildSessionFrom(any(SessionDto), any(User))).thenReturn(session)
-        Mockito.when(chatService.createChat(any(Chat))).thenReturn(chat)
-        Mockito.when(mapService.createMap(any(Map))).thenReturn(map)
+        Mockito.when(chatService.upsertChat(any(Chat))).thenReturn(chat)
+        Mockito.when(mapService.upsertMap(any(Map))).thenReturn(map)
         Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(session)
         Mockito.when(sessionService.buildDtoFrom(any(Session))).thenReturn(sessionDto)
         response = sessionController.createSession(sessionDto)
@@ -71,8 +71,8 @@ class SessionControllerTests {
         //Then
         assert response.statusCode == HttpStatus.CREATED
         assert response.body == sessionDto
-        Mockito.verify(chatService, Mockito.atLeastOnce()).createChat(any(Chat))
-        Mockito.verify(mapService, Mockito.atLeastOnce()).createMap(any(Map))
+        Mockito.verify(chatService, Mockito.atLeastOnce()).upsertChat(any(Chat))
+        Mockito.verify(mapService, Mockito.atLeastOnce()).upsertMap(any(Map))
         Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
     }
 

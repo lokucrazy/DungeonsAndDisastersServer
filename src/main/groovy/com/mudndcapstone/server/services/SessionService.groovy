@@ -41,6 +41,7 @@ class SessionService {
     Session buildAndCreateSession(SessionDto sessionDto, User dm) {
         Session sessionRequest = buildSessionFrom(sessionDto, dm)
         Session session = upsertSession(sessionRequest)
+
         session
     }
 
@@ -67,6 +68,7 @@ class SessionService {
 
         if (!session.characters) session.characters = []
         session.characters << character
+
         session
     }
 

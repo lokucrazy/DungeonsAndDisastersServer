@@ -25,7 +25,7 @@ class MapService {
         mapRepository.findById(id).orElse(null)
     }
 
-    Map createMap(Map map) {
+    Map upsertMap(Map map) {
         if (!map.session) return null
 
         Auditor.enableAuditing(map)
@@ -34,7 +34,8 @@ class MapService {
 
     Map buildAndCreateMap(MapDto mapDto, Session session) {
         Map mapRequest = buildMapFrom(mapDto, session)
-        Map map = createMap(mapRequest)
+        Map map = upsertMap(mapRequest)
+
         map
     }
 

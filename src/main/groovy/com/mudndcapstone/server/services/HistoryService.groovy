@@ -37,6 +37,7 @@ class HistoryService {
 
     History buildHistoryFrom(HistoryDto historyDto) {
         History history = modelMapper.map(historyDto, History)
+
         history
     }
 

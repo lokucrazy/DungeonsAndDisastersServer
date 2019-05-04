@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.*
-import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.*
@@ -38,8 +37,8 @@ class SessionController {
 
         if (!sessionRequest.identifier) {
             /* Entirely new session */
-            sessionRequest.chatLog = chatService.createChat(new Chat(session: sessionRequest))
-            sessionRequest.map = mapService.createMap(new Map(session: sessionRequest))
+            sessionRequest.chatLog = chatService.upsertChat(new Chat(session: sessionRequest))
+            sessionRequest.map = mapService.upsertMap(new Map(session: sessionRequest))
             session = sessionService.upsertSession(sessionRequest)
         } else {
             /* Previous session exists */

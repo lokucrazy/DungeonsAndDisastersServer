@@ -26,7 +26,7 @@ class ChatService {
         chatRepository.findById(id).orElse(null)
     }
 
-    Chat createChat(Chat chat) {
+    Chat upsertChat(Chat chat) {
         if (!chat.session) return null
 
         Auditor.enableAuditing(chat)
@@ -35,7 +35,8 @@ class ChatService {
 
     Chat buildAndCreateChat(ChatDto chatDto, Session session) {
         Chat chatRequest = buildChatFrom(chatDto, session)
-        Chat chat = createChat(chatRequest)
+        Chat chat = upsertChat(chatRequest)
+
         chat
     }
 

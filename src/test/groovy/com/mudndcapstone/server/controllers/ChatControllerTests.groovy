@@ -70,5 +70,5 @@ class ChatControllerTests {
         assert response.body == chatLog
         Mockito.verify(sessionService, Mockito.atLeastOnce()).getSessionById("test")
     }
-  
+
 }
