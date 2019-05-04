@@ -31,6 +31,12 @@ class EnemyService {
         enemyRepository.save(enemy)
     }
 
+    Enemy buildAndCreateEnemy(EnemyDto enemyDto, Session session, User dm) {
+        Enemy enemyRequest = buildEnemyFrom(enemyDto, session, dm)
+        Enemy enemy = createEnemy(enemyRequest)
+        enemy
+    }
+
     void deleteEnemy(String id) {
         enemyRepository.deleteById(id)
     }

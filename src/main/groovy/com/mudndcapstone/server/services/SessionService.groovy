@@ -38,6 +38,12 @@ class SessionService {
         sessionRepository.save(session)
     }
 
+    Session buildAndCreateSession(SessionDto sessionDto, User dm) {
+        Session sessionRequest = buildSessionFrom(sessionDto, dm)
+        Session session = upsertSession(sessionRequest)
+        session
+    }
+
     void deleteSession(String id) {
         sessionRepository.deleteById(id)
     }

@@ -40,8 +40,7 @@ class MapController {
         Session session = sessionService.getSessionById(mapDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
-        Map mapRequest = mapService.buildMapFrom(mapDto, session)
-        Map map = mapService.createMap(mapRequest)
+        Map map = mapService.buildAndCreateMap(mapDto, session)
         if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MAP_NOT_CREATED_EXCEPTION)
 
         MapDto created = mapService.buildDtoFrom(map)

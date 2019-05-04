@@ -31,6 +31,12 @@ class NPCService {
         npcRepository.save(npc)
     }
 
+    NPC buildAndCreateNPC(NPCDto npcDto, Session session, User dm) {
+        NPC npcRequest = buildNPCFrom(npcDto, session, dm)
+        NPC npc = createNPC(npcRequest)
+        npc
+    }
+
     void deleteNPC(String id) {
         npcRepository.deleteById(id)
     }

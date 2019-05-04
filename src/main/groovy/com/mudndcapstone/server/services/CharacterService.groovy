@@ -30,6 +30,12 @@ class CharacterService {
         characterRepository.save(character)
     }
 
+    Character buildAndCreateCharacter(CharacterDto characterDto, User user) {
+        Character characterRequest = buildCharacterFrom(characterDto, user)
+        Character character = createCharacter(characterRequest)
+        character
+    }
+
     void deleteCharacter(String id) {
         characterRepository.deleteById(id)
     }

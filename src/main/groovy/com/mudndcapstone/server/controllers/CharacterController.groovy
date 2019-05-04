@@ -36,8 +36,7 @@ class CharacterController {
         User user = userService.getUserById(characterDto.userId)
         if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
 
-        Character characterRequest = characterService.buildCharacterFrom(characterDto, user)
-        Character character = characterService.createCharacter(characterRequest)
+        Character character = characterService.buildAndCreateCharacter(characterDto, user)
         if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_CREATED_EXCEPTION)
 
         CharacterDto created = characterService.buildDtoFrom(character)

@@ -32,6 +32,12 @@ class MapService {
         mapRepository.save(map)
     }
 
+    Map buildAndCreateMap(MapDto mapDto, Session session) {
+        Map mapRequest = buildMapFrom(mapDto, session)
+        Map map = createMap(mapRequest)
+        map
+    }
+
     void deleteMap(String id) {
         mapRepository.deleteById(id)
     }

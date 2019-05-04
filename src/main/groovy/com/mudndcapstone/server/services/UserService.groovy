@@ -30,6 +30,12 @@ class UserService {
         userRepository.save(user)
     }
 
+    User buildAndCreateUser(UserDto userDto) {
+        User userRequest = buildUserFrom(userDto)
+        User user = createUser(userRequest)
+        user
+    }
+
     void deleteUserById(String id) {
         userRepository.deleteById(id)
     }

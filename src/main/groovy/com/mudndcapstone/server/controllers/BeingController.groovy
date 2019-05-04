@@ -49,8 +49,7 @@ class BeingController {
         User dm = userService.getUserById(enemyDto.dmId)
         if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
 
-        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto, session, dm)
-        Enemy enemy = enemyService.createEnemy(enemyRequest)
+        Enemy enemy = enemyService.buildAndCreateEnemy(enemyDto, session, dm)
         if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_CREATED_EXCEPTION)
 
         EnemyDto created = enemyService.buildDtoFrom(enemy)
@@ -93,8 +92,7 @@ class BeingController {
         User dm = userService.getUserById(npcDto.dmId)
         if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
 
-        NPC npcRequest = npcService.buildNPCFrom(npcDto, session, dm)
-        NPC npc = npcService.createNPC(npcRequest)
+        NPC npc = npcService.buildAndCreateNPC(npcDto, session, dm)
         if (!npc) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.NPC_NOT_CREATED_EXCEPTION)
 
         NPCDto created = npcService.buildDtoFrom(npc)

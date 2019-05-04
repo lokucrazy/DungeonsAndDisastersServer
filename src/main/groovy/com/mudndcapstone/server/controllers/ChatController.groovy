@@ -34,8 +34,7 @@ class ChatController {
         Session session = sessionService.getSessionById(chatDto.sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
-        Chat chatRequest = chatService.buildChatFrom(chatDto, session)
-        Chat chat = chatService.createChat(chatRequest)
+        Chat chat = chatService.buildAndCreateChat(chatDto, session)
         if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHAT_NOT_CREATED_EXCEPTION)
 
         ChatDto created = chatService.buildDtoFrom(chat)

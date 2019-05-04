@@ -33,6 +33,12 @@ class ChatService {
         chatRepository.save(chat)
     }
 
+    Chat buildAndCreateChat(ChatDto chatDto, Session session) {
+        Chat chatRequest = buildChatFrom(chatDto, session)
+        Chat chat = createChat(chatRequest)
+        chat
+    }
+
     Chat addMessage(Chat chat, String message) {
         if (!chat) return null
         if (!message) return chat
