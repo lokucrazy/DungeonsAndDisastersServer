@@ -27,13 +27,6 @@ class SessionController {
     @Autowired HistoryService historyService
 
     /* Sessions */
-    @GetMapping("/sessions")
-    ResponseEntity<Set<SessionDto>> getAllSessions() {
-        Set<Session> sessions = sessionService.getAllSessions()
-        Set<SessionDto> sessionDtos = sessionService.buildDtoSetFrom(sessions)
-        new ResponseEntity<>(sessionDtos, HttpStatus.OK)
-    }
-
     @Transactional(rollbackFor = ResponseStatusException)
     @PostMapping("/sessions")
     ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionDto sessionDto) {
@@ -84,14 +77,6 @@ class SessionController {
     ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
-    }
-
-    /* History */
-    @GetMapping("/histories")
-    ResponseEntity<Set<HistoryDto>> getAllHistories() {
-        Set<History> histories = historyService.getAllHistories()
-        Set<HistoryDto> historyDtos = historyService.buildDtoSetFrom(histories)
-        new ResponseEntity<>(historyDtos, HttpStatus.OK)
     }
 
 }

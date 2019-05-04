@@ -34,37 +34,8 @@ class BeingControllerTests {
     }
 
     @Test
-    void givenEnemyList_whenEnemyServiceReturnsList_thenEnemyControllerReturnsList() {
-        // Given
-        Set<Enemy> enemies = [new Enemy()]
-        Set<EnemyDto> enemyDtos = enemyService.buildDtoSetFrom(enemies)
-        ResponseEntity response
-
-        // When
-        Mockito.when(enemyService.getAllEnemies()).thenReturn(enemies)
-        response = beingController.getAllEnemies()
-
-        // Then
-        assert response.statusCode == HttpStatus.OK
-        assert response.body == enemyDtos
-        Mockito.verify(enemyService, Mockito.atLeastOnce()).getAllEnemies()
-    }
-
-    @Test
-    void givenNPCList_whenNPCServiceReturnsList_thenNPCControllerReturnsList() {
-        // Given
-        Set<NPC> npcs = [new NPC()]
-        Set<NPCDto> npcDtos = npcService.buildDtoSetFrom(npcs)
-        ResponseEntity response
-
-        // When
-        Mockito.when(npcService.getAllNPCs()).thenReturn(npcs)
-        response = beingController.getAllNPCs()
-
-        // Then
-        assert response.statusCode == HttpStatus.OK
-        assert response.body == npcDtos
-        Mockito.verify(npcService, Mockito.atLeastOnce()).getAllNPCs()
+    void initTest() {
+        assert 1 == 1
     }
 
 }
