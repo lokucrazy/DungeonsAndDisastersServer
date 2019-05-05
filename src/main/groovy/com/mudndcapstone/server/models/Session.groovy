@@ -5,6 +5,8 @@ import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
 class Session extends History {
+    boolean running
+
     @Relationship(type = "HAS_CHAT_LOG", direction = Relationship.OUTGOING)
     Chat chatLog
 
