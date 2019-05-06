@@ -37,8 +37,10 @@ _generic route can either not exist or be overridden by a custom route_
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
 | GET /users/{userId}/characters | Get all Characters in a User | | [CharacterDto] |
-| POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 | POST /users/{userId}/characters | Create a Character | CharacterDto | CharacterDto |
+| GET /users/{userId}/notes | Get all user's notes | | List<String> |
+| POST /users/{userId}/notes | Create a new note for a user | Messenger | UserDto |
+| POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 
 #### Being (npcs, enemies)
 | Route | Description | Body | Response |
@@ -181,6 +183,13 @@ _properties marked with_ * _means they're used for creation_
     "modified_at": "YYYY-mm-dd HH:mm a",
 !   "session_id": "",
     "images": []
+}
+```
+
+#### Messenger
+```
+{
+!   "body": ""
 }
 ```
 
