@@ -30,6 +30,7 @@ _generic route can either not exist or be overridden by a custom route_
 | GET /sessions/{sessionId}/chats | Get chat log of a Session | | [String] |
 | GET /sessions/{sessionId}/maps | Get Map node of a Session | | MapDto |
 | POST /sessions/{sessionId}/combats | Create combat in a Session | CombatDto | CombatDto |
+| PATCH /sessions/{sessionId}/state | Set Session state | SessionState | SessionDto |
 | PUT /sessions/{sessionId}/characters/{characterId} | Connect Character to a Session | | SessionDto |
 | PUT /sessions/{sessionId}/users/{userId} | Connect User to a Session | | SessionDto |
 
@@ -141,6 +142,13 @@ _properties marked with_ * _means they're used for creation_
     "npc_ids": [],
     "player_ids": [],
     "character_ids": []
+}
+```
+
+#### SessionState
+```
+{
+!   "running": false
 }
 ```
 
