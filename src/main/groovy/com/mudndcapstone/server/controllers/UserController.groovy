@@ -1,5 +1,6 @@
 package com.mudndcapstone.server.controllers
 
+import com.mudndcapstone.server.models.Messenger
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.SessionDto
@@ -69,6 +70,24 @@ class UserController {
     ResponseEntity deleteUser(@PathVariable String userId) {
         userService.deleteUserById(userId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @GetMapping("/users/{userId}/notes")
+    ResponseEntity<List<String>> getUserNotes(@PathVariable String userId) {
+        User user = userService.getUserById(userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        new ResponseEntity<>(user.notes, HttpStatus.OK)
+    }
+
+    @PostMapping("/users/{userId}/notes")
+    ResponseEntity<UserDto> addUserNote(@PathVariable String userId, @Valid @RequestBody Messenger messenger) {
+        User user = userService.getUserById(userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        User updated = userService.addNote(user, messenger.body)
+        UserDto userDto = userService.buildDtoFrom(updated)
+        new ResponseEntity<>(userDto, HttpStatus.OK)
     }
 
     @PutMapping("/sessions/{sessionId}/users/{userId}")
