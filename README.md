@@ -278,6 +278,6 @@ CharacterRace = [
     "half orc"
     "halfling"
     "human"
-    "tiefling")
+    "tiefling"
 ]
 ```
