@@ -4,5 +4,4 @@ import javax.validation.constraints.NotNull
 
 class Messenger {
     @NotNull String body
-
 }
