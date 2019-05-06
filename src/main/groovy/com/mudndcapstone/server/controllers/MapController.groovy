@@ -6,6 +6,7 @@ import com.mudndcapstone.server.models.dto.MapDto
 import com.mudndcapstone.server.services.MapService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.Exceptions
+import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 
 import javax.validation.Valid
@@ -42,6 +45,13 @@ class MapController {
 
         MapDto mapDto = mapService.buildDtoFrom(map)
         new ResponseEntity<>(mapDto, HttpStatus.OK)
+    }
+
+    @PostMapping("/sessions/{sessionId{/maps")
+    ResponseEntity<MapDto> addMapImage(@RequestParam MultipartFile image) {
+        if (image.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
+
+
     }
 
 }
