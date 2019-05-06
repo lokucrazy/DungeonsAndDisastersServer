@@ -1,13 +1,15 @@
 package com.mudndcapstone.server.utils
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 enum CharacterRace {
-    DRAGONBORN,
-    DWARF,
-    ELF,
-    GNOME,
-    HALF_ELF,
-    HALF_ORC,
-    HALFLING,
-    HUMAN,
-    TIEFLING
+    @JsonProperty("dragonborn") DRAGONBORN,
+    @JsonProperty("dwarf") DWARF,
+    @JsonProperty("elf") ELF,
+    @JsonProperty("gnome") GNOME,
+    @JsonProperty("half elf") HALF_ELF,
+    @JsonProperty("half orc") HALF_ORC,
+    @JsonProperty("halfling") HALFLING,
+    @JsonProperty("human") HUMAN,
+    @JsonProperty("tiefling") TIEFLING
 }
