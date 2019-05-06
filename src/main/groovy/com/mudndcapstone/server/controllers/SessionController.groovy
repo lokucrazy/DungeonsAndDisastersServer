@@ -72,7 +72,7 @@ class SessionController {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
     }
 
-    @PatchMapping("/sessions/{sessionId}")
+    @PatchMapping("/sessions/{sessionId}/state")
     ResponseEntity<SessionDto> setSessionState(@PathVariable String sessionId, @Valid @RequestBody SessionState state) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
