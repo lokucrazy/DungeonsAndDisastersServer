@@ -19,8 +19,8 @@ class AuditorTests {
         Auditor.enableAuditing(session)
 
         // Then
-        assert session.createdAt
-        assert session.modifiedAt
+        assert session.createdOn
+        assert session.lastModifiedOn
     }
 
 }

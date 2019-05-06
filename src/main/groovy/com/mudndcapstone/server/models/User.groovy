@@ -6,8 +6,7 @@ import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
 class User extends Node {
-    @Index(unique = true)
-    String username
+    @Index(unique = true) String username
     String password
     Date birthdate
     List<String> notes

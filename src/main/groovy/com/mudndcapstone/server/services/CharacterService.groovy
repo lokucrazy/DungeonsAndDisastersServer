@@ -5,6 +5,7 @@ import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.dto.CharacterDto
 import com.mudndcapstone.server.repositories.CharacterRepository
 import com.mudndcapstone.server.utils.Auditor
+import com.mudndcapstone.server.utils.BeingAbilities
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -32,9 +33,11 @@ class CharacterService {
 
     Character buildAndCreateCharacter(CharacterDto characterDto, User user) {
         Character characterRequest = buildCharacterFrom(characterDto, user)
-        Character character = upsertCharacter(characterRequest)
 
-        character
+        BeingAbilities abilities = new BeingAbilities()
+        characterRequest.abilities = modelMapper.map(abilities, String)
+
+        upsertCharacter(characterRequest)
     }
 
     void deleteCharacter(String id) {
@@ -45,6 +48,7 @@ class CharacterService {
         Character character = modelMapper.map(characterDto, Character)
 
         character.user = user
+        character.abilities = characterDto.abilities ? modelMapper.map(characterDto.abilities, String) : null
 
         character
     }
@@ -56,10 +60,12 @@ class CharacterService {
         Set<String> sessionIds = character.sessions ?
                 character.sessions.stream().map({ session -> session.identifier }).collect(Collectors.toSet()) :
                 null
+        BeingAbilities abilities = modelMapper.map(character.abilities, BeingAbilities)
 
 
         characterDto.setUserId(userId)
         characterDto.setSessionIds(sessionIds)
+        characterDto.setAbilities(abilities)
 
         characterDto
     }

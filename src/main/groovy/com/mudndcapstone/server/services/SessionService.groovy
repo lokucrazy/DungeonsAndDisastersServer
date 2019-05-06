@@ -40,9 +40,8 @@ class SessionService {
 
     Session buildAndCreateSession(SessionDto sessionDto, User dm) {
         Session sessionRequest = buildSessionFrom(sessionDto, dm)
-        Session session = upsertSession(sessionRequest)
 
-        session
+        upsertSession(sessionRequest)
     }
 
     void deleteSession(String id) {

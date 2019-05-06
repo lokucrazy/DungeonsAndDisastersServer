@@ -1,6 +1,5 @@
 package com.mudndcapstone.server.models
 
-import com.mudndcapstone.server.utils.BeingAbilities
 import com.mudndcapstone.server.utils.character.CharacterAlignment
 import com.mudndcapstone.server.utils.character.CharacterClass
 import com.mudndcapstone.server.utils.character.CharacterRace
@@ -17,7 +16,7 @@ class Character extends Being {
     String background
     CharacterRace race
     CharacterAlignment alignment
-    BeingAbilities abilities
+    String abilities
 
     @Relationship(type = "CREATED_CHARACTER", direction = Relationship.INCOMING)
     @CreatedBy User user
