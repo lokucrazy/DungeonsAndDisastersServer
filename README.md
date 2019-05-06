@@ -37,6 +37,7 @@ _generic route can either not exist or be overridden by a custom route_
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
 | GET /users/{userId}/characters | Get all Characters in a User | | [CharacterDto] |
+| POST /user/{username} | Get User based on username and password | password | UserDto |
 | POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 | POST /users/{userId}/characters | Create a Character | CharacterDto | CharacterDto |
 

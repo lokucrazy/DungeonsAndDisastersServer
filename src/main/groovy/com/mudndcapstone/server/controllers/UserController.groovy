@@ -37,6 +37,19 @@ class UserController {
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
+    @PostMapping("/users/{username}")
+    ResponseEntity<UserDto> loginUser(@PathVariable String username, @RequestParam(required = true) String password) {
+        if (!username || !password) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USERNAME_PASSWORD_NOT_FOUND)
+
+        User user = userService.getUserByUserName(username)
+        if (!user) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        if (user.password != password) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.PASSWORD_INCORRECT)
+
+        UserDto userDto = userService.buildDtoFrom(user)
+        new ResponseEntity<>(userDto, HttpStatus.OK)
+    }
+
     @GetMapping("/users/{userId}")
     ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
         User user = userService.getUserById(userId)
@@ -45,6 +58,7 @@ class UserController {
         UserDto userDto = userService.buildDtoFrom(user)
         new ResponseEntity<>(userDto, HttpStatus.OK)
     }
+
 
     @PutMapping("/users/{userId}")
     ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
