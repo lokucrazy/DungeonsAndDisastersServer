@@ -9,7 +9,7 @@ import com.mudndcapstone.server.utils.CharacterRace
 import javax.validation.constraints.NotNull
 
 class CharacterDto extends BeingDto {
-    @NotNull @JsonProperty(value = "user_id") String userId
+    @JsonProperty(value = "user_id") String userId
     @NotNull @JsonProperty(value = "class") CharacterClass characterClass
     @NotNull String background
     @NotNull CharacterRace race
