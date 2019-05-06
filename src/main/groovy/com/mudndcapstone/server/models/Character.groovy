@@ -1,9 +1,9 @@
 package com.mudndcapstone.server.models
 
 import com.mudndcapstone.server.utils.BeingAbilities
-import com.mudndcapstone.server.utils.CharacterAlignment
-import com.mudndcapstone.server.utils.CharacterClass
-import com.mudndcapstone.server.utils.CharacterRace
+import com.mudndcapstone.server.utils.character.CharacterAlignment
+import com.mudndcapstone.server.utils.character.CharacterClass
+import com.mudndcapstone.server.utils.character.CharacterRace
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Property
 import org.neo4j.ogm.annotation.Relationship

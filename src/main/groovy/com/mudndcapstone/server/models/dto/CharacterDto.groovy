@@ -2,9 +2,9 @@ package com.mudndcapstone.server.models.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.mudndcapstone.server.utils.BeingAbilities
-import com.mudndcapstone.server.utils.CharacterAlignment
-import com.mudndcapstone.server.utils.CharacterClass
-import com.mudndcapstone.server.utils.CharacterRace
+import com.mudndcapstone.server.utils.character.CharacterAlignment
+import com.mudndcapstone.server.utils.character.CharacterClass
+import com.mudndcapstone.server.utils.character.CharacterRace
 
 import javax.validation.constraints.NotNull
 

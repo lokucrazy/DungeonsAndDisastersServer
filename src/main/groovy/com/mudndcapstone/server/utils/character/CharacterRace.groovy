@@ -1,4 +1,4 @@
-package com.mudndcapstone.server.utils
+package com.mudndcapstone.server.utils.character
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
