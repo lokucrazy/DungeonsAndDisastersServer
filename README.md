@@ -238,7 +238,20 @@ _properties marked with_ * _means they're used for creation_
 !   "alignment": CharacterAlignment,
 *   "level" : 0,
 *   "experience": 0,
-*   "abilities: {},
+*   "abilities: {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+        "strength_modifier": 0,
+        "dexterity_modifier": 0,
+        "constitution_modifier": 0,
+        "intelligence_modifier": 0,
+        "wisdom_modifier": 0,
+        "charisma_modifier": 0
+    },
     "session_ids": [] 
 }
 
