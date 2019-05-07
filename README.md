@@ -1,5 +1,5 @@
-#Dungeons And Disasters Server
-##Spring Server for Senior Capstone Project 2019
+# Dungeons And Disasters Server
+### Spring Server for Senior Capstone Project 2019
 
 A server for Dungeons and also a server for Dragons.
 
@@ -39,7 +39,7 @@ _generic route can either not exist or be overridden by a custom route_
 | ------ | ------ | ------ | ------ |
 | GET /users/{userId}/characters | Get all Characters in a User | | [CharacterDto] |
 | POST /users/{userId}/characters | Create a Character | CharacterDto | CharacterDto |
-| GET /users/{userId}/notes | Get all user's notes | | List<String> |
+| GET /users/{userId}/notes | Get all user's notes | | [String] |
 | POST /users/{userId}/notes | Create a new note for a user | Messenger | UserDto |
 | POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 
