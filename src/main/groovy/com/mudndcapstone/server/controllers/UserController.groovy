@@ -37,14 +37,12 @@ class UserController {
         new ResponseEntity<>(created, HttpStatus.CREATED)
     }
 
-    @PostMapping("/users/{username}")
+    @PostMapping("/login/{username}")
     ResponseEntity<UserDto> loginUser(@PathVariable String username, @RequestParam(required = true) String password) {
-        if (!username || !password) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USERNAME_PASSWORD_NOT_FOUND)
+        if (!userService.existsByUsername(username)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USER_NOT_FOUND_EXCEPTION)
 
-        User user = userService.getUserByUserName(username)
-        if (!user) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USER_NOT_FOUND_EXCEPTION)
-
-        if (user.password != password) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.PASSWORD_INCORRECT)
+        User user = userService.getUserByUserNameAndPassword(username, password)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USERNAME_PASSWORD_INCORRECT)
 
         UserDto userDto = userService.buildDtoFrom(user)
         new ResponseEntity<>(userDto, HttpStatus.OK)
@@ -58,8 +56,7 @@ class UserController {
         UserDto userDto = userService.buildDtoFrom(user)
         new ResponseEntity<>(userDto, HttpStatus.OK)
     }
-
-
+    
     @PutMapping("/users/{userId}")
     ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
