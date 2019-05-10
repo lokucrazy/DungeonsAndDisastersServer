@@ -57,7 +57,7 @@ class UserController {
         UserDto userDto = userService.buildDtoFrom(user)
         new ResponseEntity<>(userDto, HttpStatus.OK)
     }
-    
+
     @PutMapping("/users/{userId}")
     ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
