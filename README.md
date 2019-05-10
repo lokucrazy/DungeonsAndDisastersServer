@@ -30,16 +30,19 @@ _generic route can either not exist or be overridden by a custom route_
 | GET /sessions/{sessionId}/chats | Get chat log of a Session | | [String] |
 | GET /sessions/{sessionId}/maps | Get Map node of a Session | | MapDto |
 | POST /sessions/{sessionId}/combats | Create combat in a Session | CombatDto | CombatDto |
+| PATCH /sessions/{sessionId}/state | Set Session state | SessionState | SessionDto |
 | PUT /sessions/{sessionId}/characters/{characterId} | Connect Character to a Session | | SessionDto |
 | PUT /sessions/{sessionId}/users/{userId} | Connect User to a Session | | SessionDto |
 
 #### User (users, dms)
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
+| POST /users/{username} | Get User based on username and password | password | UserDto |
 | GET /users/{userId}/characters | Get all Characters in a User | | [CharacterDto] |
-| POST /user/{username} | Get User based on username and password | password | UserDto |
-| POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 | POST /users/{userId}/characters | Create a Character | CharacterDto | CharacterDto |
+| GET /users/{userId}/notes | Get all user's notes | | List<String> |
+| POST /users/{userId}/notes | Create a new note for a user | Messenger | UserDto |
+| POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 
 #### Being (npcs, enemies)
 | Route | Description | Body | Response |
@@ -145,6 +148,13 @@ _properties marked with_ * _means they're used for creation_
 }
 ```
 
+#### SessionState
+```
+{
+!   "running": false
+}
+```
+
 #### HistoryDto
 ```
 {
@@ -182,6 +192,13 @@ _properties marked with_ * _means they're used for creation_
     "modified_at": "YYYY-mm-dd HH:mm a",
 !   "session_id": "",
     "images": []
+}
+```
+
+#### Messenger
+```
+{
+!   "body": ""
 }
 ```
 

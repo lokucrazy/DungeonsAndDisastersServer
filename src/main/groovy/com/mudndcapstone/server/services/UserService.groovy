@@ -46,6 +46,16 @@ class UserService {
         user
     }
 
+    User addNote(User user, String note) {
+        if (!user) return null
+        if (!note) return user
+
+        user.notes ? (user.notes << note) : (user.notes = [note])
+
+        Auditor.updateAuditing(user)
+        userRepository.save(user)
+    }
+
     void deleteUserById(String id) {
         userRepository.deleteById(id)
     }
