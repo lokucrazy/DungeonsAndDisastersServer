@@ -37,6 +37,7 @@ _generic route can either not exist or be overridden by a custom route_
 #### User (users, dms)
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
+| POST /login/{username} | Get User based on username and password | password | UserDto |
 | GET /users/{userId}/characters | Get all Characters in a User | | [CharacterDto] |
 | POST /users/{userId}/characters | Create a Character | CharacterDto | CharacterDto |
 | GET /users/{userId}/notes | Get all user's notes | | [String] |
