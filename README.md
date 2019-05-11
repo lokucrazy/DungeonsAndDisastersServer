@@ -123,8 +123,10 @@ _properties marked with_ * _means they're used for creation_
     "notes": [],
     "created_at": "YYYY-mm-dd HH:mm a",
     "modified_at": "YYYY-mm-dd HH:mm a",
-    "characters": [],
-    "sessions": []
+    "character_ids": [],
+    "session_ids": [],
+    "dm_session_ids": [],
+    "npc_ids": []
 }
 ```
 
