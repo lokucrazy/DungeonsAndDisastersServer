@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
+@CrossOrigin("*")
 class ChatController {
 
     @Autowired ChatService chatService
