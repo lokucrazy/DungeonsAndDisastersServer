@@ -7,7 +7,6 @@ import com.mudndcapstone.server.utils.character.converters.*
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
 import org.neo4j.ogm.annotation.typeconversion.Convert
-import org.neo4j.ogm.annotation.Required
 import org.springframework.data.annotation.CreatedBy
 
 import javax.validation.constraints.NotNull
@@ -16,7 +15,7 @@ import javax.validation.constraints.NotNull
 class Character extends Being {
     @NotNull int level
     @NotNull int experience
-    @NotNull @Property(name = "class") CharacterClass characterClass
+    @NotNull @JsonProperty("class") CharacterClass characterClass
     @NotNull String background
     @NotNull CharacterRace race
     @NotNull CharacterAlignment alignment
