@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.*
-import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.*
 import com.mudndcapstone.server.utils.Exceptions
@@ -72,7 +71,7 @@ class SessionController {
   
     @PutMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
-        if (!sessionService.existsById(sessionId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+        if (!sessionService.existsBySessionId(sessionId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
         User dm = userService.getDMById(sessionDto.dmId)
         if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
         Session sessionRequest = sessionService.buildSessionFrom(sessionDto, dm)

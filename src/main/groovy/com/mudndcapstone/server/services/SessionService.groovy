@@ -34,8 +34,8 @@ class SessionService {
         sessionRepository.findAll().toSet()
     }
 
-    boolean existsById(String id) {
-        sessionRepository.findById(id).orElse(null)
+    boolean existsBySessionId(String id) {
+        sessionRepository.existsById(id)
     }
 
     Session getSessionById(String id) {

@@ -13,10 +13,12 @@ class Exceptions {
     /* Enemy */
     final static String ENEMY_NOT_CREATED_EXCEPTION = "Enemy could not be created"
     final static String ENEMY_NOT_FOUND_EXCEPTION = "Enemy could not be found"
+    final static String ENEMY_NOT_UPDATED_EXCEPTION = "Enemy could not be updated"
 
     /* NPC */
     final static String NPC_NOT_CREATED_EXCEPTION = "NPC could not be created"
     final static String NPC_NOT_FOUND_EXCEPTION = "NPC could not be found"
+    final static String NPC_NOT_UPDATED_EXCEPTION = "NPC could not be updated"
 
     /* Combat */
     final static String COMBAT_NOT_CREATED_EXCEPTION = "Combat could not be created"

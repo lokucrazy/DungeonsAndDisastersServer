@@ -27,6 +27,10 @@ class EnemyService {
         enemyRepository.findById(id).orElse(null)
     }
 
+    boolean existsByEnemyId(String id) {
+        enemyRepository.existsById(id)
+    }
+
     Enemy upsertEnemy(Enemy enemy) {
         if (!enemy.combat) return null
 
