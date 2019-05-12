@@ -27,5 +27,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.codehaus.groovy:groovy'
 	implementation 'org.modelmapper:modelmapper:2.3.0'
+	implementation 'org.modelmapper.extensions:modelmapper-jackson:2.3.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
