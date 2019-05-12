@@ -3,8 +3,7 @@ package com.mudndcapstone.server.models
 import com.mudndcapstone.server.utils.BeingAbilities
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
-
-import javax.validation.constraints.NotNull
+import org.neo4j.ogm.annotation.Required
 
 @NodeEntity
 class NPC extends Being {
@@ -16,7 +15,7 @@ class NPC extends Being {
     @Relationship(type = "HAS_NPC", direction = Relationship.INCOMING)
     Session session
 
-    @NotNull
+    @Required
     @Relationship(type = "CONTROLS", direction = Relationship.INCOMING)
     User dm
 }

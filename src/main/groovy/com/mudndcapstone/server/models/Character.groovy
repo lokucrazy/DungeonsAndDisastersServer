@@ -6,19 +6,18 @@ import com.mudndcapstone.server.utils.character.*
 import com.mudndcapstone.server.utils.character.converters.*
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
+import org.neo4j.ogm.annotation.Required
 import org.neo4j.ogm.annotation.typeconversion.Convert
 import org.springframework.data.annotation.CreatedBy
 
-import javax.validation.constraints.NotNull
-
 @NodeEntity
 class Character extends Being {
-    @NotNull int level
-    @NotNull int experience
-    @NotNull @JsonProperty("class") CharacterClass characterClass
-    @NotNull String background
-    @NotNull CharacterRace race
-    @NotNull CharacterAlignment alignment
+    @Required int level
+    @Required int experience
+    @Required @JsonProperty("class") CharacterClass characterClass
+    @Required String background
+    @Required CharacterRace race
+    @Required CharacterAlignment alignment
     @Convert(BeingAbilitiesConverter) BeingAbilities abilities
     @Convert(CharacterSavingThrowConverter) List<CharacterSavingThrow> savingThrows
     @Convert(CharacterSkillConverter) List<CharacterSkill> skills
@@ -36,7 +35,7 @@ class Character extends Being {
     List<String> languages
     List<String> feats
 
-    @NotNull
+    @Required
     @Relationship(type = "CREATED_CHARACTER", direction = Relationship.INCOMING)
     @CreatedBy User user
 
