@@ -26,6 +26,8 @@ class CharacterService {
     }
 
     Character upsertCharacter(Character character) {
+        if (!character.user) return null
+
         Auditor.enableAuditing(character)
         characterRepository.save(character)
     }

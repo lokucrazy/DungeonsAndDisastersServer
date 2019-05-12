@@ -7,18 +7,20 @@ import com.mudndcapstone.server.utils.CharacterRace
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Property
 import org.neo4j.ogm.annotation.Relationship
+import org.neo4j.ogm.annotation.Required
 import org.springframework.data.annotation.CreatedBy
 
 @NodeEntity
 class Character extends Being {
     int level
     int experience
-    @Property(name = "class") CharacterClass characterClass
-    String background
-    CharacterRace race
-    CharacterAlignment alignment
+    @Required @Property(name = "class") CharacterClass characterClass
+    @Required String background
+    @Required CharacterRace race
+    @Required CharacterAlignment alignment
     BeingAbilities abilities
 
+    @Required
     @Relationship(type = "CREATED_CHARACTER", direction = Relationship.INCOMING)
     @CreatedBy User user
 

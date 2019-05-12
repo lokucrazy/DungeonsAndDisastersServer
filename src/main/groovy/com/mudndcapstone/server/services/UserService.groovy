@@ -35,6 +35,8 @@ class UserService {
     }
 
     User upsertUser(User user) {
+        if (!user.username || !user.password || !user.birthdate) return null
+
         Auditor.enableAuditing(user)
         userRepository.save(user)
     }

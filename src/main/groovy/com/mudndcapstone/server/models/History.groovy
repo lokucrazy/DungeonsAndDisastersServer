@@ -10,5 +10,5 @@ class History extends Node {
     Date dateEnded
 
     @Relationship(type = "HAS_PREVIOUS_SESSION", direction = Relationship.OUTGOING)
-    History history /* might need to rename this to previousHistory */
+    History history
 }
