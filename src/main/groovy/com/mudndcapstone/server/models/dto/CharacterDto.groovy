@@ -15,9 +15,7 @@ import com.mudndcapstone.server.utils.character.CharacterSkill
 import javax.validation.constraints.NotNull
 
 class CharacterDto extends BeingDto {
-    int level
-    int experience
-    @NotNull @JsonProperty("class") CharacterClass characterClass
+    @JsonProperty("class") @NotNull CharacterClass characterClass
     @NotNull String background
     @NotNull CharacterRace race
     @NotNull CharacterAlignment alignment

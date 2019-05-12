@@ -2,7 +2,8 @@ package com.mudndcapstone.server.models.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-/* might not need this class, can possibly just grab from static API */
+import javax.validation.constraints.NotNull
+
 class EnemyDto extends NPCDto {
-    @JsonProperty("combat_id") String combatId
+    @JsonProperty("combat_id") @NotNull String combatId
 }

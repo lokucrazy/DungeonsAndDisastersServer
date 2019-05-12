@@ -6,6 +6,6 @@ import javax.validation.constraints.NotNull
 
 class CombatDto extends EntityDto {
     @JsonProperty("next_combat_id") String nextCombatId
-    @JsonProperty("session_id") @NotNull String sessionId
+    @JsonProperty("session_id") String sessionId
     @JsonProperty("enemy_ids") Set<String> enemyIds
 }
