@@ -5,6 +5,7 @@ import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.*
 import com.mudndcapstone.server.utils.Exceptions
+import com.mudndcapstone.server.utils.PaginationHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -71,7 +72,18 @@ class SessionController {
   
     @PutMapping("/sessions/{sessionId}")
     ResponseEntity<SessionDto> updateSession(@PathVariable String sessionId, @Valid @RequestBody SessionDto sessionDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
+        if (!sessionService.existsById(sessionId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+        User dm = userService.getDMById(sessionDto.dmId)
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+        Session sessionRequest = sessionService.buildSessionFrom(sessionDto, dm)
+        sessionRequest.identifier = sessionId
+        Session session
+
+        session = sessionService.upsertSession(sessionRequest)
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.SESSION_NOT_UPDATED_EXCEPTION)
+
+        SessionDto updated = sessionService.buildDtoFrom(session)
+        new ResponseEntity<>(updated, HttpStatus.OK)
     }
 
     @PatchMapping("/sessions/{sessionId}/state")
@@ -88,6 +100,18 @@ class SessionController {
     ResponseEntity deleteSession(@PathVariable String sessionId) {
         sessionService.deleteSession(sessionId)
         new ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    @PutMapping("/sessions/{sessionId}/log")
+    ResponseEntity<List<String>> addCombatMessage(@PathVariable String sessionId, @Valid @RequestBody Messenger messenger, @RequestParam boolean combat) {
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        session = sessionService.addMessage(session, messenger.body, combat)
+        if (!session) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MESSAGE_NOT_ADDED_EXCEPTION)
+
+        List<String> messages = PaginationHandler.getPage(combat ? session.combatLog : session.nonCombatLog, null, null)
+        new ResponseEntity<>(messages, HttpStatus.OK)
     }
 
 }

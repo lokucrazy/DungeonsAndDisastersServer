@@ -25,7 +25,7 @@ class Exceptions {
     /* Chat */
     final static String CHAT_NOT_CREATED_EXCEPTION = "Chat could not be created"
     final static String CHAT_NOT_FOUND_EXCEPTION = "Chat could not be found"
-    final static String MESSAGE_NOT_ADDED_EXCEPTION = "Message could not be added to chat"
+    final static String MESSAGE_NOT_ADDED_EXCEPTION = "Message could not be added"
 
     /* Map */
     final static String MAP_NOT_CREATED_EXCEPTION = "Map could not be created"
@@ -50,6 +50,7 @@ class Exceptions {
     /* Session */
     final static String SESSION_NOT_CREATED_EXCEPTION = "Session could not be created"
     final static String SESSION_NOT_FOUND_EXCEPTION = "Session could not be found"
+    final static String SESSION_NOT_UPDATED_EXCEPTION = "Session could not be updated"
     final static String SESSION_CANT_REFACTOR_RELATIONSHIP_EXCEPTION = "Could not refactor session's relationship"
 
 }
