@@ -62,16 +62,14 @@ class MapController {
     }
 
     @GetMapping("/maps/{mapId}/images/{imageName}")
-    ResponseEntity<File> getMapImage(@PathVariable String mapId, @PathVariable String imageName) {
+    ResponseEntity<String> getMapImage(@PathVariable String mapId, @PathVariable String imageName) {
         Map map = mapService.getMapById(mapId)
         if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
 
-        File img = mapService.getImage(imageName)
+        String img = mapService.getImage(imageName)
         if (!img) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.IMAGE_NOT_FOUND)
 
-        ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + img.name + "\"")
-                .body(img)
+        new ResponseEntity<>(img, HttpStatus.OK)
     }
 
 }

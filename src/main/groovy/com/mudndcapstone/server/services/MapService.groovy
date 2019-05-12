@@ -64,18 +64,9 @@ class MapService {
         }
     }
 
-    File getImage(String imageName) {
+    String getImage(String imageName) {
         try {
-            GetObjectRequest getObjectRequest = new GetObjectRequest(awsS3AudioBucket, imageName)
-
-            S3Object s3Object = amazonS3.getObject(getObjectRequest)
-
-            String buffer = new String(s3Object.objectContent.readAllBytes())
-
-            File img = new File(imageName)
-            img.write(buffer)
-
-            img
+            amazonS3.getUrl(awsS3AudioBucket, imageName)
         } catch (IOException | AmazonServiceException ex) {
             return null
         }
