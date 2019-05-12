@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotNull
 
 class SessionDto extends EntityDto {
+    @JsonProperty(value = "session_state") boolean running
     @JsonProperty(value = "dm_id") @NotNull String dmId
     @JsonProperty(value = "non_combat_log") List<String> nonCombatLog
     @JsonProperty(value = "combat_log") List<String> combatLog

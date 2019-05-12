@@ -3,7 +3,6 @@ package com.mudndcapstone.server.controllers
 import com.mudndcapstone.server.models.Chat
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.Messenger
-import com.mudndcapstone.server.models.dto.ChatDto
 import com.mudndcapstone.server.services.ChatService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.Exceptions
@@ -17,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
+@CrossOrigin("*")
 class ChatController {
 
     @Autowired ChatService chatService
@@ -27,7 +27,7 @@ class ChatController {
         Chat chat = chatService.getChatById(chatId)
         if (!chat) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHAT_NOT_FOUND_EXCEPTION)
 
-        chat = chatService.addMessage(chat, messenger.message)
+        chat = chatService.addMessage(chat, messenger.body)
         if (!chat) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.MESSAGE_NOT_ADDED_EXCEPTION)
 
         List<String> messages = PaginationHandler.getPage(chat.log, null, null)
