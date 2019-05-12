@@ -38,6 +38,7 @@ class Exceptions {
     /* Character */
     final static String CHARACTER_NOT_CREATED_EXCEPTION = "Character could not be created"
     final static String CHARACTER_NOT_FOUND_EXCEPTION = "Character could not be found"
+    final static String CHARACTER_NOT_UPDATED_EXCEPTION = "Character could not be updated"
 
     /* User */
     final static String USER_NOT_CREATED_EXCEPTION = "User could not be created"

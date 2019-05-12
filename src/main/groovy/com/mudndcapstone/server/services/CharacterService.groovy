@@ -27,6 +27,10 @@ class CharacterService {
         characterRepository.findById(id).orElse(null)
     }
 
+    boolean existsByCharacterId(String id) {
+        characterRepository.existsById(id)
+    }
+
     Character upsertCharacter(Character character) {
         if (!character.user) return null
 
