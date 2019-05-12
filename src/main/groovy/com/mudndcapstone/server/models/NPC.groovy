@@ -15,6 +15,7 @@ class NPC extends Being {
     @Relationship(type = "HAS_NPC", direction = Relationship.INCOMING)
     Session session
 
+    @Required
     @Relationship(type = "CONTROLS", direction = Relationship.INCOMING)
     User dm
 }

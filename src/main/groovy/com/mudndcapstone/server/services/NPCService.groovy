@@ -26,6 +26,8 @@ class NPCService {
     }
 
     NPC upsertNPC(NPC npc) {
+        if (!npc.dm)
+
         Auditor.enableAuditing(npc)
         npcRepository.save(npc)
     }

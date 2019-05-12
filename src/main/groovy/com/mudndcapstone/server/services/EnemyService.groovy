@@ -28,6 +28,8 @@ class EnemyService {
     }
 
     Enemy upsertEnemy(Enemy enemy) {
+        if (!enemy.combat) return null
+
         Auditor.enableAuditing(enemy)
         enemyRepository.save(enemy)
     }

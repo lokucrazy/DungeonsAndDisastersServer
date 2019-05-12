@@ -17,6 +17,7 @@ class Session extends History {
     @Relationship(type = "HAS_COMBAT_LIST", direction = Relationship.OUTGOING)
     Combat combat
 
+    @Required
     @Relationship(type = "HAS_DM", direction = Relationship.OUTGOING)
     User dm
 
