@@ -38,6 +38,7 @@ class SessionController {
 
         if (!sessionRequest.identifier) {
             /* Entirely new session */
+            if (sessionRequest.identifier == "") { sessionRequest.identifier = null }
             sessionRequest.chatLog = chatService.upsertChat(new Chat(session: sessionRequest))
             sessionRequest.map = mapService.upsertMap(new Map(session: sessionRequest))
             session = sessionService.upsertSession(sessionRequest)

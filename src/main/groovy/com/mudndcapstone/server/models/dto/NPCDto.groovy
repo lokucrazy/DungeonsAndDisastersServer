@@ -5,7 +5,6 @@ import com.mudndcapstone.server.utils.BeingAbilities
 
 import javax.validation.constraints.NotNull
 
-/* might not need this class, can possibly just grab from static API */
 class NPCDto extends BeingDto {
     int health
     @JsonProperty("is_alive") boolean isAlive

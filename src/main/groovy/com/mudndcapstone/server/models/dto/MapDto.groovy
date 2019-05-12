@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotNull
 
 class MapDto extends EntityDto {
-    @NotNull @JsonProperty("session_id") String sessionId
+    @JsonProperty("session_id") @NotNull String sessionId
     List<String> images
 }

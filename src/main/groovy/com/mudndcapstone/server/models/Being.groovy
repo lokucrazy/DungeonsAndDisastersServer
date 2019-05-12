@@ -1,8 +1,7 @@
 package com.mudndcapstone.server.models
 
-import org.neo4j.ogm.annotation.Required
+import javax.validation.constraints.NotNull
 
 abstract class Being extends Node {
-    @Required
-    String name
+    @NotNull String name
 }
