@@ -148,7 +148,7 @@ _properties marked with_ * _means they're used for creation_
     "initial_location": "",
 *   "abilities": {},
 *   "session_id": "",
-!*   "dm_id": ""
+!*  "dm_id": ""
 }
 ```
 
@@ -182,7 +182,7 @@ _properties marked with_ * _means they're used for creation_
     "initial_location": "",
 *   "abilities": {},
 *   "session_id": "",
-!*   "combat_id": ""
+!*  "combat_id": ""
 }
 ```
 
@@ -218,13 +218,13 @@ _properties marked with_ * _means they're used for creation_
     "modified_at": "YYYY-mm-dd HH:mm a",
 !*  "name": "",
 !*  "user_id": "",
-!   "class": "",
-!   "background: "",
-!   "race": "",
-!   "alignment": "",
-*   "level" : 0,
-*   "experience": 0,
-*   "abilities: {},
+!*  "class": "",
+!*  "background: "",
+!*  "race": "",
+!*  "alignment": "",
+!*  "level" : 0,
+!*  "experience": 0,
+!*  "abilities: {},
     "session_ids": [] 
 }
 ```
