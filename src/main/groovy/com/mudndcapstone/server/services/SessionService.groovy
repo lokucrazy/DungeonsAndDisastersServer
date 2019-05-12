@@ -1,7 +1,7 @@
 package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Session
-import com.mudndcapstone.server.models.SessionState
+import com.mudndcapstone.server.models.State
 import com.mudndcapstone.server.models.User
 import com.mudndcapstone.server.models.Character
 import com.mudndcapstone.server.models.dto.SessionDto
@@ -24,10 +24,11 @@ class SessionService {
     @Autowired UserService userService
     @Autowired ModelMapper modelMapper
 
-    static Session setSessionState(Session session, SessionState state) {
+    Session setSessionState(Session session, State state) {
         session.running = state.running
 
-        session
+        Auditor.enableAuditing(session)
+        sessionRepository.save(session)
     }
 
     Set<Session> getAllSessions() {

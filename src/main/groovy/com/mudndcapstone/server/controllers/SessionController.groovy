@@ -1,7 +1,6 @@
 package com.mudndcapstone.server.controllers
 
 import com.mudndcapstone.server.models.*
-import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
 import com.mudndcapstone.server.services.*
 import com.mudndcapstone.server.utils.Exceptions
@@ -75,7 +74,7 @@ class SessionController {
     }
 
     @PatchMapping("/sessions/{sessionId}/state")
-    ResponseEntity<SessionDto> setSessionState(@PathVariable String sessionId, @Valid @RequestBody SessionState state) {
+    ResponseEntity<SessionDto> setSessionState(@PathVariable String sessionId, @Valid @RequestBody State state) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 

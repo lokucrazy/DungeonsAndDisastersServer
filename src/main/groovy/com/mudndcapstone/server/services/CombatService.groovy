@@ -2,6 +2,7 @@ package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.State
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.repositories.CombatRepository
 import com.mudndcapstone.server.utils.Auditor
@@ -20,6 +21,24 @@ class CombatService {
 
     Set<Combat> getAllCombats() {
         combatRepository.findAll().toSet()
+    }
+
+    Combat setCombatState(Combat combat, State state) {
+        if (combat ==  null) return null
+        combat = combatRepository.findById(combat.identifier).orElse(combat)
+
+        if (state.running) {
+            combat.running = true
+        } else {
+            combat.running = false
+            Session session = combat.session
+            session.combat = combat.nextCombat
+            combat.session = null
+            sessionService.upsertSession(session)
+        }
+
+        Auditor.enableAuditing(combat)
+        combat
     }
 
     Combat getCombatById(String id) {
@@ -53,7 +72,7 @@ class CombatService {
         if (!session.combat) return combatRepository.save(combat)
 
         combat.session = null
-        Combat lastCombat = findLastCombat(session.combat)
+        Combat lastCombat = findLastCombat(combatRepository.findById(session.combat.identifier).orElse(session.combat))
         lastCombat.nextCombat = combat
 
         Auditor.updateAuditing(lastCombat)
