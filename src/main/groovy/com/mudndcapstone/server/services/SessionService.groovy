@@ -24,10 +24,11 @@ class SessionService {
     @Autowired UserService userService
     @Autowired ModelMapper modelMapper
 
-    static Session setSessionState(Session session, SessionState state) {
+    Session setSessionState(Session session, SessionState state) {
         session.running = state.running
 
-        session
+        Auditor.enableAuditing(session)
+        sessionRepository.save(session)
     }
 
     Set<Session> getAllSessions() {
