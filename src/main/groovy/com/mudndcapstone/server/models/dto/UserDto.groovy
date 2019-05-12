@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull
 class UserDto extends EntityDto {
     @NotNull String username
     @NotNull String password
-    Date birthdate
+    @NotNull Date birthdate
     List<String> notes
     @JsonProperty(value = "character_ids") Set<String> characterIds
     @JsonProperty(value = "session_ids") Set<String> sessionIds
