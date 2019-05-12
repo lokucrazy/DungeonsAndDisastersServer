@@ -40,6 +40,7 @@ class Exceptions {
     /* User */
     final static String USER_NOT_CREATED_EXCEPTION = "User could not be created"
     final static String USER_NOT_FOUND_EXCEPTION = "User could not be found"
+    final static String USER_NOT_UPDATED_EXCEPTION = "User could not be updated"
     final static String USERNAME_TAKEN_EXCEPTION = "Username already in use"
     final static String USERNAME_PASSWORD_INCORRECT = "Username or Password is incorrect"
 

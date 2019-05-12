@@ -34,6 +34,10 @@ class UserService {
         userRepository.findByUsername(username).orElse(null)
     }
 
+    boolean existsByUserId(String id) {
+        userRepository.existsById(id)
+    }
+
     User upsertUser(User user) {
         if (!user.username || !user.password || !user.birthdate) return null
 
