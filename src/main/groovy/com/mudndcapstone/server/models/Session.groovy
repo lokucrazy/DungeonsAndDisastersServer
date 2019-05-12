@@ -2,8 +2,7 @@ package com.mudndcapstone.server.models
 
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
-
-import javax.validation.constraints.NotNull
+import org.neo4j.ogm.annotation.Required
 
 @NodeEntity
 class Session extends History {
@@ -20,7 +19,7 @@ class Session extends History {
     @Relationship(type = "HAS_COMBAT_LIST", direction = Relationship.OUTGOING)
     Combat combat
 
-    @NotNull
+    @Required
     @Relationship(type = "HAS_DM", direction = Relationship.OUTGOING)
     User dm
 

@@ -3,8 +3,7 @@ package com.mudndcapstone.server.models
 import org.neo4j.ogm.annotation.Index
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
-
-import javax.validation.constraints.NotNull
+import org.neo4j.ogm.annotation.Required
 
 @NodeEntity
 class User extends Node {
