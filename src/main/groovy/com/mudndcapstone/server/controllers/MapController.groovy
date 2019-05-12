@@ -8,6 +8,7 @@ import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.Exceptions
 import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -47,11 +48,30 @@ class MapController {
         new ResponseEntity<>(mapDto, HttpStatus.OK)
     }
 
-    @PostMapping("/sessions/{sessionId{/maps")
-    ResponseEntity<MapDto> addMapImage(@RequestParam MultipartFile image) {
+    @PostMapping("/sessions/{sessionId}/maps")
+    ResponseEntity<MapDto> addMapImage(@PathVariable String sessionId, @RequestParam MultipartFile image) {
         if (image.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
+        Session session = sessionService.getSessionById(sessionId)
+        if (!session) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
+        Map map = mapService.addImage(session.map, image)
+        if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.IMAGE_NOT_ADDED)
 
+        MapDto mapDto = mapService.buildDtoFrom(map)
+        new ResponseEntity<>(mapDto, HttpStatus.OK)
+    }
+
+    @GetMapping("/maps/{mapId}/images/{imageName}")
+    ResponseEntity<File> getMapImage(@PathVariable String mapId, @PathVariable String imageName) {
+        Map map = mapService.getMapById(mapId)
+        if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
+
+        File img = mapService.getImage(imageName)
+        if (!img) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.IMAGE_NOT_FOUND)
+
+        ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + img.name + "\"")
+                .body(img)
     }
 
 }

@@ -30,6 +30,8 @@ class Exceptions {
     /* Map */
     final static String MAP_NOT_CREATED_EXCEPTION = "Map could not be created"
     final static String MAP_NOT_FOUND_EXCEPTION = "Map could not be found"
+    final static String IMAGE_NOT_ADDED = "Map image could not be added"
+    final static String IMAGE_NOT_FOUND = "Map Image could not be Found"
 
     /* Character */
     final static String CHARACTER_NOT_CREATED_EXCEPTION = "Character could not be created"

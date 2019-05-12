@@ -1,5 +1,11 @@
 package com.mudndcapstone.server.services
 
+import com.amazonaws.AmazonServiceException
+import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.amazonaws.services.s3.model.GetObjectRequest
+import com.amazonaws.services.s3.model.PutObjectRequest
+import com.amazonaws.services.s3.model.S3Object
 import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.dto.MapDto
@@ -7,13 +13,17 @@ import com.mudndcapstone.server.repositories.MapRepository
 import com.mudndcapstone.server.utils.Auditor
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 import java.util.stream.Collectors
 
 @Service
 class MapService {
 
+    @Autowired String awsS3AudioBucket
+    @Autowired AmazonS3 amazonS3
     @Autowired MapRepository mapRepository
     @Autowired ModelMapper modelMapper
 
@@ -30,6 +40,45 @@ class MapService {
 
         Auditor.enableAuditing(map)
         mapRepository.save(map)
+    }
+
+    Map addImage(Map map, MultipartFile image) {
+        String imageName = image.getOriginalFilename()
+
+        try {
+            File img = new File(imageName)
+            FileOutputStream fos = new FileOutputStream(img)
+            fos.write(image.getBytes())
+            fos.close()
+
+            PutObjectRequest putObjectRequest = new PutObjectRequest(awsS3AudioBucket, imageName, img)
+            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead)
+            amazonS3.putObject(putObjectRequest)
+
+            map.images == null ? map.images = [imageName] : map.images << imageName
+
+            Auditor.enableAuditing(map)
+            mapRepository.save(map)
+        } catch (IOException | AmazonServiceException ex) {
+            return null
+        }
+    }
+
+    File getImage(String imageName) {
+        try {
+            GetObjectRequest getObjectRequest = new GetObjectRequest(awsS3AudioBucket, imageName)
+
+            S3Object s3Object = amazonS3.getObject(getObjectRequest)
+
+            String buffer = new String(s3Object.objectContent.readAllBytes())
+
+            File img = new File(imageName)
+            img.write(buffer)
+
+            img
+        } catch (IOException | AmazonServiceException ex) {
+            return null
+        }
     }
 
     Map buildAndCreateMap(MapDto mapDto, Session session) {
