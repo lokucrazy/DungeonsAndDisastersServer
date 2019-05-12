@@ -3,6 +3,7 @@ package com.mudndcapstone.server.services
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.amazonaws.services.s3.model.S3Object
@@ -69,6 +70,15 @@ class MapService {
             amazonS3.getUrl(awsS3AudioBucket, imageName)
         } catch (IOException | AmazonServiceException ex) {
             return null
+        }
+    }
+
+    boolean deleteImage(String imageName) {
+        try {
+            amazonS3.deleteObject(new DeleteObjectRequest(awsS3AudioBucket,imageName))
+            true
+        } catch (AmazonServiceException ex) {
+            return false
         }
     }
 
