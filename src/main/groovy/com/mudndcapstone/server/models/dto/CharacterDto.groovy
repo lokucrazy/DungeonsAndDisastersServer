@@ -14,8 +14,8 @@ class CharacterDto extends BeingDto {
     @NotNull String background
     @NotNull CharacterRace race
     @NotNull CharacterAlignment alignment
-    int level
-    int experience
-    BeingAbilities abilities
+    @NotNull int level
+    @NotNull int experience
+    @NotNull BeingAbilities abilities
     @JsonProperty(value = "session_ids") Set<String> sessionIds
 }

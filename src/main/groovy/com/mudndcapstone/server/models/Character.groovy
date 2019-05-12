@@ -7,20 +7,21 @@ import com.mudndcapstone.server.utils.CharacterRace
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Property
 import org.neo4j.ogm.annotation.Relationship
-import org.neo4j.ogm.annotation.Required
 import org.springframework.data.annotation.CreatedBy
+
+import javax.validation.constraints.NotNull
 
 @NodeEntity
 class Character extends Being {
-    int level
-    int experience
-    @Required @Property(name = "class") CharacterClass characterClass
-    @Required String background
-    @Required CharacterRace race
-    @Required CharacterAlignment alignment
-    BeingAbilities abilities
+    @NotNull int level
+    @NotNull int experience
+    @NotNull @Property(name = "class") CharacterClass characterClass
+    @NotNull String background
+    @NotNull CharacterRace race
+    @NotNull CharacterAlignment alignment
+    @NotNull BeingAbilities abilities
 
-    @Required
+    @NotNull
     @Relationship(type = "CREATED_CHARACTER", direction = Relationship.INCOMING)
     @CreatedBy User user
 
