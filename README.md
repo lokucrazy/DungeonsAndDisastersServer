@@ -224,7 +224,59 @@ _properties marked with_ * _means they're used for creation_
 !*  "alignment": "",
 !*  "level" : 0,
 !*  "experience": 0,
-!*  "abilities: {},
+!*  "abilities: {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+        "strength_modifier": 0,
+        "dexterity_modifier": 0,
+        "constitution_modifier": 0,
+        "intelligence_modifier": 0,
+        "wisdom_modifier": 0,
+        "charisma_modifier": 0
+    },
     "session_ids": [] 
 }
+
+CharacterAlignment = [
+    "lawful good"
+    "neutral good"
+    "chaotic good"
+    "lawful neutral"
+    "neutral"
+    "chaotic neutral"
+    "lawful evil"
+    "neutral evil"
+    "chaotic evil"
+]
+
+CharacterClass = [
+    "barbarian"
+    "bard"
+    "cleric"
+    "druid"
+    "fighter"
+    "monk"
+    "paladin"
+    "ranger"
+    "rogue"
+    "sorcerer"
+    "warlock"
+    "wizard"
+]
+
+CharacterRace = [
+    "dragonborn"
+    "dwarf"
+    "elf"
+    "gnome"
+    "half elf"
+    "half orc"
+    "halfling"
+    "human"
+    "tiefling"
+]
 ```

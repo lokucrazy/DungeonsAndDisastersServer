@@ -27,5 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.codehaus.groovy:groovy'
 	implementation 'org.modelmapper:modelmapper:2.3.0'
+	implementation 'org.modelmapper.extensions:modelmapper-jackson:2.3.0'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.550'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

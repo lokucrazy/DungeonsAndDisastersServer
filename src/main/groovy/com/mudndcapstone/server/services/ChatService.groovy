@@ -35,9 +35,8 @@ class ChatService {
 
     Chat buildAndCreateChat(ChatDto chatDto, Session session) {
         Chat chatRequest = buildChatFrom(chatDto, session)
-        Chat chat = upsertChat(chatRequest)
 
-        chat
+        upsertChat(chatRequest)
     }
 
     Chat addMessage(Chat chat, String message) {

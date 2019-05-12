@@ -36,9 +36,8 @@ class EnemyService {
 
     Enemy buildAndCreateEnemy(EnemyDto enemyDto, Combat combat) {
         Enemy enemyRequest = buildEnemyFrom(enemyDto, combat)
-        Enemy enemy = upsertEnemy(enemyRequest)
 
-        enemy
+        upsertEnemy(enemyRequest)
     }
 
     void deleteEnemy(String id) {

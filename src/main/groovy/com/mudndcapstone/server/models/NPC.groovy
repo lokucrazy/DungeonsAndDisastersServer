@@ -3,6 +3,7 @@ package com.mudndcapstone.server.models
 import com.mudndcapstone.server.utils.BeingAbilities
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
+import org.neo4j.ogm.annotation.Required
 
 import javax.validation.constraints.NotNull
 

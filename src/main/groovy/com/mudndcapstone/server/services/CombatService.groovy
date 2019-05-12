@@ -33,9 +33,8 @@ class CombatService {
 
     Combat buildAndCreateCombat(CombatDto combatDto, Session session, boolean insert = false) {
         Combat combatRequest = buildCombatFrom(combatDto, session)
-        Combat combat = insert ? insertCombatToPath(combatRequest, session) : appendCombatToPath(combatRequest, session)
 
-        combat
+        insert ? insertCombatToPath(combatRequest, session) : appendCombatToPath(combatRequest, session)
     }
 
     Combat updateCombat(Combat combat) {
