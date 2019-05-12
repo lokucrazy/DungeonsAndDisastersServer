@@ -61,7 +61,9 @@ class UserController {
     @PutMapping("/users/{userId}")
     ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
         if (!userService.existsByUserId(userId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USER_NOT_FOUND_EXCEPTION)
-        if (userService.existsByUsername(userDto.username)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USERNAME_TAKEN_EXCEPTION)
+        if (userService.getUsernameById(userId) != userDto.username && userService.existsByUsername(userDto.username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USERNAME_TAKEN_EXCEPTION)
+        }
         User userRequest = userService.buildUserFrom(userDto)
         userRequest.identifier = userId
         User user
