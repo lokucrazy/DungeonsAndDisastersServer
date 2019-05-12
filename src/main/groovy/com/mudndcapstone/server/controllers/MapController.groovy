@@ -37,7 +37,7 @@ class MapController {
     }
 
     @GetMapping("/sessions/{sessionId}/maps")
-    ResponseEntity<MapDto> getMapById(@PathVariable String sessionId) {
+    ResponseEntity<MapDto> getSessionMap(@PathVariable String sessionId) {
         Session session = sessionService.getSessionById(sessionId)
         if (!session) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
@@ -48,13 +48,13 @@ class MapController {
         new ResponseEntity<>(mapDto, HttpStatus.OK)
     }
 
-    @PostMapping("/sessions/{sessionId}/maps")
-    ResponseEntity<MapDto> addMapImage(@PathVariable String sessionId, @RequestParam MultipartFile image) {
+    @PostMapping("/maps/{mapId}/images")
+    ResponseEntity<MapDto> addMapImage(@PathVariable String mapId, @RequestParam MultipartFile image) {
         if (image.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
-        Session session = sessionService.getSessionById(sessionId)
-        if (!session) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+        Map map = mapService.getMapById(mapId)
+        if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.SESSION_NOT_FOUND_EXCEPTION)
 
-        Map map = mapService.addImage(session.map, image)
+        map = mapService.addImage(map, image)
         if (!map) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.IMAGE_NOT_ADDED)
 
         MapDto mapDto = mapService.buildDtoFrom(map)
@@ -70,6 +70,18 @@ class MapController {
         if (!img) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.IMAGE_NOT_FOUND)
 
         new ResponseEntity<>(img, HttpStatus.OK)
+    }
+
+    @DeleteMapping("/maps/{mapId}/images/{imageName}")
+    ResponseEntity deleteImage(@PathVariable String mapId, @PathVariable String imageName) {
+        Map map = mapService.getMapById(mapId)
+        if (!map) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.MAP_NOT_FOUND_EXCEPTION)
+
+        if (mapService.deleteImage(imageName)) {
+            new ResponseEntity(HttpStatus.NO_CONTENT)
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.IMAGE_NOT_FOUND)
+        }
     }
 
 }
