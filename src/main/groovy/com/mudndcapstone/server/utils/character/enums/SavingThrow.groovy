@@ -1,6 +1,12 @@
 package com.mudndcapstone.server.utils.character.enums
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 enum SavingThrow {
-    TEST_ST_1,
-    TEST_ST_2
+    @JsonProperty("strength") STRENGTH,
+    @JsonProperty("dexterity") DEXTERITY,
+    @JsonProperty("constitution") CONSTITUTION,
+    @JsonProperty("intelligence") INTELLIGENCE,
+    @JsonProperty("wisdom") WISDOM,
+    @JsonProperty("charisma") CHARISMA
 }
