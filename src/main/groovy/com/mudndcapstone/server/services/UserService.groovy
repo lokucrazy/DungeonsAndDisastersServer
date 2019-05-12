@@ -25,6 +25,11 @@ class UserService {
         userRepository.findById(id).orElse(null)
     }
 
+    User getUserByUserNameAndPassword(String username, String password) {
+        User user = userRepository.findByUsername(username).orElse(null)
+        user && user.password == password ? user : null
+    }
+
     boolean existsByUsername(String username) {
         userRepository.findByUsername(username).orElse(null)
     }
@@ -38,6 +43,16 @@ class UserService {
         User userRequest = buildUserFrom(userDto)
 
         upsertUser(userRequest)
+    }
+
+    User addNote(User user, String note) {
+        if (!user) return null
+        if (!note) return user
+
+        user.notes ? (user.notes << note) : (user.notes = [note])
+
+        Auditor.updateAuditing(user)
+        userRepository.save(user)
     }
 
     void deleteUserById(String id) {
