@@ -5,7 +5,6 @@ import com.mudndcapstone.server.utils.character.enums.SavingThrow
 class CharacterSavingThrow extends BaseSkill {
     SavingThrow type
 
-    CharacterSavingThrow() {}
     CharacterSavingThrow(SavingThrow t, int v, int m, boolean tr) {
         type = t
         value = v
