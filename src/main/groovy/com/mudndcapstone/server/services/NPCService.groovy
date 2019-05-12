@@ -34,9 +34,8 @@ class NPCService {
 
     NPC buildAndCreateNPC(NPCDto npcDto, User dm) {
         NPC npcRequest = buildNPCFrom(npcDto, dm)
-        NPC npc = upsertNPC(npcRequest)
 
-        npc
+        upsertNPC(npcRequest)
     }
 
     void deleteNPC(String id) {

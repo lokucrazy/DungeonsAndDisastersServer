@@ -19,7 +19,7 @@ class User extends Node {
 
     List<String> notes
 
-    @Relationship(type = "CREATED_CHAR", direction = Relationship.OUTGOING)
+    @Relationship(type = "CREATED_CHARACTER", direction = Relationship.OUTGOING)
     Set<Character> characters
 
     @Relationship(type = "HAS_PLAYER", direction = Relationship.INCOMING)

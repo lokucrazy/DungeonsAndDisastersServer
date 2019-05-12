@@ -1,6 +1,9 @@
 package com.mudndcapstone.server
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.ObjectWriter
 import org.modelmapper.ModelMapper
+import org.modelmapper.jackson.JsonNodeValueReader
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -20,6 +23,7 @@ class ServerApplication {
 	static ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper()
 		modelMapper.getConfiguration().setAmbiguityIgnored(true)
+		modelMapper.getConfiguration().addValueReader(new JsonNodeValueReader())
 		modelMapper
 	}
 

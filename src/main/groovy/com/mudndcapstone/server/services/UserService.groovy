@@ -43,9 +43,8 @@ class UserService {
 
     User buildAndCreateUser(UserDto userDto) {
         User userRequest = buildUserFrom(userDto)
-        User user = upsertUser(userRequest)
-      
-        user
+
+        upsertUser(userRequest)
     }
 
     User addNote(User user, String note) {

@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotNull
 
 class SessionDto extends EntityDto {
-    @JsonProperty(value = "session_state") boolean running
-    @JsonProperty(value = "dm_id") @NotNull String dmId
-    @JsonProperty(value = "non_combat_log") List<String> nonCombatLog
-    @JsonProperty(value = "combat_log") List<String> combatLog
-    @JsonProperty(value = "date_ended") Date dateEnded
-    @JsonProperty(value = "history_id") String historyId
-    @JsonProperty(value = "chat_id") String chatId
-    @JsonProperty(value = "map_id") String mapId
-    @JsonProperty(value = "combat_id") String combatId
-    @JsonProperty(value = "npc_ids") Set<String> npcIds
-    @JsonProperty(value = "player_ids") Set<String> playerIds
-    @JsonProperty(value = "character_ids") Set<String> characterIds
+    @JsonProperty("session_state") boolean running
+    @JsonProperty("dm_id") @NotNull String dmId
+    @JsonProperty("non_combat_log") List<String> nonCombatLog
+    @JsonProperty("combat_log") List<String> combatLog
+    @JsonProperty("date_ended") Date dateEnded
+    @JsonProperty("history_id") String historyId
+    @JsonProperty("chat_id") String chatId
+    @JsonProperty("map_id") String mapId
+    @JsonProperty("combat_id") String combatId
+    @JsonProperty("npc_ids") Set<String> npcIds
+    @JsonProperty("player_ids") Set<String> playerIds
+    @JsonProperty("character_ids") Set<String> characterIds
 }
