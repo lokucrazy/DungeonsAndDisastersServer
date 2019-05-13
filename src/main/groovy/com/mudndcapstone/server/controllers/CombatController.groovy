@@ -4,6 +4,7 @@ import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.State
 import com.mudndcapstone.server.models.dto.CombatDto
+import com.mudndcapstone.server.models.dto.EnemyDto
 import com.mudndcapstone.server.services.CombatService
 import com.mudndcapstone.server.services.SessionService
 import com.mudndcapstone.server.utils.Exceptions
