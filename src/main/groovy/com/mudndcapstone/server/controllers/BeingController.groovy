@@ -49,7 +49,7 @@ class BeingController {
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
-    @GetMapping("combats/{combatId}/enemies")
+    @GetMapping("/combats/{combatId}/enemies")
     ResponseEntity<Set<EnemyDto>> getAllCombatsEnemies(@PathVariable String combatId) {
         Combat combat = combatService.getCombatById(combatId)
         if (!combat) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.COMBAT_NOT_FOUND_EXCEPTION)
