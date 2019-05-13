@@ -40,7 +40,18 @@ class BeingController {
 
     @PutMapping("/enemies/{enemyId}")
     ResponseEntity<EnemyDto> updateEnemy(@PathVariable String enemyId, @Valid @RequestBody EnemyDto enemyDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
+        if (!enemyService.existsByEnemyId(enemyId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.ENEMY_NOT_FOUND_EXCEPTION)
+        Combat combat = combatService.getCombatById(enemyDto.combatId)
+        if (!combat) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.COMBAT_NOT_FOUND_EXCEPTION)
+        Enemy enemyRequest = enemyService.buildEnemyFrom(enemyDto, combat)
+        enemyRequest.identifier = enemyId
+        Enemy enemy
+
+        enemy = enemyService.upsertEnemy(enemyRequest)
+        if (!enemy) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.ENEMY_NOT_UPDATED_EXCEPTION)
+
+        EnemyDto updated = enemyService.buildDtoFrom(enemy)
+        new ResponseEntity<>(updated, HttpStatus.OK)
     }
 
     @DeleteMapping("/enemies/{enemyId}")
@@ -82,7 +93,18 @@ class BeingController {
 
     @PutMapping("/npcs/{npcId}")
     ResponseEntity<NPCDto> updateNPC(@PathVariable String npcId, @Valid @RequestBody NPCDto npcDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
+        if (!npcService.existsByNPCId(npcId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.NPC_NOT_FOUND_EXCEPTION)
+        User dm = userService.getDMById(npcDto.dmId)
+        if (!dm) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+        NPC npcRequest = npcService.buildNPCFrom(npcDto, dm)
+        npcRequest.identifier = npcId
+        NPC npc
+
+        npc = npcService.upsertNPC(npcRequest)
+        if (!npc) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.NPC_NOT_UPDATED_EXCEPTION)
+
+        NPCDto updated = npcService.buildDtoFrom(npc)
+        new ResponseEntity<>(updated, HttpStatus.OK)
     }
 
     @DeleteMapping("/npcs/{npcId}")

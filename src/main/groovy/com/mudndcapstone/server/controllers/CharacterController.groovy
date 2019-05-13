@@ -36,7 +36,18 @@ class CharacterController {
 
     @PutMapping("/characters/{characterId}")
     ResponseEntity<CharacterDto> updateCharacter(@PathVariable String characterId, @Valid @RequestBody CharacterDto characterDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
+        if (!characterService.existsByCharacterId(characterId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.CHARACTER_NOT_FOUND_EXCEPTION)
+        User user = userService.getUserById(characterDto.userId)
+        if (!user) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USER_NOT_FOUND_EXCEPTION)
+        Character characterRequest = characterService.buildCharacterFrom(characterDto, user)
+        characterRequest.identifier = characterId
+        Character character
+
+        character = characterService.upsertCharacter(characterRequest)
+        if (!character) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.CHARACTER_NOT_UPDATED_EXCEPTION)
+
+        CharacterDto updated = characterService.buildDtoFrom(character)
+        new ResponseEntity<>(updated, HttpStatus.OK)
     }
 
     @DeleteMapping("/characters/{characterId}")
