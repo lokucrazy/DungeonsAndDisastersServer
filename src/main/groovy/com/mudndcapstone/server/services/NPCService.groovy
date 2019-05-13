@@ -25,6 +25,10 @@ class NPCService {
         npcRepository.findById(id).orElse(null)
     }
 
+    boolean existsByNPCId(String id) {
+        npcRepository.existsById(id)
+    }
+
     NPC upsertNPC(NPC npc) {
         if (!npc.dm)
 

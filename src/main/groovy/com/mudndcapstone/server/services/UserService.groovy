@@ -25,6 +25,10 @@ class UserService {
         userRepository.findById(id).orElse(null)
     }
 
+    String getUsernameById(String id) {
+        userRepository.findUsernameById(id).orElse(null)
+    }
+
     User getUserByUserNameAndPassword(String username, String password) {
         User user = userRepository.findByUsername(username).orElse(null)
         user && user.password == password ? user : null
@@ -32,6 +36,10 @@ class UserService {
 
     boolean existsByUsername(String username) {
         userRepository.findByUsername(username).orElse(null)
+    }
+
+    boolean existsByUserId(String id) {
+        userRepository.existsById(id)
     }
 
     User upsertUser(User user) {

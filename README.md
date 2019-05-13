@@ -17,6 +17,9 @@ _X means the associated model_
 _If there is a 404 for a generic route of a model, that means that route does not exist
 or is overridden by a custom route_
 
+_When Updating X, make sure to send the entire DTO (this shouldn't be a problem, but
+better safe than sorry)_
+
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
 | GET /X/{Xid} | Get X | | X |

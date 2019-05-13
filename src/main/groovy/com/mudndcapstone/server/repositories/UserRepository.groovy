@@ -11,4 +11,7 @@ interface UserRepository extends Neo4jRepository<User, String> {
 
     @Query("MATCH (dm)<-[:HAS_DM]-() RETURN dm")
     List<User> findAllDMs()
+
+    @Query("MATCH (user:User) WHERE user.identifier={0} RETURN user.username")
+    Optional<String> findUsernameById(String identifier)
 }

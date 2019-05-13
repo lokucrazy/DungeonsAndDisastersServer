@@ -60,7 +60,19 @@ class UserController {
 
     @PutMapping("/users/{userId}")
     ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, Exceptions.ROUTE_NOT_IMPLEMENTED)
+        if (!userService.existsByUserId(userId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.USER_NOT_FOUND_EXCEPTION)
+        if (userService.getUsernameById(userId) != userDto.username && userService.existsByUsername(userDto.username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Exceptions.USERNAME_TAKEN_EXCEPTION)
+        }
+        User userRequest = userService.buildUserFrom(userDto)
+        userRequest.identifier = userId
+        User user
+
+        user = userService.upsertUser(userRequest)
+        if (!user) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Exceptions.USER_NOT_UPDATED_EXCEPTION)
+
+        UserDto updated = userService.buildDtoFrom(user)
+        new ResponseEntity<>(updated, HttpStatus.OK)
     }
 
     @DeleteMapping("/users/{userId}")

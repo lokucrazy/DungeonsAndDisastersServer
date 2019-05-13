@@ -13,10 +13,12 @@ class Exceptions {
     /* Enemy */
     final static String ENEMY_NOT_CREATED_EXCEPTION = "Enemy could not be created"
     final static String ENEMY_NOT_FOUND_EXCEPTION = "Enemy could not be found"
+    final static String ENEMY_NOT_UPDATED_EXCEPTION = "Enemy could not be updated"
 
     /* NPC */
     final static String NPC_NOT_CREATED_EXCEPTION = "NPC could not be created"
     final static String NPC_NOT_FOUND_EXCEPTION = "NPC could not be found"
+    final static String NPC_NOT_UPDATED_EXCEPTION = "NPC could not be updated"
 
     /* Combat */
     final static String COMBAT_NOT_CREATED_EXCEPTION = "Combat could not be created"
@@ -25,7 +27,7 @@ class Exceptions {
     /* Chat */
     final static String CHAT_NOT_CREATED_EXCEPTION = "Chat could not be created"
     final static String CHAT_NOT_FOUND_EXCEPTION = "Chat could not be found"
-    final static String MESSAGE_NOT_ADDED_EXCEPTION = "Message could not be added to chat"
+    final static String MESSAGE_NOT_ADDED_EXCEPTION = "Message could not be added"
 
     /* Map */
     final static String MAP_NOT_CREATED_EXCEPTION = "Map could not be created"
@@ -36,10 +38,12 @@ class Exceptions {
     /* Character */
     final static String CHARACTER_NOT_CREATED_EXCEPTION = "Character could not be created"
     final static String CHARACTER_NOT_FOUND_EXCEPTION = "Character could not be found"
+    final static String CHARACTER_NOT_UPDATED_EXCEPTION = "Character could not be updated"
 
     /* User */
     final static String USER_NOT_CREATED_EXCEPTION = "User could not be created"
     final static String USER_NOT_FOUND_EXCEPTION = "User could not be found"
+    final static String USER_NOT_UPDATED_EXCEPTION = "User could not be updated"
     final static String USERNAME_TAKEN_EXCEPTION = "Username already in use"
     final static String USERNAME_PASSWORD_INCORRECT = "Username or Password is incorrect"
 
@@ -49,6 +53,7 @@ class Exceptions {
     /* Session */
     final static String SESSION_NOT_CREATED_EXCEPTION = "Session could not be created"
     final static String SESSION_NOT_FOUND_EXCEPTION = "Session could not be found"
+    final static String SESSION_NOT_UPDATED_EXCEPTION = "Session could not be updated"
     final static String SESSION_CANT_REFACTOR_RELATIONSHIP_EXCEPTION = "Could not refactor session's relationship"
 
 }

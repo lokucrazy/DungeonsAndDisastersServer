@@ -35,6 +35,10 @@ class SessionService {
         sessionRepository.findAll().toSet()
     }
 
+    boolean existsBySessionId(String id) {
+        sessionRepository.existsById(id)
+    }
+
     Session getSessionById(String id) {
         sessionRepository.findById(id).orElse(null)
     }
@@ -50,6 +54,16 @@ class SessionService {
         Session sessionRequest = buildSessionFrom(sessionDto, dm)
 
         upsertSession(sessionRequest)
+    }
+
+    Session addMessage(Session session, String message, boolean combat) {
+        if (!session) return null
+        if (!message) return session
+
+        combat ? addToCombatLog(session, message) : addToNonCombatLog(session, message)
+
+        Auditor.enableAuditing(session)
+        sessionRepository.save(session)
     }
 
     void deleteSession(String id) {
@@ -131,6 +145,14 @@ class SessionService {
     Set<SessionDto> buildDtoSetFrom(Set<Session> sessions) {
         if (!sessions) return []
         sessions.stream().map({ session -> buildDtoFrom(session) }).collect(Collectors.toSet())
+    }
+
+    private void addToCombatLog(Session session, String message) {
+        session.combatLog == null ? session.combatLog = [message] : session.combatLog << message
+    }
+
+    private void addToNonCombatLog(Session session, String message) {
+        session.nonCombatLog == null ? session.nonCombatLog = [message] : session.nonCombatLog << message
     }
 
 }
