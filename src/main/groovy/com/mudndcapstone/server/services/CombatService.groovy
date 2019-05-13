@@ -31,14 +31,15 @@ class CombatService {
             combat.running = true
         } else {
             combat.running = false
-            Session session = combat.session
-            session.combat = combat.nextCombat
-            combat.session = null
-            sessionService.upsertSession(session)
+            if (combat.nextCombat) {
+                combat.nextCombat.session = combat.session
+                combat.session.combat = combat.nextCombat
+                combat.session = null
+            }
         }
 
         Auditor.updateAuditing(combat)
-        combat
+        combatRepository.save(combat)
     }
 
     Combat getCombatById(String id) {
