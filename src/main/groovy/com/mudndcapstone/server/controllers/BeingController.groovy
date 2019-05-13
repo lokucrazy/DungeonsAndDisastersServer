@@ -60,6 +60,15 @@ class BeingController {
         new ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
+    @GetMapping("/combats/{combatId}/enemies")
+    ResponseEntity<Set<EnemyDto>> getAllCombatsEnemies(@PathVariable String combatId) {
+        Combat combat = combatService.getCombatById(combatId)
+        if (!combat) throw new ResponseStatusException(HttpStatus.NOT_FOUND, Exceptions.COMBAT_NOT_FOUND_EXCEPTION)
+
+        Set<EnemyDto> enemyDtos = enemyService.buildDtoSetFrom(combat.enemies)
+        new ResponseEntity<>(enemyDtos, HttpStatus.OK)
+    }
+
     @PostMapping("/combats/{combatId}/enemies")
     ResponseEntity<EnemyDto> createEnemy(@PathVariable String combatId, @Valid @RequestBody EnemyDto enemyDto) {
         Combat combat = combatService.getCombatById(combatId)

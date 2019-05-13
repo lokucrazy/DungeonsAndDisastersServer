@@ -36,7 +36,8 @@ better safe than sorry)_
 | GET /sessions/{sessionId}/chats | Get chat log of a Session | | [String] |
 | GET /sessions/{sessionId}/maps | Get Map node of a Session | | MapDto |
 | POST /sessions/{sessionId}/combats?insert | Create combat in a Session | CombatDto | CombatDto |
-| PATCH /sessions/{sessionId}/state | Set Session state | SessionState | SessionDto |
+| PATCH /sessions/{sessionId}/state | Set Session state | State | SessionDto |
+| PATCH /sessions/{sessionId}/combats/state | Set Combat state | State | CombatDto |
 | PUT /sessions/{sessionId}/characters/{characterId} | Connect Character to a Session | | SessionDto |
 | PUT /sessions/{sessionId}/users/{userId} | Connect User to a Session | | SessionDto |
 
@@ -66,6 +67,7 @@ better safe than sorry)_
 #### Combat
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
+| GET /combats/{combatId}/enemies | Get all Enemies in a Combat | | [EnemyDto] |
 | POST /combats/{combatId}/enemies | Create Enemy in a Combat | EnemyDto | EnemyDto |
 
 #### Map

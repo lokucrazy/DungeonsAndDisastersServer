@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CombatRepository extends Neo4jRepository<Combat, String> {
-    @Query("""MATCH (prev:Combat)-[:NEXT_COMBAT]->(current:Combat {identifier:{0}})
-              OPTIONAL MATCH (prev)-[r]->(i)
-              RETURN prev,r,i""")
-    Optional<Combat> findPreviousCombat(String combatId)
+    @Query("""OPTIONAL MATCH (prev:Combat)-[:NEXT_COMBAT]->(current:Combat {identifier:{0}})
+              RETURN prev.identifier""")
+    Optional<String> findPreviousCombatId(String combatId)
 }

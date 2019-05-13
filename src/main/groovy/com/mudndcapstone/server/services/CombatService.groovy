@@ -2,6 +2,7 @@ package com.mudndcapstone.server.services
 
 import com.mudndcapstone.server.models.Combat
 import com.mudndcapstone.server.models.Session
+import com.mudndcapstone.server.models.State
 import com.mudndcapstone.server.models.dto.CombatDto
 import com.mudndcapstone.server.repositories.CombatRepository
 import com.mudndcapstone.server.utils.Auditor
@@ -20,6 +21,25 @@ class CombatService {
 
     Set<Combat> getAllCombats() {
         combatRepository.findAll().toSet()
+    }
+
+    Combat setCombatState(Combat combat, State state) {
+        if (combat ==  null) return null
+        combat = combatRepository.findById(combat.identifier).orElse(combat)
+
+        if (state.running) {
+            combat.running = true
+        } else {
+            combat.running = false
+            if (combat.nextCombat) {
+                combat.nextCombat.session = combat.session
+                combat.session.combat = combat.nextCombat
+                combat.session = null
+            }
+        }
+
+        Auditor.updateAuditing(combat)
+        combatRepository.save(combat)
     }
 
     Combat getCombatById(String id) {
@@ -64,7 +84,8 @@ class CombatService {
 
     Combat insertCombatToPath(Combat newCombat, Session session) {
         if (!session || !newCombat) return null
-        Combat prevCombat = combatRepository.findPreviousCombat(session.combat.identifier).orElse(null)
+        String prevCombatId = combatRepository.findPreviousCombatId(session.combat.identifier).orElse("")
+        Combat prevCombat = combatRepository.findById(prevCombatId).orElse(null)
         Combat nextCombat = session.combat
 
         if (prevCombat) {
@@ -73,15 +94,15 @@ class CombatService {
             combatRepository.save(prevCombat)
         }
         newCombat.nextCombat = nextCombat
-        Auditor.updateAuditing(newCombat)
-        newCombat = combatRepository.save(newCombat)
         session.combat = newCombat
-        sessionService.upsertSession(session)
+        nextCombat.session = null
 
-        newCombat
+        Auditor.updateAuditing(newCombat)
+        combatRepository.save(newCombat)
     }
 
     Combat findLastCombat(Combat combat) {
+        combat = combatRepository.findById(combat.identifier).orElse(combat)
         if (!combat.nextCombat) return combat
         return findLastCombat(combat.nextCombat)
     }
