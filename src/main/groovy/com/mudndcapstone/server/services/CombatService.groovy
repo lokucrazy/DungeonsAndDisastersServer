@@ -37,7 +37,7 @@ class CombatService {
             sessionService.upsertSession(session)
         }
 
-        Auditor.enableAuditing(combat)
+        Auditor.updateAuditing(combat)
         combat
     }
 
@@ -72,7 +72,7 @@ class CombatService {
         if (!session.combat) return combatRepository.save(combat)
 
         combat.session = null
-        Combat lastCombat = findLastCombat(combatRepository.findById(session.combat.identifier).orElse(session.combat))
+        Combat lastCombat = findLastCombat(session.combat)
         lastCombat.nextCombat = combat
 
         Auditor.updateAuditing(lastCombat)
@@ -83,7 +83,8 @@ class CombatService {
 
     Combat insertCombatToPath(Combat newCombat, Session session) {
         if (!session || !newCombat) return null
-        Combat prevCombat = combatRepository.findPreviousCombat(session.combat.identifier).orElse(null)
+        String prevCombatId = combatRepository.findPreviousCombatId(session.combat.identifier).orElse("")
+        Combat prevCombat = combatRepository.findById(prevCombatId).orElse(null)
         Combat nextCombat = session.combat
 
         if (prevCombat) {
@@ -92,15 +93,15 @@ class CombatService {
             combatRepository.save(prevCombat)
         }
         newCombat.nextCombat = nextCombat
-        Auditor.updateAuditing(newCombat)
-        newCombat = combatRepository.save(newCombat)
         session.combat = newCombat
-        sessionService.upsertSession(session)
+        nextCombat.session = null
 
-        newCombat
+        Auditor.updateAuditing(newCombat)
+        combatRepository.save(newCombat)
     }
 
     Combat findLastCombat(Combat combat) {
+        combat = combatRepository.findById(combat.identifier).orElse(combat)
         if (!combat.nextCombat) return combat
         return findLastCombat(combat.nextCombat)
     }
