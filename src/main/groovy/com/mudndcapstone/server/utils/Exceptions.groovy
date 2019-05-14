@@ -14,7 +14,7 @@ class Exceptions {
     final static String ABILITY_SCORE_MIN_EXCEPTION = "Ability score should not be less than 1"
     final static String ABILITY_SCORE_MAX_EXCEPTION = "Ability score should not be greater than 30"
     final static String ABILITY_MODIFIER_MIN_EXCEPTION = "Ability modifier should not be less than -5"
-    final static String ABILITY_MODIFIER_MAX_EXCEPTION = "Ability modifier should not be less than 10"
+    final static String ABILITY_MODIFIER_MAX_EXCEPTION = "Ability modifier should not be greater than 10"
 
     /* Enemy */
     final static String ENEMY_NOT_CREATED_EXCEPTION = "Enemy could not be created"
