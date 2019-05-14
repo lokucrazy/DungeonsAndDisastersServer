@@ -2,9 +2,11 @@ package com.mudndcapstone.server.utils.character
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+import javax.validation.constraints.Positive
+
 class CharacterHealth {
     @JsonProperty("current_hit_points") int currentHitPoints
-    @JsonProperty("maximum_hit_points") int maximumHitPoints
+    @JsonProperty("maximum_hit_points") @Positive int maximumHitPoints
     @JsonProperty("temporary_hit_points") int temporaryHitPoints
     @JsonProperty("hit_dice") int hitDice
     @JsonProperty("success_death_saves") int successDeathSaves
