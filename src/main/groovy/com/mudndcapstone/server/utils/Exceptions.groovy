@@ -10,6 +10,12 @@ class Exceptions {
     final static String SESSION_CANT_CONNECT_USER_EXCEPTION = "Could not connect user to session"
     final static String SESSION_COMBAT_NO_MATCH_EXCEPTION = "Cannot match session and combat's session ids"
 
+    /* Abilities */
+    final static String ABILITY_SCORE_MIN_EXCEPTION = "Ability score should not be less than 1"
+    final static String ABILITY_SCORE_MAX_EXCEPTION = "Ability score should not be greater than 30"
+    final static String ABILITY_MODIFIER_MIN_EXCEPTION = "Ability modifier should not be less than -5"
+    final static String ABILITY_MODIFIER_MAX_EXCEPTION = "Ability modifier should not be greater than 10"
+
     /* Enemy */
     final static String ENEMY_NOT_CREATED_EXCEPTION = "Enemy could not be created"
     final static String ENEMY_NOT_FOUND_EXCEPTION = "Enemy could not be found"

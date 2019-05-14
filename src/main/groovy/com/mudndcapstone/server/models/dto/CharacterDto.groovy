@@ -12,6 +12,7 @@ import com.mudndcapstone.server.utils.character.CharacterRace
 import com.mudndcapstone.server.utils.character.CharacterSavingThrow
 import com.mudndcapstone.server.utils.character.CharacterSkill
 
+import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 class CharacterDto extends BeingDto {
@@ -21,7 +22,7 @@ class CharacterDto extends BeingDto {
     @NotNull CharacterAlignment alignment
     @NotNull int level
     @NotNull int experience
-    @NotNull BeingAbilities abilities
+    @NotNull @Valid BeingAbilities abilities
     List<CharacterSavingThrow> savingThrows
     List<CharacterSkill> skills
     int inspiration
@@ -30,7 +31,7 @@ class CharacterDto extends BeingDto {
     @JsonProperty("armor_class") int armorClass
     int initiative
     int speed
-    CharacterHealth health
+    @NotNull @Valid CharacterHealth health
     List<CharacterAttack> attacks
     List<CharacterEquipment> equipment
     CharacterMonies monies

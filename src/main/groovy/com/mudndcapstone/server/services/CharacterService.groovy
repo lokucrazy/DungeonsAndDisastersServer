@@ -41,9 +41,14 @@ class CharacterService {
     Character buildAndCreateCharacter(CharacterDto characterDto, User user) {
         Character characterRequest = buildCharacterFrom(characterDto, user)
 
-        characterRequest.abilities = new BeingAbilities()
-        characterRequest.health = new CharacterHealth()
+        characterRequest.savingThrows = []
+        characterRequest.skills = []
+        characterRequest.attacks = []
+        characterRequest.equipment = []
         characterRequest.monies = new CharacterMonies()
+        characterRequest.proficiencies = []
+        characterRequest.languages = []
+        characterRequest.feats = []
 
         upsertCharacter(characterRequest)
     }
