@@ -1,145 +1,248 @@
 package com.mudndcapstone.server.controllers
 
-import com.mudndcapstone.server.models.Character
-import com.mudndcapstone.server.models.Chat
-import com.mudndcapstone.server.models.Map
 import com.mudndcapstone.server.models.History
+import com.mudndcapstone.server.models.Messenger
 import com.mudndcapstone.server.models.Session
 import com.mudndcapstone.server.models.User
-import com.mudndcapstone.server.models.dto.CharacterDto
-import com.mudndcapstone.server.models.dto.ChatDto
-import com.mudndcapstone.server.models.dto.HistoryDto
 import com.mudndcapstone.server.models.dto.SessionDto
-import com.mudndcapstone.server.services.CharacterService
-import com.mudndcapstone.server.services.ChatService
-import com.mudndcapstone.server.services.HistoryService
-import com.mudndcapstone.server.services.MapService
-import com.mudndcapstone.server.services.SessionService
-import com.mudndcapstone.server.services.UserService
+import com.mudndcapstone.server.services.*
+import com.mudndcapstone.server.utils.Exceptions
 import org.junit.Before
-import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import static org.mockito.ArgumentMatchers.*
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.web.server.ResponseStatusException
+
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.Mockito.verify
+import static org.mockito.Mockito.when
 
 @RunWith(SpringRunner)
 @SpringBootTest
 class SessionControllerTests {
 
     @Mock SessionService sessionService
+    @Mock UserService userService
     @Mock CharacterService characterService
+    @Mock CombatService combatService
     @Mock ChatService chatService
     @Mock MapService mapService
     @Mock HistoryService historyService
-    @Mock UserService userService
 
-    @InjectMocks
-    SessionController sessionController
+    @InjectMocks SessionController sessionController
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none()
 
     @Before
     void setup() {
         MockitoAnnotations.initMocks(this)
     }
 
-    @Ignore
-    @Test
-    void givenSessionDTOWithNoIdentifier_whenSessionServiceCreate_thenSessionControllerReturnsSession() {
-        // Given
-        SessionDto sessionDto = new SessionDto()
-        Session session = new Session()
-        Chat chat = new Chat()
-        Map map = new Map()
-        ResponseEntity response
-
-        // When
-        Mockito.when(userService.getUserById())
-        Mockito.when(sessionService.buildSessionFrom(any(SessionDto), any(User))).thenReturn(session)
-        Mockito.when(chatService.upsertChat(any(Chat))).thenReturn(chat)
-        Mockito.when(mapService.upsertMap(any(Map))).thenReturn(map)
-        Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(session)
-        Mockito.when(sessionService.buildDtoFrom(any(Session))).thenReturn(sessionDto)
-        response = sessionController.createSession(sessionDto)
-
-        //Then
-        assert response.statusCode == HttpStatus.CREATED
-        assert response.body == sessionDto
-        Mockito.verify(chatService, Mockito.atLeastOnce()).upsertChat(any(Chat))
-        Mockito.verify(mapService, Mockito.atLeastOnce()).upsertMap(any(Map))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
-    }
-
-    @Ignore
-    @Test
-    void givenSessionDTOWithIdentifier_whenSessionServiceCreate_thenSessionControllerReturnsSession() {
-        // Given
-        Session oldSession = new Session()
-        Session newSession = new Session()
-        oldSession.identifier = "oldIdentifier"
-        newSession.identifier = "newIdentifier"
-        History history = oldSession
-        newSession.history = history
-        SessionDto oldSessionDto = new SessionDto()
-        SessionDto newSessionDto = new SessionDto()
-        oldSessionDto.dmId = "test"
-        oldSessionDto.identifier = "oldIdentifier"
-        newSessionDto.dmId = "test"
-        newSessionDto.identifier = "newIdentifier"
-
-        ResponseEntity response
-
-        // When
-        Mockito.when(sessionService.buildSessionFrom(oldSessionDto, any(User))).thenReturn(oldSession)
-        Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(newSession)
-        Mockito.when(sessionService.moveRelationships(oldSession.identifier)).thenReturn(newSession)
-        Mockito.when(historyService.convertSessionToHistory(oldSession.identifier)).thenReturn(history)
-        Mockito.when(sessionService.upsertSession(newSession)).thenReturn(newSession)
-        Mockito.when(sessionService.buildDtoFrom(newSession)).thenReturn(newSessionDto)
-        response = sessionController.createSession(oldSessionDto)
-
-        //Then
-        assert response.statusCode == HttpStatus.CREATED
-        assert response.body == newSessionDto
-        assert newSessionDto.identifier == newSession.identifier
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).moveRelationships(any(String))
-        Mockito.verify(historyService, Mockito.atLeastOnce()).convertSessionToHistory(any(String))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
-    }
-
-    @Ignore
-    @Test
-    void givenNullSessionDTO_whenSessionServiceCreate_ThenSessionControllerReturnsError() {
+    /* createSession tests */
+    @Test()
+    void givenNullSessionDto_whenAttemptCreateSession_thenThrowException(){
         // Given
         SessionDto sessionDto = null
-        ResponseEntity response
+
+        thrown.expect(NullPointerException)
 
         // When
-        response = sessionController.createSession(sessionDto)
+        sessionController.createSession(sessionDto)
 
         // Then
-        assert response.statusCode == HttpStatus.BAD_REQUEST
+        // exception thrown
     }
 
-    @Ignore
-    @Test
-    void givenSessionDTOWithNoDmId_whenSessionServiceCreate_ThenSessionControllerReturnsError() {
+    @Test()
+    void givenEmptySessionDto_whenAttemptCreateSession_thenThrowException() {
         // Given
         SessionDto sessionDto = new SessionDto()
-        ResponseEntity response
+
+        thrown.expect(ResponseStatusException)
+        thrown.expectMessage(Exceptions.USER_NOT_FOUND_EXCEPTION)
 
         // When
+        sessionController.createSession(sessionDto)
+
+        // Then
+        // exception thrown
+    }
+
+    @Test
+    void givenValidSessionDtoWithInvalidDMId_whenAttemptCreateSession_thenThrowException() {
+        // Given
+        SessionDto sessionDto = new SessionDto(dmId: "fake_dm_id")
+
+        thrown.expect(ResponseStatusException)
+        thrown.expectMessage(Exceptions.USER_NOT_FOUND_EXCEPTION)
+
+        // When
+        sessionController.createSession(sessionDto)
+
+        // Then
+        // exception thrown
+    }
+
+    @Test
+    void givenValidSessionDtoWithNoPreviousIdentifier_whenAttemptCreateSession_thenCreateSession() {
+        // Given
+        User user = new User(identifier: "user_id")
+        SessionDto sessionDto = new SessionDto(dmId: user.identifier)
+        Session session = new Session(dm: user)
+        ResponseEntity<SessionDto> response
+
+        // When
+        when(userService.getUserById("user_id")).thenReturn(user)
+        when(sessionService.buildSessionFrom(sessionDto, user)).thenReturn(session)
+        when(sessionService.upsertSession(session)).thenReturn(session)
         response = sessionController.createSession(sessionDto)
 
         // Then
-        assert response.statusCode == HttpStatus.BAD_REQUEST
+        verify(userService).getUserById("user_id")
+        verify(sessionService).buildSessionFrom(sessionDto, user)
+        verify(sessionService).upsertSession(session)
+        assert response.statusCode == HttpStatus.CREATED
     }
 
+    @Test
+    void givenValidSessionDtoWithPreviousIdentifier_whenAttemptCreateSession_thenRefactorOldSessionAndCreateNewSession() {
+        // Given
+        User user = new User(identifier: "user_id")
+        SessionDto sessionDto = new SessionDto(identifier: "previous_session_id", dmId: user.identifier)
+        Session old = new Session(identifier: "previous_session_id", dm: user)
+        History history = new History(identifier: "previous_session_id")
+        Session session = new Session(identifier: "new_session_id", dm: user, history: history)
+        ResponseEntity<SessionDto> response
+
+        // When
+        when(userService.getUserById("user_id")).thenReturn(user)
+        when(sessionService.buildSessionFrom(sessionDto, user)).thenReturn(old)
+        when(sessionService.moveRelationships("previous_session_id")).thenReturn(old)
+        when(historyService.convertSessionToHistory("previous_session_id")).thenReturn(history)
+        when(sessionService.upsertSession(any(Session))).thenReturn(session)
+        response = sessionController.createSession(sessionDto)
+
+        // Then
+        verify(userService).getUserById("user_id")
+        verify(sessionService).buildSessionFrom(sessionDto, user)
+        verify(sessionService).moveRelationships("previous_session_id")
+        verify(historyService).convertSessionToHistory("previous_session_id")
+        verify(sessionService).upsertSession(any(Session))
+        assert response.statusCode == HttpStatus.CREATED
+    }
+
+    /* getSessionById tests */
+    @Test
+    void givenInvalidSessionId_whenGetSessionByIdCalled_thenExceptionThrown() {
+        // Given
+        String sessionId = "fake_session_id"
+
+        thrown.expect(ResponseStatusException)
+        thrown.expectMessage(Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        // When
+        sessionController.getSessionById(sessionId)
+
+        // Then
+        // exception thrown
+    }
+
+    @Test
+    void givenValidSessionId_whenGetSessionByIdCalled_thenReturnSession() {
+        // Given
+        Session session = new Session(identifier: "fake_session_id")
+        ResponseEntity<SessionDto> response
+
+        // When
+        when(sessionService.getSessionById("fake_session_id")).thenReturn(session)
+        response = sessionController.getSessionById("fake_session_id")
+
+        // Then
+        verify(sessionService).getSessionById("fake_session_id")
+        assert response.statusCode == HttpStatus.OK
+    }
+
+    /* updateSession tests */
+
+    /* setSessionState tests */
+
+    /* deleteSession tests */
+    @Test
+    void givenSessionId_whenDeleteSession_thenResponseReturned() {
+        // Given
+        String sessionId = "fake_session_id"
+        ResponseEntity response
+
+        // When
+        response = sessionController.deleteSession(sessionId)
+
+        // Then
+        verify(sessionService).deleteSession(sessionId)
+        assert response.statusCode == HttpStatus.NO_CONTENT
+    }
+
+    /* addCombatMessage tests */
+    @Test
+    void givenInvalidSessionId_whenAddCombatMessageCalled_thenExceptionThrown() {
+        // Given
+        String sessionId = "fake_session_id"
+
+        thrown.expect(ResponseStatusException)
+        thrown.expectMessage(Exceptions.SESSION_NOT_FOUND_EXCEPTION)
+
+        // When
+        sessionController.addCombatMessage(sessionId, null, false)
+
+        // Then
+        // exception thrown
+    }
+
+    @Test
+    void givenFalseCombatParam_whenAddCombatMessageCalled_thenMessageAddedToNonCombatLog() {
+        // Given
+        String sessionId = "session_id"
+        Session session = new Session(identifier: sessionId)
+        Messenger messenger = new Messenger(body: "test_body")
+        ResponseEntity<List<String>> response
+
+
+        // When
+        when(sessionService.getSessionById(sessionId)).thenReturn(session)
+        when(sessionService.addMessage(session, messenger.body, false)).thenReturn()
+        response = sessionController.addCombatMessage(sessionId, messenger, false)
+
+        // Then
+        verify(sessionService).getSessionById(sessionId)
+        verify(sessionService).addMessage(session, messenger.body, false)
+        assert response.statusCode == HttpStatus.OK
+    }
+
+    @Test
+    void givenTrueCombatParam_whenAddCombatMessageCalled_thenMessageAddedToCombatLog() {
+        // Given
+        String sessionId = "session_id"
+        Session session = new Session(identifier: sessionId)
+        Messenger messenger = new Messenger(body: "test_body")
+        ResponseEntity<List<String>> response
+
+
+        // When
+        when(sessionService.getSessionById(sessionId)).thenReturn(session)
+        when(sessionService.addMessage(session, messenger.body, true)).thenReturn()
+        response = sessionController.addCombatMessage(sessionId, messenger, true)
+
+        // Then
+        verify(sessionService).getSessionById(sessionId)
+        verify(sessionService).addMessage(session, messenger.body, true)
+        assert response.statusCode == HttpStatus.OK
+    }
 }
