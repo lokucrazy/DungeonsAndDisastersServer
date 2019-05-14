@@ -49,97 +49,22 @@ class SessionControllerTests {
         MockitoAnnotations.initMocks(this)
     }
 
-    @Ignore
     @Test
-    void givenSessionDTOWithNoIdentifier_whenSessionServiceCreate_thenSessionControllerReturnsSession() {
-        // Given
-        SessionDto sessionDto = new SessionDto()
-        Session session = new Session()
-        Chat chat = new Chat()
-        Map map = new Map()
-        ResponseEntity response
+    void getResponseEntity_whenGivenSessionId_forGetSessionById() {
+        // Mocks
 
-        // When
-        Mockito.when(userService.getUserById())
-        Mockito.when(sessionService.buildSessionFrom(any(SessionDto), any(User))).thenReturn(session)
-        Mockito.when(chatService.upsertChat(any(Chat))).thenReturn(chat)
-        Mockito.when(mapService.upsertMap(any(Map))).thenReturn(map)
-        Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(session)
-        Mockito.when(sessionService.buildDtoFrom(any(Session))).thenReturn(sessionDto)
-        response = sessionController.createSession(sessionDto)
+        // Test
 
-        //Then
-        assert response.statusCode == HttpStatus.CREATED
-        assert response.body == sessionDto
-        Mockito.verify(chatService, Mockito.atLeastOnce()).upsertChat(any(Chat))
-        Mockito.verify(mapService, Mockito.atLeastOnce()).upsertMap(any(Map))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
+        // Assert
     }
 
-    @Ignore
     @Test
-    void givenSessionDTOWithIdentifier_whenSessionServiceCreate_thenSessionControllerReturnsSession() {
-        // Given
-        Session oldSession = new Session()
-        Session newSession = new Session()
-        oldSession.identifier = "oldIdentifier"
-        newSession.identifier = "newIdentifier"
-        History history = oldSession
-        newSession.history = history
-        SessionDto oldSessionDto = new SessionDto()
-        SessionDto newSessionDto = new SessionDto()
-        oldSessionDto.dmId = "test"
-        oldSessionDto.identifier = "oldIdentifier"
-        newSessionDto.dmId = "test"
-        newSessionDto.identifier = "newIdentifier"
+    void getResponseStatusException_whenGivenBadSessionId_forGetSessionById() {
+        // Mocks
 
-        ResponseEntity response
+        // Test
 
-        // When
-        Mockito.when(sessionService.buildSessionFrom(oldSessionDto, any(User))).thenReturn(oldSession)
-        Mockito.when(sessionService.upsertSession(any(Session))).thenReturn(newSession)
-        Mockito.when(sessionService.moveRelationships(oldSession.identifier)).thenReturn(newSession)
-        Mockito.when(historyService.convertSessionToHistory(oldSession.identifier)).thenReturn(history)
-        Mockito.when(sessionService.upsertSession(newSession)).thenReturn(newSession)
-        Mockito.when(sessionService.buildDtoFrom(newSession)).thenReturn(newSessionDto)
-        response = sessionController.createSession(oldSessionDto)
-
-        //Then
-        assert response.statusCode == HttpStatus.CREATED
-        assert response.body == newSessionDto
-        assert newSessionDto.identifier == newSession.identifier
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).moveRelationships(any(String))
-        Mockito.verify(historyService, Mockito.atLeastOnce()).convertSessionToHistory(any(String))
-        Mockito.verify(sessionService, Mockito.atLeastOnce()).upsertSession(any(Session))
-    }
-
-    @Ignore
-    @Test
-    void givenNullSessionDTO_whenSessionServiceCreate_ThenSessionControllerReturnsError() {
-        // Given
-        SessionDto sessionDto = null
-        ResponseEntity response
-
-        // When
-        response = sessionController.createSession(sessionDto)
-
-        // Then
-        assert response.statusCode == HttpStatus.BAD_REQUEST
-    }
-
-    @Ignore
-    @Test
-    void givenSessionDTOWithNoDmId_whenSessionServiceCreate_ThenSessionControllerReturnsError() {
-        // Given
-        SessionDto sessionDto = new SessionDto()
-        ResponseEntity response
-
-        // When
-        response = sessionController.createSession(sessionDto)
-
-        // Then
-        assert response.statusCode == HttpStatus.BAD_REQUEST
+        // Assert
     }
 
 }
