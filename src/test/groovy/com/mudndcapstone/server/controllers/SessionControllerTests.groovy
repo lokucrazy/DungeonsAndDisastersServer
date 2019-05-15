@@ -210,14 +210,15 @@ class SessionControllerTests {
     void givenFalseCombatParam_whenAddCombatMessageCalled_thenMessageAddedToNonCombatLog() {
         // Given
         String sessionId = "session_id"
-        Session session = new Session(identifier: sessionId)
+        List<String> nonCombatLog = ["non combat log"]
+        Session session = new Session(identifier: sessionId, nonCombatLog: nonCombatLog)
         Messenger messenger = new Messenger(body: "test_body")
         ResponseEntity<List<String>> response
 
 
         // When
         when(sessionService.getSessionById(sessionId)).thenReturn(session)
-        when(sessionService.addMessage(session, messenger.body, false)).thenReturn()
+        when(sessionService.addMessage(session, messenger.body, false)).thenReturn(session)
         response = sessionController.addCombatMessage(sessionId, messenger, false)
 
         // Then
@@ -230,14 +231,15 @@ class SessionControllerTests {
     void givenTrueCombatParam_whenAddCombatMessageCalled_thenMessageAddedToCombatLog() {
         // Given
         String sessionId = "session_id"
-        Session session = new Session(identifier: sessionId)
+        List<String> combatLog = ["combat log"]
+        Session session = new Session(identifier: sessionId, combatLog: combatLog)
         Messenger messenger = new Messenger(body: "test_body")
         ResponseEntity<List<String>> response
 
 
         // When
         when(sessionService.getSessionById(sessionId)).thenReturn(session)
-        when(sessionService.addMessage(session, messenger.body, true)).thenReturn()
+        when(sessionService.addMessage(session, messenger.body, true)).thenReturn(session)
         response = sessionController.addCombatMessage(sessionId, messenger, true)
 
         // Then
