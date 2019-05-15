@@ -9,17 +9,23 @@ A server for Dungeons and also a server for Dragons.
 
 ### Routes
 
-##### Note: all routes prefixed with "/api/v1"
+##### _Note: all routes prefixed with "/api/v1"_
 
 ##### Generic Routes
-_generic route can either not exist or be overridden by a custom route_
+_X means the associated model_
+
+_If there is a 404 for a generic route of a model, that means that route does not exist
+or is overridden by a custom route_
+
+_When Updating X, make sure to send the entire DTO (this shouldn't be a problem, but
+better safe than sorry)_
 
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
-| GET /X/{id} | Get X | | X |
-| POST /X | Create X | XDto | X |
-| PUT /X/{id} | Update X | XDto | X |
-| DELETE /X/{id} | Delete X | | 204 |
+| GET /X/{Xid} | Get X | | X |
+| POST /X | Create X | Xdto | X |
+| PUT /X/{Xid} | Update X | Xdto | X |
+| DELETE /X/{Xid} | Delete X | | 204 |
 
 ##### Custom Routes
 
@@ -29,16 +35,21 @@ _generic route can either not exist or be overridden by a custom route_
 | GET /sessions/{sessionId}/characters | Get all Characters in a Session | | [CharacterDto] |
 | GET /sessions/{sessionId}/chats | Get chat log of a Session | | [String] |
 | GET /sessions/{sessionId}/maps | Get Map node of a Session | | MapDto |
-| POST /sessions/{sessionId}/combats | Create combat in a Session | CombatDto | CombatDto |
+| POST /sessions/{sessionId}/combats?insert | Create combat in a Session | CombatDto | CombatDto |
+| PATCH /sessions/{sessionId}/state | Set Session state | State | SessionDto |
+| PATCH /sessions/{sessionId}/combats/state | Set Combat state | State | CombatDto |
 | PUT /sessions/{sessionId}/characters/{characterId} | Connect Character to a Session | | SessionDto |
 | PUT /sessions/{sessionId}/users/{userId} | Connect User to a Session | | SessionDto |
 
 #### User (users, dms)
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
+| POST /login/{username}?password | Get User based on username and password | | UserDto |
 | GET /users/{userId}/characters | Get all Characters in a User | | [CharacterDto] |
-| POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 | POST /users/{userId}/characters | Create a Character | CharacterDto | CharacterDto |
+| GET /users/{userId}/notes | Get all user's notes | | [String] |
+| POST /users/{userId}/notes | Create a new note for a user | Messenger | UserDto |
+| POST /dms/{dmId}/npcs | Create an NPC | NPCDto | NPCDto |
 
 #### Being (npcs, enemies)
 | Route | Description | Body | Response |
@@ -48,15 +59,22 @@ _generic route can either not exist or be overridden by a custom route_
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
 
-#### Chat
+##### Chat
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
+| PUT /chats/{chatId} | Add message to chat log | Messenger | [String] |
 
 #### Combat
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
+| GET /combats/{combatId}/enemies | Get all Enemies in a Combat | | [EnemyDto] |
 | POST /combats/{combatId}/enemies | Create Enemy in a Combat | EnemyDto | EnemyDto |
+
 #### Map
+| Route | Description | Body | Response |
+| ------ | ------ | ------ | ------ |
+
+#### History
 | Route | Description | Body | Response |
 | ------ | ------ | ------ | ------ |
 
@@ -75,15 +93,18 @@ _properties marked with_ * _means they're used for creation_
     "notes": [],
     "created_at": "YYYY-mm-dd HH:mm a",
     "modified_at": "YYYY-mm-dd HH:mm a",
-    "characters": [],
-    "sessions": []
+    "character_ids": [],
+    "session_ids": [],
+    "dm_session_ids": [],
+    "npc_ids": []
 }
 ```
 
 #### SessionDto
 ```
 {
-    "id": "",
+*   "id": "",
+    "session_state": false,
     "created_at": "YYYY-mm-dd HH:mm a",
     "modified_at": "YYYY-mm-dd HH:mm a",
 !*  "dm_id": "",
@@ -97,6 +118,13 @@ _properties marked with_ * _means they're used for creation_
     "npc_ids": [],
     "player_ids": [],
     "character_ids": []
+}
+```
+
+#### SessionState
+```
+{
+!   "running": false
 }
 ```
 
@@ -125,7 +153,7 @@ _properties marked with_ * _means they're used for creation_
     "initial_location": "",
 *   "abilities": {},
 *   "session_id": "",
-*   "dm_id": ""
+!*  "dm_id": ""
 }
 ```
 
@@ -137,6 +165,13 @@ _properties marked with_ * _means they're used for creation_
     "modified_at": "YYYY-mm-dd HH:mm a",
 !   "session_id": "",
     "images": []
+}
+```
+
+#### Messenger
+```
+{
+!   "body": ""
 }
 ```
 
@@ -152,7 +187,7 @@ _properties marked with_ * _means they're used for creation_
     "initial_location": "",
 *   "abilities": {},
 *   "session_id": "",
-*   "combat_id": ""
+!*  "combat_id": ""
 }
 ```
 
@@ -188,13 +223,65 @@ _properties marked with_ * _means they're used for creation_
     "modified_at": "YYYY-mm-dd HH:mm a",
 !*  "name": "",
 !*  "user_id": "",
-!   "class": "",
-!   "background: "",
-!   "race": "",
-!   "alignment": "",
-*   "level" : 0,
-*   "experience": 0,
-*   "abilities: {},
+!*  "class": "",
+!*  "background: "",
+!*  "race": "",
+!*  "alignment": "",
+!*  "level" : 0,
+!*  "experience": 0,
+!*  "abilities: {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+        "strength_modifier": 0,
+        "dexterity_modifier": 0,
+        "constitution_modifier": 0,
+        "intelligence_modifier": 0,
+        "wisdom_modifier": 0,
+        "charisma_modifier": 0
+    },
     "session_ids": [] 
 }
+
+CharacterAlignment = [
+    "lawful good"
+    "neutral good"
+    "chaotic good"
+    "lawful neutral"
+    "neutral"
+    "chaotic neutral"
+    "lawful evil"
+    "neutral evil"
+    "chaotic evil"
+]
+
+CharacterClass = [
+    "barbarian"
+    "bard"
+    "cleric"
+    "druid"
+    "fighter"
+    "monk"
+    "paladin"
+    "ranger"
+    "rogue"
+    "sorcerer"
+    "warlock"
+    "wizard"
+]
+
+CharacterRace = [
+    "dragonborn"
+    "dwarf"
+    "elf"
+    "gnome"
+    "half elf"
+    "half orc"
+    "halfling"
+    "human"
+    "tiefling"
+]
 ```

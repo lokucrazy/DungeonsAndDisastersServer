@@ -1,0 +1,12 @@
+version: 0.0
+os: linux
+files:
+  - source: build/libs/server-0.0.1-SNAPSHOT.jar
+    destination: /home/ec2-user/serverJar
+hooks:
+  BeforeInstall:
+    - location: bashScripts/beforeInstall.sh
+      timeout: 300
+  ApplicationStart:
+    - location: bashScripts/applicationStart.sh
+      timeout: 300
